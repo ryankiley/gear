@@ -1,0 +1,81 @@
+// Design tokens — gorpcore-brutalist, editorial (ref: ROA Hiking).
+// Reuses the portfolio token *technique* (OKLCH + light-dark(), 4/8 grid,
+// custom properties) with fresh values. Fonts are system stacks for now — to be
+// swapped for self-hosted woff2 subsets within a ≤60KB budget (no British colour).
+
+:root {
+  color-scheme: light dark;
+
+  /* ---- surfaces (muted naturals) ---- */
+  --paper: light-dark(oklch(0.965 0.008 85), oklch(0.165 0.006 75));
+  --paper-2: light-dark(oklch(0.995 0.004 85), oklch(0.205 0.006 75));
+  --paper-3: light-dark(oklch(0.925 0.011 85), oklch(0.255 0.007 75));
+
+  /* ---- ink ---- */
+  --ink: light-dark(oklch(0.205 0.012 75), oklch(0.93 0.008 85));
+  --ink-2: light-dark(oklch(0.44 0.012 75), oklch(0.71 0.01 85));
+  --ink-3: light-dark(oklch(0.58 0.01 75), oklch(0.55 0.01 85));
+
+  /* ---- hairlines (brutalist structure) ---- */
+  --line: light-dark(oklch(0.205 0.012 75 / 0.2), oklch(0.93 0.01 85 / 0.16));
+  --line-2: light-dark(oklch(0.205 0.012 75 / 0.42), oklch(0.93 0.01 85 / 0.3));
+
+  /* ---- accent: muted rust ---- */
+  --accent: light-dark(oklch(0.535 0.135 42), oklch(0.66 0.12 42));
+  --accent-ink: light-dark(oklch(0.99 0 0), oklch(0.16 0 0));
+
+  /* ---- category palette (muted naturals) ---- */
+  --cat-shelter: light-dark(oklch(0.55 0.07 150), oklch(0.66 0.07 150));
+  --cat-sleep: light-dark(oklch(0.55 0.06 250), oklch(0.68 0.06 250));
+  --cat-pack: light-dark(oklch(0.52 0.05 95), oklch(0.66 0.05 95));
+  --cat-kitchen: light-dark(oklch(0.55 0.1 45), oklch(0.68 0.1 45));
+  --cat-water: light-dark(oklch(0.55 0.07 220), oklch(0.68 0.07 220));
+  --cat-clothing: light-dark(oklch(0.55 0.06 320), oklch(0.68 0.06 320));
+  --cat-electronics: light-dark(oklch(0.5 0.03 285), oklch(0.64 0.03 285));
+  --cat-firstaid: light-dark(oklch(0.54 0.13 22), oklch(0.66 0.12 22));
+  --cat-worn: light-dark(oklch(0.56 0.045 80), oklch(0.68 0.045 80));
+  --cat-consumable: light-dark(oklch(0.6 0.09 100), oklch(0.72 0.09 100));
+  --cat-other: light-dark(oklch(0.56 0.018 80), oklch(0.64 0.018 80));
+
+  /* ---- type families (system placeholders; ROA-style swap later) ---- */
+  --font-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia,
+    "Times New Roman", serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas,
+    monospace;
+
+  /* ---- type scale ---- */
+  --t-micro: 0.6875rem; /* 11 */
+  --t-small: 0.8125rem; /* 13 */
+  --t-body: 0.9375rem; /* 15 */
+  --t-base: 1rem; /* 16 */
+  --t-h3: 1.25rem; /* 20 */
+  --t-h2: 1.75rem; /* 28 */
+  --t-h1: 2.5rem; /* 40 */
+  --t-display: clamp(2.75rem, 7vw, 4rem);
+
+  /* ---- spacing (4/8 grid) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  /* ---- radius: sharp by default; hairline only ---- */
+  --radius-0: 0;
+  --radius-1: 2px;
+
+  /* ---- motion ---- */
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.5, 1);
+  --dur: 150ms;
+  --dur-slow: 280ms;
+
+  /* ---- layout ---- */
+  --measure: 56rem;
+}

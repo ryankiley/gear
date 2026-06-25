@@ -1,0 +1,21 @@
+# Nuxt / build
+.nuxt
+.output
+.data
+dist
+
+# deps
+node_modules
+
+# local pinned toolchain (Node 24.15.0) — not committed
+.tooling
+
+# env / secrets
+.env
+.env.*
+!.env.example
+
+# misc
+.DS_Store
+*.log
+.vercel

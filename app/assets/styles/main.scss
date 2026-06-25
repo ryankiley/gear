@@ -1,0 +1,43 @@
+@use "foundations/reset";
+@use "foundations/tokens";
+@use "foundations/typography";
+@use "atoms/controls";
+
+// Global layout helpers
+.wrap {
+  width: 100%;
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.spread {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.hairline {
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+// A topo/contour motif hint for hero surfaces (sparingly).
+.topo {
+  background-image: repeating-linear-gradient(
+    115deg,
+    transparent 0 22px,
+    var(--line) 22px 23px
+  );
+}

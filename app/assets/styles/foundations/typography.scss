@@ -1,0 +1,65 @@
+body {
+  font-family: var(--font-sans);
+  font-size: var(--t-body);
+  line-height: 1.45;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+// Editorial serif for display moments (wordmark, headers, intro copy).
+.t-display,
+.t-h1,
+.t-h2 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+.t-display {
+  font-size: var(--t-display);
+}
+.t-h1 {
+  font-size: var(--t-h1);
+}
+.t-h2 {
+  font-size: var(--t-h2);
+}
+
+// Technical grotesque for UI headers / labels.
+.t-h3 {
+  font-family: var(--font-sans);
+  font-size: var(--t-h3);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.t-label {
+  font-family: var(--font-sans);
+  font-size: var(--t-micro);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-2);
+}
+
+.t-small {
+  font-size: var(--t-small);
+}
+.t-micro {
+  font-size: var(--t-micro);
+}
+
+// Monospace for all data — instrument-readout figures.
+.t-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.t-muted {
+  color: var(--ink-2);
+}
+.t-faint {
+  color: var(--ink-3);
+}
