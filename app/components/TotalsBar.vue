@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { GearList, Totals, Unit } from "~~/shared/types";
+import type { ListSnapshot, Totals, Unit } from "~~/shared/types";
 import { formatWeight } from "~~/shared/weights";
 
 const props = defineProps<{
-  list: GearList;
+  list: ListSnapshot;
   totals: Totals;
   showBreakdown: boolean;
   packed: boolean;

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Classification, Folder, GearList } from "~~/shared/types";
+import type { Classification, Folder, ListSnapshot } from "~~/shared/types";
 import { lineMg, formatWeight } from "~~/shared/weights";
 
-const props = defineProps<{ list: GearList; folder: Folder; packed: boolean }>();
-const store = useGearStore();
+const props = defineProps<{ list: ListSnapshot; folder: Folder; packed: boolean }>();
+const c = useGearList();
 
 const items = computed(() =>
   props.list.items
@@ -18,7 +18,7 @@ const draftWeight = ref("");
 
 function add() {
   if (!draftName.value.trim()) return;
-  store.addItem(props.list, props.folder.id, {
+  c.addItem(props.folder.id, {
     name: draftName.value,
     weight: draftWeight.value || undefined,
   });
@@ -41,7 +41,7 @@ const CLASS_OPTS: { value: Classification; label: string }[] = [
         class="field folder__name"
         :value="folder.name"
         :disabled="packed"
-        @change="(e) => { folder.name = (e.target as HTMLInputElement).value; store.touch(list); }"
+        @change="c.updateFolder(folder.id, { name: ($event.target as HTMLInputElement).value })"
       />
       <span v-if="folderMg > 0" class="t-num t-micro t-muted">{{ formatWeight(folderMg, list.displayUnit) }}</span>
       <select
@@ -49,7 +49,7 @@ const CLASS_OPTS: { value: Classification; label: string }[] = [
         class="field folder__class"
         :value="folder.defaultClassification"
         title="Default for items in this folder"
-        @change="(e) => { folder.defaultClassification = (e.target as HTMLSelectElement).value as Classification; store.touch(list); }"
+        @change="c.updateFolder(folder.id, { defaultClassification: ($event.target as HTMLSelectElement).value as Classification })"
       >
         <option v-for="o in CLASS_OPTS" :key="o.value" :value="o.value">{{ o.label }}</option>
       </select>
@@ -57,7 +57,7 @@ const CLASS_OPTS: { value: Classification; label: string }[] = [
         v-if="!packed"
         class="btn btn--icon btn--ghost"
         title="Remove folder"
-        @click="store.removeFolder(list, folder.id)"
+        @click="c.removeFolder(folder.id)"
       >
         ✕
       </button>

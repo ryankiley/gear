@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { Classification, GearList, Item } from "~~/shared/types";
+import type { Classification, Item, ListSnapshot } from "~~/shared/types";
 import { effectiveClassification, formatWeight } from "~~/shared/weights";
 
-const props = defineProps<{ list: GearList; item: Item; packed: boolean }>();
-const store = useGearStore();
+const props = defineProps<{ list: ListSnapshot; item: Item; packed: boolean }>();
+const c = useGearList();
 
 const weightDisplay = computed(() =>
   props.item.unitWeightMg > 0
@@ -16,12 +16,7 @@ const effClass = computed(() =>
 );
 
 function onWeight(e: Event) {
-  const v = (e.target as HTMLInputElement).value;
-  if (v.trim() === "") {
-    store.updateItem(props.list, props.item.id, { unitWeightMg: 0, weightOverridden: true });
-  } else {
-    store.setItemWeight(props.list, props.item.id, v);
-  }
+  c.setItemWeight(props.item.id, (e.target as HTMLInputElement).value);
 }
 
 const CLASS_OPTS: { value: Classification | ""; label: string }[] = [
@@ -38,7 +33,7 @@ const CLASS_OPTS: { value: Classification | ""; label: string }[] = [
       <input
         type="checkbox"
         :checked="item.packed"
-        @change="store.updateItem(list, item.id, { packed: ($event.target as HTMLInputElement).checked })"
+        @change="c.updateItem(item.id, { packed: ($event.target as HTMLInputElement).checked })"
       />
     </label>
 
@@ -47,7 +42,7 @@ const CLASS_OPTS: { value: Classification | ""; label: string }[] = [
       :value="item.name"
       placeholder="Item name"
       :disabled="packed"
-      @change="store.updateItem(list, item.id, { name: ($event.target as HTMLInputElement).value })"
+      @change="c.updateItem(item.id, { name: ($event.target as HTMLInputElement).value })"
     />
 
     <input
@@ -56,14 +51,14 @@ const CLASS_OPTS: { value: Classification | ""; label: string }[] = [
       min="1"
       :value="item.qty"
       :disabled="packed"
-      @change="store.updateItem(list, item.id, { qty: Math.max(1, Number(($event.target as HTMLInputElement).value) || 1) })"
+      @change="c.updateItem(item.id, { qty: Math.max(1, Number(($event.target as HTMLInputElement).value) || 1) })"
     />
 
     <div class="item__weight">
       <input
         class="field field--num"
         :value="weightDisplay"
-        :placeholder="'—'"
+        placeholder="—"
         :disabled="packed"
         @change="onWeight"
       />
@@ -76,7 +71,7 @@ const CLASS_OPTS: { value: Classification | ""; label: string }[] = [
       :value="item.classification ?? ''"
       :disabled="packed"
       :title="`Counts as ${effClass}`"
-      @change="store.updateItem(list, item.id, { classification: (($event.target as HTMLSelectElement).value || null) as any })"
+      @change="c.updateItem(item.id, { classification: (($event.target as HTMLSelectElement).value || null) as any })"
     >
       <option v-for="o in CLASS_OPTS" :key="o.label" :value="o.value">
         {{ o.value === "" ? `Auto · ${effClass}` : o.label }}
@@ -87,7 +82,7 @@ const CLASS_OPTS: { value: Classification | ""; label: string }[] = [
       v-if="!packed"
       class="btn btn--icon btn--ghost item__del"
       title="Remove item"
-      @click="store.removeItem(list, item.id)"
+      @click="c.removeItem(item.id)"
     >
       ✕
     </button>
@@ -135,7 +130,6 @@ const CLASS_OPTS: { value: Classification | ""; label: string }[] = [
   color: var(--cat-firstaid);
 }
 
-/* On phones the row reflows: name full width, the rest below. */
 @media (max-width: 560px) {
   .item {
     grid-template-columns: 44px 1fr 84px;

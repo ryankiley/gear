@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { GearList } from "~~/shared/types";
+import type { ListSnapshot } from "~~/shared/types";
 import { lineMg, formatWeight } from "~~/shared/weights";
 
-const props = defineProps<{ list: GearList }>();
+const props = defineProps<{ list: ListSnapshot }>();
 
 const segments = computed(() => {
   const total = props.list.items.reduce((s, i) => s + lineMg(i), 0);

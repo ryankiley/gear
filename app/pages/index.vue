@@ -1,12 +1,43 @@
 <script setup lang="ts">
+import { STARTER_FOLDERS } from "~~/shared/categories";
+import type { Folder, ListSnapshot } from "~~/shared/types";
 import { formatWeight } from "~~/shared/weights";
 
-const store = useGearStore();
+const myLists = useMyLists();
 const router = useRouter();
+const creating = ref(false);
 
-function newList() {
-  const id = store.createList();
-  router.push(`/e#${id}`);
+const uid = () =>
+  crypto?.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2);
+
+async function newList() {
+  if (creating.value) return;
+  creating.value = true;
+  try {
+    const folders: Folder[] = STARTER_FOLDERS.map((p, i) => ({
+      id: uid(),
+      name: p.name,
+      colorKey: p.colorKey,
+      defaultClassification: p.defaultClassification,
+      sortOrder: i,
+    }));
+    const res = await $fetch<{ editToken: string; snapshot: ListSnapshot }>(
+      "/api/lists/create",
+      { method: "POST", body: { title: "Untitled list", data: { folders, items: [] } } },
+    );
+    myLists.upsert({
+      editToken: res.editToken,
+      shareCode: res.snapshot.shareCode,
+      slug: res.snapshot.slug,
+      title: res.snapshot.title,
+      totalMg: 0,
+      version: res.snapshot.version,
+      lastOpened: Date.now(),
+    });
+    router.push(`/e#${res.editToken}`);
+  } finally {
+    creating.value = false;
+  }
 }
 </script>
 
@@ -20,8 +51,8 @@ function newList() {
           A calm place to build a list and share it. Weights are optional — add
           them when you care. No login.
         </p>
-        <button class="btn btn--primary hero__cta" @click="newList">
-          Start a list
+        <button class="btn btn--primary hero__cta" :disabled="creating" @click="newList">
+          {{ creating ? "Starting…" : "Start a list" }}
         </button>
       </div>
     </header>
@@ -32,24 +63,24 @@ function newList() {
         <span class="t-micro t-faint">saved in this browser</span>
       </div>
 
-      <p v-if="!store.allLists.value.length" class="t-muted mylists__empty">
+      <p v-if="!myLists.all.value.length" class="t-muted mylists__empty">
         Nothing yet. Start a list above — it’ll show up here next time you visit.
       </p>
 
       <ul v-else class="mylists__grid">
-        <li v-for="l in store.allLists.value" :key="l.id">
-          <NuxtLink :to="`/e#${l.id}`" class="card">
+        <li v-for="l in myLists.all.value" :key="l.editToken">
+          <NuxtLink :to="`/e#${l.editToken}`" class="card">
             <span class="card__title t-h3">{{ l.title || "Untitled list" }}</span>
             <span class="card__meta t-micro t-muted">
-              {{ l.items.length }} item{{ l.items.length === 1 ? "" : "s" }}
-              <template v-if="store.totalsFor(l).hasWeights">
-                · <span class="t-num">{{ formatWeight(store.totalsFor(l).baseMg, l.displayUnit) }}</span> base
+              <template v-if="l.totalMg > 0">
+                <span class="t-num">{{ formatWeight(l.totalMg, "g") }}</span> total
               </template>
+              <template v-else>no weights yet</template>
             </span>
             <button
               class="btn btn--icon btn--ghost card__del"
-              title="Delete list"
-              @click.prevent="store.deleteList(l.id)"
+              title="Remove from this device"
+              @click.prevent="myLists.forget(l.editToken)"
             >
               ✕
             </button>

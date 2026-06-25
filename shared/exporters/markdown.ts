@@ -1,10 +1,10 @@
 // Markdown export — pure string building, ~0 KB, no deps. Pastes cleanly into
 // Apple Notes. Shared by the client (copy/download) and later the server.
 
-import type { GearList } from "../types";
+import type { ListSnapshot } from "../types";
 import { computeTotals, formatWeight, lineMg } from "../weights";
 
-export function listToMarkdown(list: GearList): string {
+export function listToMarkdown(list: ListSnapshot): string {
   const u = list.displayUnit;
   const totals = computeTotals(list);
   const out: string[] = [];

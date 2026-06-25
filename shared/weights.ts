@@ -5,8 +5,8 @@
 import type {
   Classification,
   Folder,
-  GearList,
   Item,
+  ListData,
   Totals,
   Unit,
 } from "./types";
@@ -98,9 +98,7 @@ export function lineMg(item: Pick<Item, "qty" | "unitWeightMg">): number {
  * The math keys off effective classification, never folder names, so lists
  * stay comparable no matter how each person folders.
  */
-export function computeTotals(
-  list: Pick<GearList, "folders" | "items">,
-): Totals {
+export function computeTotals(list: ListData): Totals {
   let totalMg = 0;
   let wornMg = 0;
   let consumableMg = 0;
