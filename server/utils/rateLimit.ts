@@ -75,6 +75,44 @@ export async function consumeRateLimit(
   return bucket.count > limit;
 }
 
+// A per-slug set of distinct reporter fingerprints (hashed IPs), held in the
+// same shared KV store as the rate limiter.
+export interface ReportTally {
+  ips: string[];
+}
+
+/**
+ * Record a distinct reporter for `slug` and report whether the distinct-reporter
+ * threshold has been reached. IP-deduped: the same reporter re-reporting never
+ * moves the count, so one actor can't flag a list alone. Pure/injectable like
+ * consumeRateLimit so it's unit-testable. TTL bounds the tally to `windowMs` from
+ * the last report, so a stale, rarely-reported list decays instead of latching.
+ */
+export async function tallyDistinctReport(
+  storage: KvStorage,
+  slug: string,
+  reporterHash: string,
+  threshold: number,
+  windowMs: number,
+): Promise<{ distinct: number; reached: boolean }> {
+  const key = `report:${slug}`;
+  const existing = await storage.getItem<ReportTally>(key);
+  const prior = existing?.ips ?? [];
+  const ips = prior.includes(reporterHash) ? prior : [...prior, reporterHash];
+  // bound the stored set — once we're past the threshold the exact members no
+  // longer matter, so a rotating attacker can't grow the value unbounded.
+  const cap = Math.max(threshold * 4, 16);
+  const capped = ips.length > cap ? ips.slice(0, cap) : ips;
+  const ttl = Math.max(1, Math.ceil(windowMs / 1000));
+  await storage.setItem(key, { ips: capped }, { ttl });
+  return { distinct: capped.length, reached: capped.length >= threshold };
+}
+
+/** Clear a slug's report tally (admin restore — so a restored list can't instantly re-flag). */
+export async function clearReportTally(storage: KvStorage, slug: string): Promise<void> {
+  await storage.setItem(`report:${slug}`, { ips: [] }, { ttl: 1 });
+}
+
 /**
  * Per-IP rate limit for a public mutating endpoint. Backed by Nitro's
  * `useStorage("kv")` — Upstash Redis in prod (shared across every serverless

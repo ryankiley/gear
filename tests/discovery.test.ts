@@ -13,6 +13,7 @@ import {
   getPublishState,
   publishList,
   reportList,
+  restoreList,
 } from "../server/utils/discoveryRepo";
 import {
   cardFromRow,
@@ -332,6 +333,17 @@ describe("reportList + bumpView", () => {
     expect(after.flagged).toBe(true);
     // idempotent: a second report on an already-flagged list changes nothing
     expect(await reportList(row.publicSlug, db)).toBe(false);
+  });
+  it("restoreList clears the flag so a falsely-reported list returns to the feed", async () => {
+    const db = await freshDb();
+    const { row } = await seed(db, { isPublic: true, itemCount: 3, baseWeightMg: 1_000_000, publishedAt: new Date() });
+    await reportList(row.publicSlug, db);
+    expect(await getFeed({}, db)).toHaveLength(0);
+    expect(await restoreList(row.publicSlug, db)).toBe(true);
+    expect(await getFeed({}, db)).toHaveLength(1); // back in discovery
+    expect(await getPublicBySlug(row.publicSlug, db)).not.toBeNull();
+    // restoring an unflagged list is a no-op
+    expect(await restoreList(row.publicSlug, db)).toBe(false);
   });
   it("bumpView increments the counter for a public list", async () => {
     const db = await freshDb();

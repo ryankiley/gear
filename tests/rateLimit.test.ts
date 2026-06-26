@@ -1,6 +1,11 @@
 import type { H3Event } from "h3";
 import { describe, expect, it } from "vitest";
-import { consumeRateLimit, getClientIp, type KvStorage } from "../server/utils/rateLimit";
+import {
+  consumeRateLimit,
+  getClientIp,
+  tallyDistinctReport,
+  type KvStorage,
+} from "../server/utils/rateLimit";
 
 // A Map-backed fake of the KV store. This also mirrors the prod fix itself: one
 // shared store that every "instance" reads/writes, vs the old per-process Map.
@@ -85,5 +90,30 @@ describe("consumeRateLimit — shared-store fixed-window counter", () => {
     };
     await consumeRateLimit(kv, "k", 5, 60_000, 0);
     expect(ttls[0]).toBe(60); // ceil(60000 / 1000)
+  });
+});
+
+describe("tallyDistinctReport — distinct-reporter threshold (IP-deduped)", () => {
+  const W = 60_000;
+  it("only reaches the threshold with DISTINCT reporters", async () => {
+    const kv = fakeKv();
+    const r = (ip: string) => tallyDistinctReport(kv, "slug", ip, 3, W);
+    expect(await r("ipA")).toEqual({ distinct: 1, reached: false });
+    expect(await r("ipB")).toEqual({ distinct: 2, reached: false });
+    expect(await r("ipC")).toEqual({ distinct: 3, reached: true });
+  });
+
+  it("ignores the same reporter re-reporting (one actor can't self-flag)", async () => {
+    const kv = fakeKv();
+    const r = (ip: string) => tallyDistinctReport(kv, "slug", ip, 3, W);
+    for (let i = 0; i < 10; i++) expect((await r("ipA")).reached).toBe(false);
+    expect((await r("ipA")).distinct).toBe(1); // still just one distinct reporter
+  });
+
+  it("keeps separate tallies per slug", async () => {
+    const kv = fakeKv();
+    await tallyDistinctReport(kv, "one", "ipA", 2, W);
+    const other = await tallyDistinctReport(kv, "two", "ipA", 2, W);
+    expect(other.distinct).toBe(1); // "two" didn't inherit "one"'s reporter
   });
 });

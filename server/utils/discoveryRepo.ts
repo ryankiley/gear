@@ -248,10 +248,9 @@ export async function getFeed(q: FeedQuery, db?: Db): Promise<DiscoveryCard[]> {
 // can never lock an owner out of their own list (that needs an admin takedown to
 // status='hidden'/'removed', which nothing user-facing does). Rate-limited at the
 // endpoint; answers generically whether or not a row matched (no existence oracle).
-// FOLLOW-UPS (no admin surface yet — Phase 5): a single report currently flags a
-// list, so this still wants (1) a distinct-reporter threshold (needs IP dedup —
-// the rate-limiter session's Upstash territory) and (2) an admin review/restore
-// queue. The blast radius is now small (feed-only), so these are no longer urgent.
+// A single report no longer flags: the /api/lists/report endpoint requires a
+// THRESHOLD of distinct reporters (IP-deduped via tallyDistinctReport) before it
+// calls this, and restoreList() (admin-only) reverses a flag.
 // ---------------------------------------------------------------------------
 export async function reportList(slug: string, db?: Db): Promise<boolean> {
   const s = normalizeSlug(slug);
@@ -270,5 +269,24 @@ export async function reportList(slug: string, db?: Db): Promise<boolean> {
       ),
     )
     .returning(); // no-arg form (the union db type's only shared overload)
+  return res.length > 0;
+}
+
+/**
+ * Admin restore — clear a list's `flagged` so it returns to discovery. The
+ * counterpart to reportList; deliberately NOT exposed to the owner's edit token,
+ * because letting an owner self-clear would defeat moderation of genuine spam
+ * (the same reason publishList keeps the flag sticky). Returns true if a row
+ * changed. The endpoint gates this on GEAR_ADMIN_TOKEN.
+ */
+export async function restoreList(slug: string, db?: Db): Promise<boolean> {
+  const s = normalizeSlug(slug);
+  if (!s) return false;
+  const d = db ?? (await useDb());
+  const res = await d
+    .update(lists)
+    .set({ flagged: false, updatedAt: new Date() })
+    .where(and(eq(lists.publicSlug, s), eq(lists.flagged, true), isNull(lists.deletedAt)))
+    .returning();
   return res.length > 0;
 }
