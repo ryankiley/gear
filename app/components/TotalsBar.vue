@@ -19,7 +19,7 @@ const UNITS: Unit[] = ["g", "kg", "oz", "lb"];
 </script>
 
 <template>
-  <div class="totals panel">
+  <div class="totals">
     <div class="totals__main">
       <div class="totals__headline">
         <span class="t-label">{{ showBreakdown ? "Base weight" : "Total" }}</span>
@@ -71,7 +71,7 @@ const UNITS: Unit[] = ["g", "kg", "oz", "lb"];
 
 <style scoped>
 .totals {
-  padding: var(--space-4);
+  padding-block: var(--space-2) var(--space-4);
 }
 .totals__main {
   display: flex;
@@ -86,8 +86,9 @@ const UNITS: Unit[] = ["g", "kg", "oz", "lb"];
   gap: var(--space-1);
 }
 .totals__big {
-  font-size: var(--t-h1);
-  line-height: 1;
+  font-size: var(--t-display);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
   color: var(--accent);
 }
 .totals__empty {
@@ -101,22 +102,18 @@ const UNITS: Unit[] = ["g", "kg", "oz", "lb"];
 }
 .totals__breakdown {
   margin-top: var(--space-4);
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--line);
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-4);
 }
 .totals__chips {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2);
+  gap: var(--space-5);
 }
 .chip {
   display: inline-flex;
-  align-items: baseline;
-  gap: var(--space-2);
-  padding: var(--space-1) var(--space-3);
-  border: 1px solid var(--line);
+  flex-direction: column;
+  gap: 2px;
 }
 </style>

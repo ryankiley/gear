@@ -87,31 +87,26 @@ const CLASS_OPTS: { value: Classification; label: string }[] = [
 </template>
 
 <style scoped>
+/* de-outlined: no card box — the heading + the colored dot + whitespace separate folders */
 .folder {
-  border: 1px solid var(--line-2);
-  background: var(--paper-2);
-  padding: var(--space-3) var(--space-4) var(--space-4);
+  padding: 0;
 }
 .folder__head {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  padding-bottom: var(--space-2);
-  border-bottom: 1px solid var(--line);
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-1);
 }
 .folder__dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   flex: none;
 }
 .folder__name {
   flex: 1;
-  font-weight: 600;
-  border-bottom-color: transparent;
-}
-.folder__name:focus {
-  border-bottom-color: var(--accent);
+  font-weight: 700;
+  font-size: var(--t-h3);
+  letter-spacing: -0.01em;
 }
 .folder__class {
   width: auto;
@@ -122,11 +117,10 @@ const CLASS_OPTS: { value: Classification; label: string }[] = [
   padding: var(--space-2) 0;
 }
 .folder__add {
-  margin-top: var(--space-3);
-  padding-top: var(--space-3);
-  border-top: 1px dashed var(--line);
+  margin-top: var(--space-1);
 }
 .folder__addinput {
   width: 100%;
+  color: var(--ink-2);
 }
 </style>

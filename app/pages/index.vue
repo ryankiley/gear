@@ -249,12 +249,11 @@ function onFile(e: Event) {
   flex-direction: column;
   gap: var(--space-2);
   padding: var(--space-4);
-  border: 1px solid var(--line-2);
   background: var(--paper-2);
-  transition: border-color var(--dur) var(--ease);
+  transition: background var(--dur) var(--ease);
 }
 .card:hover {
-  border-color: var(--ink);
+  background: var(--paper-3);
 }
 .card__del {
   position: absolute;

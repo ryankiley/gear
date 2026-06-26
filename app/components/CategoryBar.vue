@@ -54,9 +54,8 @@ const segments = computed(() => {
 <style scoped>
 .catbar__svg {
   width: 100%;
-  height: 8px;
+  height: 6px;
   display: block;
-  border: 1px solid var(--line);
 }
 .catbar__legend {
   display: flex;

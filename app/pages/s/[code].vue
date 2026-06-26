@@ -56,7 +56,7 @@ onBeforeUnmount(() => poll && clearInterval(poll));
     <main v-if="snapshot && totals" class="wrap view">
       <h1 class="t-h2 view__title">{{ snapshot.title }}</h1>
 
-      <div class="totals panel">
+      <div class="totals">
         <div class="totals__main">
           <div class="totals__headline">
             <span class="t-label">{{ showBreakdown ? "Base weight" : "Total" }}</span>
@@ -127,24 +127,24 @@ onBeforeUnmount(() => poll && clearInterval(poll));
 </template>
 
 <style scoped>
-.topbar { border-bottom: 1px solid var(--line-2); }
+.topbar { border-bottom: 1px solid var(--line); }
 .topbar__inner { display: flex; align-items: center; gap: var(--space-3); padding-block: var(--space-3); }
 .brand { letter-spacing: 0.1em; }
 .topbar__inner .btn { margin-left: auto; }
-.view { padding-block: var(--space-5) var(--space-9); display: flex; flex-direction: column; gap: var(--space-4); }
+.view { padding-block: var(--space-5) var(--space-9); display: flex; flex-direction: column; gap: var(--space-6); }
 .view__title { font-family: var(--font-serif); }
-.totals { padding: var(--space-4); }
+.totals { padding-block: var(--space-2) var(--space-4); }
 .totals__main { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
 .totals__headline { display: flex; flex-direction: column; gap: var(--space-1); }
-.totals__big { font-size: var(--t-h1); line-height: 1; color: var(--accent); }
+.totals__big { font-size: var(--t-display); line-height: 0.95; letter-spacing: -0.02em; color: var(--accent); }
 .totals__controls { display: flex; gap: var(--space-2); flex-wrap: wrap; }
-.totals__breakdown { margin-top: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: var(--space-3); }
-.totals__chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-.chip { display: inline-flex; align-items: baseline; gap: var(--space-2); padding: var(--space-1) var(--space-3); border: 1px solid var(--line); }
-.folder { border: 1px solid var(--line-2); background: var(--paper-2); padding: var(--space-3) var(--space-4); }
-.folder__head { display: flex; align-items: center; gap: var(--space-3); padding-bottom: var(--space-2); border-bottom: 1px solid var(--line); margin-bottom: var(--space-2); }
-.folder__dot { width: 10px; height: 10px; flex: none; }
-.folder__name { font-weight: 600; }
+.totals__breakdown { margin-top: var(--space-4); display: flex; flex-direction: column; gap: var(--space-4); }
+.totals__chips { display: flex; flex-wrap: wrap; gap: var(--space-5); }
+.chip { display: inline-flex; flex-direction: column; gap: 2px; }
+.folder { padding: 0; }
+.folder__head { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-2); }
+.folder__dot { width: 8px; height: 8px; flex: none; }
+.folder__name { font-weight: 700; font-size: var(--t-h3); letter-spacing: -0.01em; }
 .rows { display: flex; flex-direction: column; }
 .vrow { display: grid; grid-template-columns: 1fr 44px 96px; align-items: baseline; gap: var(--space-3); padding: var(--space-1) 0; }
 .vrow__w { text-align: right; }

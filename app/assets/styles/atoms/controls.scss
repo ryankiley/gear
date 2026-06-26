@@ -1,5 +1,5 @@
-// Buttons — sharp, hairline, technical. Monochrome chrome; accent reserved
-// for the primary action + live data.
+// Controls — de-outlined. Whitespace + type carry the UI; borders are rare.
+// Accent is reserved for the primary action and live/active state only.
 
 .btn {
   display: inline-flex;
@@ -7,47 +7,49 @@
   justify-content: center;
   gap: var(--space-2);
   min-height: 40px;
-  padding: 0 var(--space-4);
-  border: 1px solid var(--line-2);
+  padding: 0 var(--space-3);
+  border: 0;
   border-radius: var(--radius-0);
-  background: var(--paper-2);
+  background: transparent;
   color: var(--ink);
   font-size: var(--t-small);
   font-weight: 600;
   letter-spacing: -0.01em;
   transition:
     background var(--dur) var(--ease),
-    border-color var(--dur) var(--ease),
-    transform var(--dur) var(--ease);
+    color var(--dur) var(--ease),
+    opacity var(--dur) var(--ease);
 }
 .btn:hover {
-  border-color: var(--ink);
+  background: var(--paper-3);
 }
 .btn:active {
-  transform: translateY(1px);
+  opacity: 0.7;
 }
 
 .btn--primary {
   background: var(--accent);
-  border-color: var(--accent);
   color: var(--accent-ink);
+  padding-inline: var(--space-4);
 }
 .btn--primary:hover {
-  border-color: var(--accent);
-  filter: brightness(1.06);
+  background: var(--accent);
+  filter: brightness(1.05);
 }
 
+// ghost === default now (kept for intent at call sites)
 .btn--ghost {
   background: transparent;
-  border-color: transparent;
+  color: var(--ink-2);
 }
 .btn--ghost:hover {
-  border-color: var(--line-2);
+  background: var(--paper-3);
+  color: var(--ink);
 }
 
 .btn--sm {
   min-height: 32px;
-  padding: 0 var(--space-3);
+  padding: 0 var(--space-2);
   font-size: var(--t-micro);
 }
 
@@ -57,18 +59,21 @@
   padding: 0;
 }
 
-// Fields — spec-sheet inputs: hairline underline, mono for numeric.
+// Fields — read as plain text; the affordance appears on hover/focus, not at rest.
 .field {
   width: 100%;
   min-height: 36px;
   padding: var(--space-1) 0;
   border: 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid transparent;
   border-radius: 0;
   background: transparent;
   color: var(--ink);
   font-size: var(--t-body);
   transition: border-color var(--dur) var(--ease);
+}
+.field:hover {
+  border-bottom-color: var(--line);
 }
 .field:focus {
   outline: none;
@@ -84,29 +89,27 @@
   text-align: right;
 }
 
-// Segmented control (unit toggle, classification).
+// Segmented control — de-boxed: a row of quiet text buttons; active = accent.
 .seg {
   display: inline-flex;
-  border: 1px solid var(--line-2);
-  border-radius: var(--radius-0);
-  overflow: hidden;
+  gap: var(--space-1);
 }
 .seg button {
-  padding: var(--space-1) var(--space-3);
+  padding: var(--space-1) var(--space-2);
   font-size: var(--t-micro);
   font-weight: 600;
-  color: var(--ink-2);
-  border-right: 1px solid var(--line);
+  color: var(--ink-3);
+  letter-spacing: 0.02em;
+  transition: color var(--dur) var(--ease);
 }
-.seg button:last-child {
-  border-right: 0;
+.seg button:hover {
+  color: var(--ink);
 }
 .seg button[aria-pressed="true"] {
-  background: var(--ink);
-  color: var(--paper);
+  color: var(--accent);
 }
 
-// A hairline-ruled panel.
+// .panel — reserved for genuinely floating surfaces (dropdown menu). Quiet.
 .panel {
   border: 1px solid var(--line-2);
   border-radius: var(--radius-0);

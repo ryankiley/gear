@@ -197,7 +197,7 @@ const statusLabel = computed(() =>
   top: 0;
   z-index: 10;
   background: var(--paper);
-  border-bottom: 1px solid var(--line-2);
+  border-bottom: 1px solid var(--line);
 }
 .topbar__inner {
   display: flex;
@@ -250,7 +250,7 @@ const statusLabel = computed(() =>
 .editor__folders {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-7);
 }
 .editor__ungrouped {
   padding: var(--space-3) var(--space-4) var(--space-4);
