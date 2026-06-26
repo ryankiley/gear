@@ -1,0 +1,183 @@
+{
+  "rows": [
+    {
+      "brand": "Montbell",
+      "name": "Versalite Jacket",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 6.4,
+      "weight_unit": "oz",
+      "weight_secondary": "182 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/2id_/https://www.montbell.com/us/en/products/detail/2328169",
+      "quote": "\"weight_g\":\"182 g\",\"weight_oz\":\"6.4 oz\""
+    },
+    {
+      "brand": "Montbell",
+      "name": "Storm Cruiser Jacket",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 10,
+      "weight_unit": "oz",
+      "weight_secondary": "284 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20250419023338id_/https://www.montbell.com/us/en/products/detail/2328174",
+      "quote": "\"weight_g\":\"284 g\" ... \"weight_oz\":\"10 oz\""
+    },
+    {
+      "brand": "Montbell",
+      "name": "Plasma 1000 Down Jacket",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 4.8,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.montbell.com/us/en/products/detail/2301381",
+      "quote": "Plasma 1000 Down Jacket — manufacturer advertised weight 4.8 oz (136 g) (montbell.com)"
+    },
+    {
+      "brand": "Montbell",
+      "name": "EX Light Down Anorak",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 7.6,
+      "weight_unit": "oz",
+      "weight_secondary": "215 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20250321083016id_/https://www.montbell.com/us/en/products/detail/2301351",
+      "quote": "Stuff sack included\",\"weight_g\":\"215 g\",\"weight_oz\":\"7.6 oz\""
+    },
+    {
+      "brand": "Outdoor Research",
+      "name": "Helium Rain Jacket",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 6.2,
+      "weight_unit": "oz",
+      "weight_secondary": "176 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20250512151841id_/https://www.outdoorresearch.com/products/mens-helium-rain-jacket-275386",
+      "quote": "Weight: 6.2 oz/ 176 g"
+    },
+    {
+      "brand": "Outdoor Research",
+      "name": "Helium Rain Pants",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 5.3,
+      "weight_unit": "oz",
+      "weight_secondary": "150 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20250514181805id_/https://www.outdoorresearch.com/products/mens-helium-rain-pants-275387",
+      "quote": "Weight: 5.3 oz/ 150 g"
+    },
+    {
+      "brand": "Outdoor Research",
+      "name": "Echo Hoodie",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 5.29,
+      "weight_unit": "oz",
+      "weight_secondary": "150 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.outdoorresearch.com/products/mens-echo-hoodie-287625",
+      "quote": "<div class=\"specs-title\">Weight:</div> <div class=\"specs-content\">5.29 oz/ 150 g</div>"
+    },
+    {
+      "brand": "Outdoor Research",
+      "name": "Foray II GORE-TEX Jacket",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 19.36,
+      "weight_unit": "oz",
+      "weight_secondary": "549 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20250327035716id_/https://www.outdoorresearch.com/products/mens-foray-ii-jacket-287615",
+      "quote": "Weight: 19.36 oz/ 549 g"
+    },
+    {
+      "brand": "Outdoor Research",
+      "name": "ActiveIce Chroma Sun Gloves",
+      "variant": "Unisex, one size (model #280133)",
+      "category_hint": "clothing",
+      "weight_value": 1.2,
+      "weight_unit": "oz",
+      "weight_secondary": "34 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20251211063136id_/https://www.outdoorresearch.com/products/activeice-chroma-sun-gloves-280133",
+      "quote": "Weight: 1.2 oz/ 34 g"
+    },
+    {
+      "brand": "Smartwool",
+      "name": "Merino 150 Base Layer Long Sleeve",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 6,
+      "weight_unit": "oz",
+      "weight_secondary": "170 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20190721193205id_/https://www.smartwool.com/shop/mens-merino-150-base-layer-long-sleeve-SW016042",
+      "quote": "Weight: 170 g = 6 oz"
+    },
+    {
+      "brand": "Patagonia",
+      "name": "Capilene Cool Lightweight Shirt",
+      "variant": "Men's M (short sleeve)",
+      "category_hint": "clothing",
+      "weight_value": 74,
+      "weight_unit": "g",
+      "weight_secondary": "2.6 oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20201029055041id_/https://www.patagonia.com/product/mens-capilene-cool-lightweight-shirt/45760.html",
+      "quote": "Weight 74 g (2.6 oz)"
+    },
+    {
+      "brand": "Patagonia",
+      "name": "Capilene Midweight Bottoms",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 164,
+      "weight_unit": "g",
+      "weight_secondary": "5.8 oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20240114165323id_/https://www.patagonia.com/product/mens-capilene-midweight-baselayer-bottoms/44487.html",
+      "quote": "164 g (5.8 oz)"
+    },
+    {
+      "brand": "Smartwool",
+      "name": "Merino 250 Cuffed Beanie",
+      "variant": "One size",
+      "category_hint": "clothing",
+      "weight_value": 30,
+      "weight_unit": "g",
+      "weight_secondary": "1.06 oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20200929165301id_/https://www.smartwool.com/shop/merino-250-cuffed-beanie-sw0sw956",
+      "quote": "Weight: 30 g = 1.06 oz"
+    },
+    {
+      "brand": "Enlightened Equipment",
+      "name": "Copperfield Wind Pants",
+      "variant": "Men's, starting weight (lightest fabric/size)",
+      "category_hint": "clothing",
+      "weight_value": 1.31,
+      "weight_unit": "oz",
+      "weight_secondary": "37.1 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://enlightenedequipment.com/mens-copperfield-wind-pants-cus/",
+      "quote": "1.31 oz (37.1g)"
+    },
+    {
+      "brand": "Senchi Designs",
+      "name": "Alpha 60 Hoodie",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 3.8,
+      "weight_unit": "oz",
+      "weight_secondary": "108 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://senchidesigns.com/pages/weight-chart-alpha-60-hoodie",
+      "quote": "M | 3.8 oz | 108 g"
+    }
+  ]
+}

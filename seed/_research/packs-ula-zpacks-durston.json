@@ -1,0 +1,136 @@
+{
+  "rows": [
+    {
+      "brand": "ULA Equipment",
+      "name": "Circuit",
+      "variant": "",
+      "category_hint": "pack",
+      "weight_value": 38.5,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.ula-equipment.com/product/circuit/",
+      "quote": "WEIGHT: 38.5 OZ | 1,092 GM"
+    },
+    {
+      "brand": "ULA Equipment",
+      "name": "Catalyst",
+      "variant": "",
+      "category_hint": "pack",
+      "weight_value": 44.4,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.ula-equipment.com/product/catalyst/",
+      "quote": "WEIGHT: 44.4 OZ | 1259 GM"
+    },
+    {
+      "brand": "ULA Equipment",
+      "name": "Ohm 2.0",
+      "variant": "UltraGrid",
+      "category_hint": "pack",
+      "weight_value": 30.4,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.ula-equipment.com/product/ohm/",
+      "quote": "30.4 OZ | 862 GM"
+    },
+    {
+      "brand": "ULA Equipment",
+      "name": "CDT",
+      "variant": "UltraGrid",
+      "category_hint": "pack",
+      "weight_value": 27.1,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.ula-equipment.com/product/cdt/",
+      "quote": "WEIGHT: 27.1 OZ | 768 GM"
+    },
+    {
+      "brand": "ULA Equipment",
+      "name": "Photon",
+      "variant": "with hipbelt and foam back panel",
+      "category_hint": "pack",
+      "weight_value": 26.1,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.ula-equipment.com/product/photon/",
+      "quote": "WEIGHT: 26.1 OZ | 740 GM"
+    },
+    {
+      "brand": "Zpacks",
+      "name": "Arc Haul Ultra 50L",
+      "variant": "",
+      "category_hint": "pack",
+      "weight_value": 21.4,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://zpacks.com/products/arc-haul-ultra-50l-backpack",
+      "quote": "Weight 21.4 oz / 608 g"
+    },
+    {
+      "brand": "Zpacks",
+      "name": "Arc Haul Ultra 60L",
+      "variant": "",
+      "category_hint": "pack",
+      "weight_value": 21.8,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://zpacks.com/products/arc-haul-ultra-60l-backpack",
+      "quote": "Weight 21.8 oz / 619 g"
+    },
+    {
+      "brand": "Zpacks",
+      "name": "Arc Blast 55L",
+      "variant": "discontinued",
+      "category_hint": "pack",
+      "weight_value": 19.9,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://zpacks.com/products/arc-blast-backpack",
+      "quote": "Weight 19.9 oz / 565 g"
+    },
+    {
+      "brand": "Durston",
+      "name": "Kakwa 40",
+      "variant": "Ultra 200X / M",
+      "category_hint": "pack",
+      "weight_value": 28.0,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://durstongear.com/products/kakwa-40-backpack",
+      "quote": "27.1 oz (S), 28.0 oz (M), 28.9 oz (L)"
+    },
+    {
+      "brand": "Durston",
+      "name": "Kakwa 40",
+      "variant": "UltraGrid / M",
+      "category_hint": "pack",
+      "weight_value": 29.6,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://durstongear.com/products/kakwa-40-backpack",
+      "quote": "28.9 oz (S), 29.6 oz (M), 30.3 oz (L)"
+    },
+    {
+      "brand": "Durston",
+      "name": "Kakwa 55",
+      "variant": "Ultra 200X / M",
+      "category_hint": "pack",
+      "weight_value": 31.5,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://durstongear.com/products/kakwa-55",
+      "quote": "31.5 oz (M)"
+    },
+    {
+      "brand": "Durston",
+      "name": "Kakwa 55",
+      "variant": "UltraGrid / M",
+      "category_hint": "pack",
+      "weight_value": 30.6,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://durstongear.com/products/kakwa-55",
+      "quote": "30.6 oz (M)"
+    }
+  ]
+}

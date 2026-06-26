@@ -1,0 +1,81 @@
+{
+  "rows": [
+    {
+      "brand": "Enlightened Equipment",
+      "name": "Revelation",
+      "variant": "20F, 950FP, Regular/Regular (closest config listed on page; page does not state an 850FP Regular/Regular total weight)",
+      "category_hint": "sleep",
+      "weight_value": 19.98,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://enlightenedequipment.com/quilt-comparison",
+      "quote": "A 20° Regular/Regular 950FP weighs 19.98 Ounces"
+    },
+    {
+      "brand": "Enlightened Equipment",
+      "name": "Enigma",
+      "variant": "20F, 950FP, Regular/Regular (closest config listed on page; page does not state an 850FP Regular/Regular total weight)",
+      "category_hint": "sleep",
+      "weight_value": 18.35,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://enlightenedequipment.com/quilt-comparison",
+      "quote": "A 20° Regular/Regular 950FP weighs 18.35 Ounces"
+    },
+    {
+      "brand": "Katabatic Gear",
+      "name": "Flex 22",
+      "variant": "22F, 850FP, Regular (6')/Regular width, Total Weight",
+      "category_hint": "sleep",
+      "weight_value": 23.9,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://katabaticgear.com/products/flex-22-ultralight-quilt",
+      "quote": "Specs Small Regular Long Small Wide Regular Wide Long Wide Fits To 5'6\" 6' 6'6\" ... Fill Weight (ounces) 850fp 900fp ... Total Weight (ounces) 22.3 21.3 23.9 22.8 25.7 24.5 24.1 23.0 25.7 24.5 27.6 26.3 (Regular column, 850fp = 23.9)"
+    },
+    {
+      "brand": "Katabatic Gear",
+      "name": "Alsek 22",
+      "variant": "22F, 850FP, Regular (6')/Regular width, Total Weight",
+      "category_hint": "sleep",
+      "weight_value": 23.3,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://katabaticgear.com/products/alsek-ultralight-quilt",
+      "quote": "Specs Small Regular Long Small Wide Regular Wide Long Wide Fits To 5'6\" 6' 6'6\" ... Fill Weight (ounces) 850fp 900fp ... Total Weight (ounces) 21.9 20.9 23.3 22.2 24.8 23.6 23.7 22.6 25.4 24.2 27.0 25.7 (Regular column, 850fp = 23.3)"
+    },
+    {
+      "brand": "Katabatic Gear",
+      "name": "Palisade 30",
+      "variant": "30F, 850FP, Regular (6')/Regular width, Total Weight",
+      "category_hint": "sleep",
+      "weight_value": 19.8,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://katabaticgear.com/products/palisade-ultralight-quilt",
+      "quote": "Specs Small Regular Long Small Wide Regular Wide Long Wide Fits To 5'6\" 6' 6'6\" ... Fill Weight (ounces) 850fp 900fp ... Total Weight (ounces) 18.6 17.8 19.8 18.9 21.2 20.3 20.1 19.2 21.6 20.7 23.1 22.1 (Regular column, 850fp = 19.8)"
+    },
+    {
+      "brand": "Hammock Gear",
+      "name": "Premium Burrow 20",
+      "variant": "20F, 850FP, Standard length (74\")/Standard width (55\"), Sewn footbox, 10D shell, Final Weight 10D/850",
+      "category_hint": "sleep",
+      "weight_value": 21.72,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://hammockgear.com/wp-content/uploads/2025/06/B850finalweights.pdf",
+      "quote": "850 Fill and Final weights ... Sewn Standard = 74\" Standard - 55\" 15.98 21.72 24.97 23.57 (Fill Weight 850FP=15.98, Final Weight 10D/850=21.72) [20° block]"
+    },
+    {
+      "brand": "Hammock Gear",
+      "name": "Premium Burrow 30",
+      "variant": "30F, 850FP, Standard length (74\")/Standard width (55\"), Sewn footbox, 10D shell, Final Weight 10D/850",
+      "category_hint": "sleep",
+      "weight_value": 18.37,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://hammockgear.com/wp-content/uploads/2025/06/B850finalweights.pdf",
+      "quote": "850 Fill and Final weights ... Sewn Standard = 74\" Standard - 55\" 12.78 18.37 21.22 19.845 (Fill Weight 850FP=12.78, Final Weight 10D/850=18.37) [30° block]"
+    }
+  ]
+}

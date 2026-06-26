@@ -1,0 +1,191 @@
+{
+  "rows": [
+    {
+      "brand": "MSR",
+      "name": "PocketRocket 2 Stove",
+      "variant": "",
+      "category_hint": "cook",
+      "weight_value": 2.6,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://cascadedesigns.com/products/pocketrocket-2-stove",
+      "quote": "Minimum Weight 2.6 oz (73 g)"
+    },
+    {
+      "brand": "MSR",
+      "name": "PocketRocket Deluxe Stove",
+      "variant": "",
+      "category_hint": "cook",
+      "weight_value": 2.9,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://cascadedesigns.com/products/pocketrocket-deluxe-stove",
+      "quote": "Minimum Weight 2.9 oz (83 g)"
+    },
+    {
+      "brand": "Soto",
+      "name": "WindMaster Stove",
+      "variant": "with 4Flex",
+      "category_hint": "cook",
+      "weight_value": 3.0,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://sotooutdoors.com/product/windmaster-stove-with-4flex/",
+      "quote": "3.0. oz.(87g) with the 4Flex pot support; 2.3 oz.(67g) with the optional TriFlex pot support; 2.12 oz. (60g) with no pot support"
+    },
+    {
+      "brand": "Soto",
+      "name": "Amicus Stove with Igniter",
+      "variant": "with igniter",
+      "category_hint": "cook",
+      "weight_value": 2.9,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://sotooutdoors.com/product/amicus-stove-with-igniter/",
+      "quote": "Weight: 2.9 oz (81g)"
+    },
+    {
+      "brand": "Jetboil",
+      "name": "Flash Cooking System",
+      "variant": "1.0L",
+      "category_hint": "cook",
+      "weight_value": 13.088,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://jetboil.johnsonoutdoors.com/us/shop/stoves-systems/flash-10l-fast-boil-system",
+      "quote": "13.088 oz | 371 g (System weight excludes fuel stabilizer)"
+    },
+    {
+      "brand": "Jetboil",
+      "name": "Stash Cooking System",
+      "variant": "0.8L",
+      "category_hint": "cook",
+      "weight_value": 7.1,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://jetboil.johnsonoutdoors.com/us/shop/stoves-systems/stash-cooking-system",
+      "quote": "7.1 oz | 201.282 g"
+    },
+    {
+      "brand": "Jetboil",
+      "name": "MiniMo Cooking System",
+      "variant": "",
+      "category_hint": "cook",
+      "weight_value": 14.608,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://jetboil.johnsonoutdoors.com/us/shop/stoves-systems/minimo-cooking-system/mnmcb",
+      "quote": "14.608 oz | 415 g (excludes fuel stabilizer)"
+    },
+    {
+      "brand": "Toaks",
+      "name": "Titanium 550ml Pot (Ultralight)",
+      "variant": "550ml",
+      "category_hint": "cook",
+      "weight_value": 2.6,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.toaksoutdoor.com/products/pot-550-l",
+      "quote": "Weight: 2.6 oz (72g), 2.1 oz (60g) without lid (SKU: CUP-550-L)"
+    },
+    {
+      "brand": "Toaks",
+      "name": "Titanium 650ml Pot (Light)",
+      "variant": "650ml",
+      "category_hint": "cook",
+      "weight_value": 2.8,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.toaksoutdoor.com/products/pot-650-l",
+      "quote": "2.8 oz (80g); 2.1 oz (70g) without lid (CUP-650-L)"
+    },
+    {
+      "brand": "Toaks",
+      "name": "Titanium 750ml Pot",
+      "variant": "750ml",
+      "category_hint": "cook",
+      "weight_value": 3.6,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.toaksoutdoor.com/products/pot-750",
+      "quote": "Pot only: 3oz (86g), Pot with lid: 3.6oz (103g) (POT-750)"
+    },
+    {
+      "brand": "Toaks",
+      "name": "Titanium 900ml D115mm Pot",
+      "variant": "900ml",
+      "category_hint": "cook",
+      "weight_value": 4.1,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.toaksoutdoor.com/products/pot-900-d115",
+      "quote": "Pot with Lid: 4.1 oz (116g); Pot only: 3.2 oz (92g) (POT-900-D115)"
+    },
+    {
+      "brand": "Toaks",
+      "name": "Titanium 1100ml Pot",
+      "variant": "1100ml",
+      "category_hint": "cook",
+      "weight_value": 4.4,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.toaksoutdoor.com/products/pot-1100",
+      "quote": "Pot only: 3.5 oz; Pot with lid: 4.4 oz (125g) (POT-1100)"
+    },
+    {
+      "brand": "Toaks",
+      "name": "Titanium Long Handle Spoon",
+      "variant": "",
+      "category_hint": "cook",
+      "weight_value": 0.65,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.toaksoutdoor.com/products/slv-03",
+      "quote": "0.65 oz (19 g) (SLV-03)"
+    },
+    {
+      "brand": "Snow Peak",
+      "name": "Trek 700 Titanium",
+      "variant": "700ml",
+      "category_hint": "cook",
+      "weight_value": 4.8,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.snowpeak.com/products/trek-700-titanium",
+      "quote": "Weight: 4.8 oz (136 g)"
+    },
+    {
+      "brand": "Snow Peak",
+      "name": "LiteMax Titanium Stove",
+      "variant": "",
+      "category_hint": "cook",
+      "weight_value": 1.9,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.snowpeak.com/products/litemax-titanium-stove",
+      "quote": "Weight: 1.9 oz (56 g)"
+    },
+    {
+      "brand": "Sea to Summit",
+      "name": "X-Mug",
+      "variant": "",
+      "category_hint": "cook",
+      "weight_value": 2.5,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://seatosummit.com/products/x-mug-16oz-with-cool-grip-used",
+      "quote": "2.5 oz | 72 g"
+    },
+    {
+      "brand": "Vargo",
+      "name": "BOT 700",
+      "variant": "700ml",
+      "category_hint": "cook",
+      "weight_value": 4.8,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://vargooutdoors.com/products/bot-700",
+      "quote": "Weight: 4.8 ounces (138 grams)"
+    }
+  ]
+}

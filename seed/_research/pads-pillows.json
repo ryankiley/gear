@@ -1,0 +1,202 @@
+{
+  "rows": [
+    {
+      "brand": "Therm-a-Rest",
+      "name": "NeoAir XLite NXT",
+      "variant": "Regular",
+      "category_hint": "sleep",
+      "weight_value": 13,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://cascadedesigns.com/products/neoair-xlite-nxt-sleeping-pad",
+      "quote": "Regular ... Weight 13 oz (0.37 kg)"
+    },
+    {
+      "brand": "Therm-a-Rest",
+      "name": "NeoAir XLite NXT",
+      "variant": "Regular Wide",
+      "category_hint": "sleep",
+      "weight_value": 1,
+      "weight_unit": "lb",
+      "weight_source": "manufacturer",
+      "source_url": "https://cascadedesigns.com/products/neoair-xlite-nxt-sleeping-pad",
+      "quote": "Regular Wide ... Weight 1 lb (0.45 kg)"
+    },
+    {
+      "brand": "Therm-a-Rest",
+      "name": "NeoAir XLite NXT",
+      "variant": "Large",
+      "category_hint": "sleep",
+      "weight_value": 1.0625,
+      "weight_unit": "lb",
+      "weight_source": "manufacturer",
+      "source_url": "https://cascadedesigns.com/products/neoair-xlite-nxt-sleeping-pad",
+      "quote": "Large ... Weight 1 lb 1 oz (0.48 kg)"
+    },
+    {
+      "brand": "Therm-a-Rest",
+      "name": "NeoAir XTherm NXT",
+      "variant": "Regular",
+      "category_hint": "sleep",
+      "weight_value": 15.5,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://cascadedesigns.com/products/neoair-xtherm-nxt-sleeping-pad",
+      "quote": "Regular ... Weight 15.5 oz (0.44 kg)"
+    },
+    {
+      "brand": "Therm-a-Rest",
+      "name": "NeoAir XTherm NXT",
+      "variant": "Regular Wide",
+      "category_hint": "sleep",
+      "weight_value": 1.1875,
+      "weight_unit": "lb",
+      "weight_source": "manufacturer",
+      "source_url": "https://cascadedesigns.com/products/neoair-xtherm-nxt-sleeping-pad",
+      "quote": "Regular Wide ... Weight 1 lb 3 oz (0.54 kg)"
+    },
+    {
+      "brand": "Therm-a-Rest",
+      "name": "NeoAir XTherm NXT",
+      "variant": "Large",
+      "category_hint": "sleep",
+      "weight_value": 1.25,
+      "weight_unit": "lb",
+      "weight_source": "manufacturer",
+      "source_url": "https://cascadedesigns.com/products/neoair-xtherm-nxt-sleeping-pad",
+      "quote": "Large ... Weight 1 lb 4 oz (0.57 kg)"
+    },
+    {
+      "brand": "Therm-a-Rest",
+      "name": "Z Lite Sol",
+      "variant": "Regular",
+      "category_hint": "sleep",
+      "weight_value": 14,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://cascadedesigns.com/products/z-lite-sol-sleeping-pad",
+      "quote": "Regular ... Weight 14 oz (0.41 kg)"
+    },
+    {
+      "brand": "Therm-a-Rest",
+      "name": "Z Lite Sol",
+      "variant": "Small",
+      "category_hint": "sleep",
+      "weight_value": 10,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://cascadedesigns.com/products/z-lite-sol-sleeping-pad",
+      "quote": "Small ... Weight 10 oz (0.29 kg)"
+    },
+    {
+      "brand": "Therm-a-Rest",
+      "name": "ProLite Plus",
+      "variant": "Regular",
+      "category_hint": "sleep",
+      "weight_value": 1.4375,
+      "weight_unit": "lb",
+      "weight_source": "manufacturer",
+      "source_url": "https://cascadedesigns.com/en-eu/products/prolite-plus-sleeping-pad",
+      "quote": "Regular ... Weight (Standard) 1 lb 7 oz ... Weight (Metric) 0.65 kg"
+    },
+    {
+      "brand": "Nemo",
+      "name": "Tensor All-Season Ultralight Insulated",
+      "variant": "Regular",
+      "category_hint": "sleep",
+      "weight_value": 15.5,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.nemoequipment.com/products/tensor-all-season-insulated-sleeping-pad",
+      "quote": "Regular ... Minimum Weight 15.5 oz / 440 g"
+    },
+    {
+      "brand": "Nemo",
+      "name": "Tensor All-Season Ultralight Insulated",
+      "variant": "Regular Wide",
+      "category_hint": "sleep",
+      "weight_value": 1.1875,
+      "weight_unit": "lb",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.nemoequipment.com/products/tensor-all-season-insulated-sleeping-pad",
+      "quote": "Regular Wide ... Minimum Weight 1 lb 3 oz / 530 g"
+    },
+    {
+      "brand": "Nemo",
+      "name": "Tensor Trail Ultralight Insulated",
+      "variant": "Regular",
+      "category_hint": "sleep",
+      "weight_value": 13.9,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.nemoequipment.com/products/tensor-trail-insulated-ultralight-sleeping-pad",
+      "quote": "Regular ... Minimum Weight 13.9 oz / 395 g"
+    },
+    {
+      "brand": "Nemo",
+      "name": "Switchback Ultralight",
+      "variant": "Regular",
+      "category_hint": "sleep",
+      "weight_value": 14.5,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.nemoequipment.com/products/switchback-ultralight-sleeping-pad",
+      "quote": "Regular ... Minimum Weight 14.5 oz / 415 g"
+    },
+    {
+      "brand": "Sea to Summit",
+      "name": "Ether Light XT Insulated",
+      "variant": "Regular",
+      "category_hint": "sleep",
+      "weight_value": 17.3,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://seatosummit.com/pages/ether-light-xt-insulated-sleeping-pad",
+      "quote": "Weight: 17.3 oz | 490 g"
+    },
+    {
+      "brand": "Big Agnes",
+      "name": "Rapide SL Insulated",
+      "variant": "Regular",
+      "category_hint": "sleep",
+      "weight_value": 18,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.bigagnes.com/products/rapide-sl-insulated",
+      "quote": "Trail_Weight ... 20\" x 72\": 18oz/510g"
+    },
+    {
+      "brand": "Sea to Summit",
+      "name": "Aeros Premium Pillow",
+      "variant": "Regular",
+      "category_hint": "sleep",
+      "weight_value": 3.5,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://seatosummit.com/products/aeros-pillow-premium",
+      "quote": "Regular ... Weight 99 g 3.5 oz"
+    },
+    {
+      "brand": "Nemo",
+      "name": "Fillo",
+      "variant": "Regular",
+      "category_hint": "sleep",
+      "weight_value": 9.2,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.nemoequipment.com/products/fillo-backpacking-pillow",
+      "quote": "Minimum Weight 9.2 oz / 260 g"
+    },
+    {
+      "brand": "Trekology",
+      "name": "Aluft 2.0",
+      "variant": "Regular",
+      "category_hint": "sleep",
+      "weight_value": 3.9,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://trekology.com/products/trekology-aluft-2-0-inflatable-pillow-for-camping-copy-2",
+      "quote": "the ALUFT 2.0 weighs in at only 3.9oz (110g)"
+    }
+  ]
+}

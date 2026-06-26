@@ -11,6 +11,7 @@ import { sql } from "drizzle-orm";
 import {
   bigint,
   boolean,
+  check,
   index,
   integer,
   jsonb,
@@ -75,3 +76,72 @@ export const lists = pgTable(
 
 export type ListRow = typeof lists.$inferSelect;
 export type NewListRow = typeof lists.$inferInsert;
+
+// ---------------------------------------------------------------------------
+// catalog_items — the curated, *cited* gear-weight spine (Phase 2).
+//
+// Unlike a list's JSONB content, the catalog is queried RELATIONALLY (fuzzy
+// autocomplete, usage ranking, wiki corrections), so it's a normalized table.
+// Every seeded row carries a real citation (`source_url`) and a provenance
+// (`weight_source`) — provenance is the product's trust moat, so it's required.
+//
+// Fuzzy search uses a pg_trgm GIN index. pg_trgm is available on Neon but NOT
+// on local PGlite (its WASM build doesn't ship the extension unless loaded into
+// the constructor, which we don't touch), so the trigram index is created at
+// runtime ONLY on Neon by `ensureCatalogTrgm()` in server/utils/catalog.ts; the
+// search endpoint falls back to ILIKE substring matching on PGlite. The GIN
+// index is declared here too so the Drizzle schema / future migrations stay
+// faithful — this declaration is metadata only and is never run by the raw-DDL
+// `ensureSchema()` path that the live app uses.
+// ---------------------------------------------------------------------------
+export const catalogItems = pgTable(
+  "catalog_items",
+  {
+    id: serial("id").primaryKey(),
+    brand: text("brand"), // company / maker (nullable: generic items like "Smartwater bottle")
+    name: text("name").notNull(), // product name
+    variant: text("variant"), // size / temp / capacity that changes the weight
+    description: text("description"),
+    // shelter|sleep|pack|cook|water|clothing|electronics|firstaid|consumable|other
+    categoryHint: text("category_hint"),
+    weightMg: bigint("weight_mg", { mode: "number" }).notNull(),
+    // REQUIRED provenance — forces every row to declare where its weight came from
+    weightSource: text("weight_source").notNull(), // manufacturer|measured|community|imported
+    sourceUrl: text("source_url"), // the citation (manufacturer spec page preferred)
+    productUrl: text("product_url"), // optional buy/official link, distinct from the citation
+    imageUrl: text("image_url"), // optional, external — we don't host images
+    msrpCents: integer("msrp_cents"),
+    currency: text("currency"),
+    verified: boolean("verified").notNull().default(false), // owner-curated trust
+    usageCount: integer("usage_count").notNull().default(0), // ranks autocomplete
+    status: text("status").notNull().default("active"), // active|merged|removed
+    mergedIntoId: integer("merged_into_id"), // when status='merged', the survivor row
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    check(
+      "catalog_weight_source_ck",
+      sql`${t.weightSource} in ('manufacturer','measured','community','imported')`,
+    ),
+    check("catalog_status_ck", sql`${t.status} in ('active','merged','removed')`),
+    // identity for idempotent upsert — coalesce so NULL brand/variant compare equal
+    uniqueIndex("idx_catalog_identity").on(
+      sql`coalesce(${t.brand},'')`,
+      t.name,
+      sql`coalesce(${t.variant},'')`,
+    ),
+    // autocomplete ranking: verified first, then most-used
+    index("idx_catalog_rank")
+      .on(t.verified.desc(), t.usageCount.desc())
+      .where(sql`${t.status} = 'active'`),
+    // fuzzy search (Neon only — see note above; created by ensureCatalogTrgm())
+    index("idx_catalog_trgm").using(
+      "gin",
+      sql`(coalesce(${t.brand},'') || ' ' || ${t.name}) gin_trgm_ops`,
+    ),
+  ],
+);
+
+export type CatalogItemRow = typeof catalogItems.$inferSelect;
+export type NewCatalogItemRow = typeof catalogItems.$inferInsert;

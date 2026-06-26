@@ -1,0 +1,169 @@
+{
+  "rows": [
+    {
+      "brand": "Big Agnes",
+      "name": "Copper Spur HV UL1",
+      "variant": "UL1",
+      "category_hint": "shelter",
+      "weight_value": 34,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.absolute-snow.com/big-agnes-copper-spur-hv-ul1-ultralight-backpacking-tent",
+      "quote": "Trail Weight: 964g | 2 lb 2 oz (manufacturer spec via retailer; Big Agnes official page lists weights as images only). Packed Weight: 1.08 kg | 2 lb 6 oz"
+    },
+    {
+      "brand": "Big Agnes",
+      "name": "Copper Spur HV UL2",
+      "variant": "UL2",
+      "category_hint": "shelter",
+      "weight_value": 43,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.absolute-snow.com/big-agnes-copper-spur-hv-ul2-ultralight-backpacking-tent",
+      "quote": "Trail Weight: 2 lb 11 oz (page shows '1.22g | 2 lb 11 oz' — the metric is a site typo for 1.22kg; lb/oz value is clean). Packed Weight: 1.42 kg | 3 lb 2 oz"
+    },
+    {
+      "brand": "Big Agnes",
+      "name": "Copper Spur HV UL3",
+      "variant": "UL3",
+      "category_hint": "shelter",
+      "weight_value": 56,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.absolute-snow.com/big-agnes-copper-spur-hv-ul3-ultralight-backpacking-tent",
+      "quote": "Trail Weight: 3 lb 8 oz (page shows '1.59g | 3 lb 8 oz' — metric is a site typo for 1.59kg; lb/oz value is clean). Packed Weight: 1.76 kg | 3 lb 14 oz"
+    },
+    {
+      "brand": "Big Agnes",
+      "name": "Tiger Wall UL2",
+      "variant": "UL2",
+      "category_hint": "shelter",
+      "weight_value": 35,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.absolute-snow.com/big-agnes-tiger-wall-ul2-tents,-bivvys--extensions",
+      "quote": "Trail Weight: 992g / 2lb 3oz. Pack Weight: 1.13kg / 2lb 8oz"
+    },
+    {
+      "brand": "Big Agnes",
+      "name": "Tiger Wall UL3",
+      "variant": "UL3",
+      "category_hint": "shelter",
+      "weight_value": 42,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.absolute-snow.com/big-agnes-tiger-wall-ul3-tents,-bivvys--extensions",
+      "quote": "Trail Weight: 1.19kg / 2lb 10oz. Packed Weight: 1.33kg / 2lb 15oz"
+    },
+    {
+      "brand": "Big Agnes",
+      "name": "Fly Creek HV UL1",
+      "variant": "UL1",
+      "category_hint": "shelter",
+      "weight_value": 27,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.outdoorline.eu/products/big-agnes-fly-creek-hv-ul1-ultralight-tent",
+      "quote": "Trail Weight: 765g (1lb 11oz). Packed Weight: 907g (2lb). Fast Fly Weight: 595g (1lb 5oz). Cross-confirmed by ascentoutdoors.com (Trail Weight 1lb 11oz / 765g)"
+    },
+    {
+      "brand": "Big Agnes",
+      "name": "Fly Creek HV UL2",
+      "variant": "UL2",
+      "category_hint": "shelter",
+      "weight_value": 31,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.outdoorline.eu/products/big-agnes-fly-creek-hv-ul2-ultralight-tent",
+      "quote": "Trail Weight: 879g | 1lb 15oz. Packed Weight: 1.02kg | 2lb 4oz. Fast Fly Weight: 709g | 1lb 9oz"
+    },
+    {
+      "brand": "Nemo",
+      "name": "Hornet OSMO",
+      "variant": "1P",
+      "category_hint": "shelter",
+      "weight_value": 810,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.alpinetrek.co.uk/nemo-hornet-osmo-1p-1-person-tent/",
+      "quote": "Weight: 810 g (= NEMO minimum weight; alpinetrek 'Weight' field equals outdoorline-labelled 'Minimum Weight' for the Elite models, validating this as the minimum). Packed dimensions: 32 x 19 x 7 cm"
+    },
+    {
+      "brand": "Nemo",
+      "name": "Hornet OSMO",
+      "variant": "2P",
+      "category_hint": "shelter",
+      "weight_value": 918,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.alpinetrek.co.uk/nemo-hornet-osmo-2p-2-person-tent/",
+      "quote": "Weight: 918 g (= NEMO minimum weight; alpinetrek 'Weight' field equals outdoorline-labelled 'Minimum Weight' for the Elite models). Packed Dimensions: 32 x 19 x 8.5 cm"
+    },
+    {
+      "brand": "Nemo",
+      "name": "Hornet Elite OSMO",
+      "variant": "1P",
+      "category_hint": "shelter",
+      "weight_value": 657,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.outdoorline.eu/products/nemo-hornet-elite-osmo-1p",
+      "quote": "Minimum Weight: 657 g / 1 lb , 7 oz. Packed Weight: 812 g / 1 lb , 13 oz"
+    },
+    {
+      "brand": "Nemo",
+      "name": "Hornet Elite OSMO",
+      "variant": "2P",
+      "category_hint": "shelter",
+      "weight_value": 779,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.outdoorline.eu/products/nemo-hornet-elite-osmo-2p",
+      "quote": "Minimum Weight: 779 g / 1 lb , 11 oz. Packed Weight: 935 g / 2 lb , 1 oz"
+    },
+    {
+      "brand": "Nemo",
+      "name": "Dragonfly OSMO",
+      "variant": "1P",
+      "category_hint": "shelter",
+      "weight_value": 35,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.gearx.com/products/nemo-equipment-dragonfly-osmo-1p-tent-ai7bp-fog",
+      "quote": "Minimum Weight: 2 lbs 3 oz/ 1.0 kg. Packed Weight: 2 lbs 12 oz/ 1.23 kg"
+    },
+    {
+      "brand": "Nemo",
+      "name": "Dragonfly OSMO",
+      "variant": "2P",
+      "category_hint": "shelter",
+      "weight_value": 53,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.gearx.com/products/nemo-equipment-dragonfly-osmo-2p-tent-pg9dz-fog",
+      "quote": "Packed Weight: 3 lbs 5 oz (gearx lists only Packed Weight for the 2P; minimum weight not stated on this page — figure recorded is PACKED, not trail)"
+    },
+    {
+      "brand": "Gossamer Gear",
+      "name": "The One",
+      "variant": "",
+      "category_hint": "shelter",
+      "weight_value": 19.68,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.gossamergear.com/products/the-one",
+      "quote": "Shelter 19.68 oz / 558 g (single-wall trekking-pole shelter body; Total 22.24 oz / 630.4 g incl. 6 stakes, stuff sack, clothes line)"
+    },
+    {
+      "brand": "Gossamer Gear",
+      "name": "The Two",
+      "variant": "",
+      "category_hint": "shelter",
+      "weight_value": 28.15,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.gossamergear.com/products/the-two",
+      "quote": "Shelter Body 28.15 oz / 798 g (single-wall trekking-pole shelter body; Total 30.5 oz / 864.3 g incl. 6 stakes, stuff sack, clothes line)"
+    }
+  ]
+}

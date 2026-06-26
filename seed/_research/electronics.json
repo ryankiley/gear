@@ -1,0 +1,103 @@
+{
+  "rows": [
+    {
+      "brand": "Nitecore",
+      "name": "NU25",
+      "variant": "MCT (400 lumen, USB-C)",
+      "category_hint": "electronics",
+      "weight_value": 50,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.nitecore.com/product/nu25",
+      "quote": "50g (1.76 oz) (Bracket and Headband Included)"
+    },
+    {
+      "brand": "Black Diamond",
+      "name": "Spot 400 Headlamp",
+      "variant": "",
+      "category_hint": "electronics",
+      "weight_value": 86,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://blackdiamondequipment.com/products/spot-400-headlamp",
+      "quote": "Weight: [AAA] 86 g, [BD1500] 72 g"
+    },
+    {
+      "brand": "Black Diamond",
+      "name": "Storm 500-R Headlamp",
+      "variant": "Rechargeable",
+      "category_hint": "electronics",
+      "weight_value": 120,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://blackdiamondequipment.com/products/storm-500-r-rechargeable-headlamp",
+      "quote": "Weight: 120 g"
+    },
+    {
+      "brand": "Petzl",
+      "name": "BINDI Headlamp",
+      "variant": "",
+      "category_hint": "electronics",
+      "weight_value": 1.23,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.petzl.com/US/en/Sport/News/2018-7-24/What-you-need-to-know-about-the-BINDI",
+      "quote": "Weighs 1.23 oz (35 grams) and can fit in the palm of your hand."
+    },
+    {
+      "brand": "Petzl",
+      "name": "ACTIK CORE Headlamp",
+      "variant": "",
+      "category_hint": "electronics",
+      "weight_value": 88,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.petzl.com/US/en/Sport/Headlamps/ACTIK-CORE",
+      "quote": "Weight: 88 g"
+    },
+    {
+      "brand": "Nitecore",
+      "name": "NB10000",
+      "variant": "GEN2",
+      "category_hint": "electronics",
+      "weight_value": 150,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.nitecore.com/product/nb10000",
+      "quote": "150g (5.29 oz)"
+    },
+    {
+      "brand": "Anker",
+      "name": "PowerCore 10000",
+      "variant": "A1263",
+      "category_hint": "electronics",
+      "weight_value": 6.3,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://service.anker.com/product-description/a085g000004x2B3AAI/powercore-10000",
+      "quote": "Weight: 6.3 ounces"
+    },
+    {
+      "brand": "Anker",
+      "name": "313 Power Bank (PowerCore 10K)",
+      "variant": "A1229",
+      "category_hint": "electronics",
+      "weight_value": 7.5,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://service.anker.com/product-description/a085g000004x2B4AAI/anker-313-power-bank-powercore-10k",
+      "quote": "Weight: 7.5 ounces"
+    },
+    {
+      "brand": "Anker",
+      "name": "Nano Charger (20W)",
+      "variant": "A2637",
+      "category_hint": "electronics",
+      "weight_value": 1.1,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.anker.com/products/a2637-nano-20w-charger",
+      "quote": "Weight: 1.1 ounces"
+    }
+  ]
+}

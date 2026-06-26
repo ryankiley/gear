@@ -1,0 +1,59 @@
+{
+  "rows": [
+    {
+      "brand": "Arc'teryx",
+      "name": "Cerium Hoody",
+      "variant": "Men's",
+      "category_hint": "clothing",
+      "weight_value": 338,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://arcteryx.com/us/en/shop/mens/cerium-hoody-0521",
+      "quote": "Weighing in at only 338g"
+    },
+    {
+      "brand": "Zpacks",
+      "name": "Vertice Rain Jacket",
+      "variant": "Men's (size not specified for headline weight)",
+      "category_hint": "clothing",
+      "weight_value": 5.4,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://zpacks.com/products/vertice-rain-jacket",
+      "quote": "Weight 5.4 oz / 152 g"
+    },
+    {
+      "brand": "Frogg Toggs",
+      "name": "Ultra-Lite2 Rain Suit (jacket + pants)",
+      "variant": "Men's",
+      "category_hint": "clothing",
+      "weight_value": 12.8,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.froggtoggs.com/products/the-frogg-toggsr-ultra-lite2tm-4749",
+      "quote": "Net weight: 12.8 oz."
+    },
+    {
+      "brand": "Outdoor Research",
+      "name": "Sun Runner Cap",
+      "variant": "",
+      "category_hint": "clothing",
+      "weight_value": 2.98,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.outdoorresearch.com/products/sun-runner-cap-300299",
+      "quote": "Weight: 2.98 oz/ 85 g"
+    },
+    {
+      "brand": "Black Diamond",
+      "name": "Lightweight Screentap Liners",
+      "variant": "Men's M (size not specified for weight)",
+      "category_hint": "clothing",
+      "weight_value": 37,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://blackdiamondequipment.com/products/lightweight-screentap-liners",
+      "quote": "Weight: 37 g"
+    }
+  ]
+}

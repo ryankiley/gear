@@ -1,0 +1,199 @@
+{
+  "rows": [
+    {
+      "brand": "Sea to Summit",
+      "name": "Trek TkII Down Sleeping Bag",
+      "variant": "Long, 18F",
+      "category_hint": "sleep",
+      "weight_value": 2,
+      "weight_unit": "lb",
+      "weight_secondary": "6 oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.thebrokebackpacker.com/sea-to-summit-trek-tkii-review/",
+      "quote": "Long: 2 lbs. 6 oz. (1.1 kilos)"
+    },
+    {
+      "brand": "Big Agnes",
+      "name": "Rapide SL Pillow",
+      "variant": "One size (no Medium variant in current catalog)",
+      "category_hint": "sleep",
+      "weight_value": 1.6,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.bigagnes.com/products/rapide-sl-pillow",
+      "quote": "At a scant 1.6oz, the Rapide SL Pillow is the perfect backpacking companion"
+    },
+    {
+      "brand": "Big Agnes",
+      "name": "Copper Spur HV UL2 mtnGLO",
+      "variant": "Trail (minimum) weight, with integrated LED lights",
+      "category_hint": "shelter",
+      "weight_value": 2,
+      "weight_unit": "lb",
+      "weight_secondary": "13 oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://jrifecompany.com/products/big-agnes-copper-spur-hv-ul2-mtnglo%C2%AE",
+      "quote": "Trail Weight: 2lb 13oz / 1.28kg"
+    },
+    {
+      "brand": "REI Co-op",
+      "name": "Flexlite Air Chair",
+      "variant": "Measured weight (OutdoorGearLab scale)",
+      "category_hint": "other",
+      "weight_value": 16.9,
+      "weight_unit": "oz",
+      "weight_source": "measured",
+      "source_url": "https://www.outdoorgearlab.com/reviews/camping-and-hiking/backpacking-chair/rei-co-op-flexlite-air",
+      "quote": "16.9 oz"
+    },
+    {
+      "brand": "Hyperlite Mountain Gear",
+      "name": "Stuff Sack Pillow",
+      "variant": "One size (9L)",
+      "category_hint": "sleep",
+      "weight_value": 1.7,
+      "weight_unit": "oz",
+      "weight_secondary": "48 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://hyperlitemountaingear.com/products/stuff-sack-pillows",
+      "quote": "Weight: 1.7 oz. | 48g"
+    },
+    {
+      "brand": "Arc'teryx",
+      "name": "Cormac Hoody",
+      "variant": "Men's",
+      "category_hint": "clothing",
+      "weight_value": 160,
+      "weight_unit": "g",
+      "weight_secondary": "5.6 oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://mountainhighoutfitters.com/products/m-cormac-hoody",
+      "quote": "Weight 160g / 5.6 oz"
+    },
+    {
+      "brand": "Mountain Hardwear",
+      "name": "Ghost Whisperer UL Hoody",
+      "variant": "Men's (current live UL down hoody)",
+      "category_hint": "clothing",
+      "weight_value": 6.7,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.adventurealan.com/product/mountain-hardwear-ghost-whisperer-ul-jacket/",
+      "quote": "6.7 oz"
+    },
+    {
+      "brand": "Outdoor Research",
+      "name": "ActiveIce Chroma Full Sun Gloves",
+      "variant": "",
+      "category_hint": "clothing",
+      "weight_value": 1.41,
+      "weight_unit": "oz",
+      "weight_secondary": "40 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.outdoorresearch.com/products/activeice-chroma-full-sun-gloves-280134",
+      "quote": "1.41 oz/ 40 g"
+    },
+    {
+      "brand": "Petzl",
+      "name": "Cordex Plus belay/rappel gloves",
+      "variant": "Size S",
+      "category_hint": "clothing",
+      "weight_value": 136,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.petzl.com/US/en/Sport/Packs-And-Accessories/CORDEX-PLUS",
+      "quote": "Size S (K53 SN): 136 g"
+    },
+    {
+      "brand": "Petzl",
+      "name": "Cordex Plus belay/rappel gloves",
+      "variant": "Size M",
+      "category_hint": "clothing",
+      "weight_value": 140,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.petzl.com/US/en/Sport/Packs-And-Accessories/CORDEX-PLUS",
+      "quote": "Size M (K53 MN): 140 g"
+    },
+    {
+      "brand": "Petzl",
+      "name": "Cordex Plus belay/rappel gloves",
+      "variant": "Size L",
+      "category_hint": "clothing",
+      "weight_value": 146,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.petzl.com/US/en/Sport/Packs-And-Accessories/CORDEX-PLUS",
+      "quote": "Size L (K53 LN): 146 g"
+    },
+    {
+      "brand": "Petzl",
+      "name": "Cordex Plus belay/rappel gloves",
+      "variant": "Size XL",
+      "category_hint": "clothing",
+      "weight_value": 152,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.petzl.com/US/en/Sport/Packs-And-Accessories/CORDEX-PLUS",
+      "quote": "Size XL (K53 XLN): 152 g"
+    },
+    {
+      "brand": "Sea to Summit",
+      "name": "Mosquito Head Net with Insect Shield",
+      "variant": "",
+      "category_hint": "clothing",
+      "weight_value": 1.3,
+      "weight_unit": "oz",
+      "weight_secondary": "36.9 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.campingworld.com/sea-to-summit-mosquito-head-net-with-insect-shield-202502.html",
+      "quote": "1.3 oz"
+    },
+    {
+      "brand": "Sea to Summit",
+      "name": "Ultra-Sil Dry Bag",
+      "variant": "8L",
+      "category_hint": "other",
+      "weight_value": 39,
+      "weight_unit": "g",
+      "weight_secondary": "1.4 oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://seatosummit.com/products/ultra-sil-dry-bag",
+      "quote": "Weight: 39 g 1.4 oz"
+    },
+    {
+      "brand": "Patagonia",
+      "name": "P-6 Logo LoPro Trucker Hat",
+      "variant": "",
+      "category_hint": "clothing",
+      "weight_value": 85,
+      "weight_unit": "g",
+      "weight_secondary": "3 oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.idahomountaintouring.com/products/p-6-logo-lopro-trucker-hat",
+      "quote": "Weight. 85 g (3 oz)"
+    },
+    {
+      "brand": "Teva",
+      "name": "Original Universal Sandals (men's)",
+      "variant": "Measured weight per pair, size 11 (OutdoorGearLab scale)",
+      "category_hint": "other",
+      "weight_value": 14.5,
+      "weight_unit": "oz",
+      "weight_source": "measured",
+      "source_url": "https://www.outdoorgearlab.com/reviews/shoes-and-boots/sandals-mens/teva-original-universal",
+      "quote": "14.5(size 11) Weight (per pair)"
+    },
+    {
+      "brand": "Mazama Designs",
+      "name": "M!GO Bottle",
+      "variant": "Avalanche colorway",
+      "category_hint": "water",
+      "weight_value": 132,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://mazamadesigns.com/products/m-go-bottle",
+      "quote": "132 grams"
+    }
+  ]
+}

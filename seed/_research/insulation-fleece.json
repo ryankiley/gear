@@ -1,0 +1,164 @@
+{
+  "rows": [
+    {
+      "brand": "Enlightened Equipment",
+      "name": "Torrid APEX Jacket",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 8.4,
+      "weight_unit": "oz",
+      "weight_secondary": "238 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.adventurealan.com/enlightened-equipment-torrid-apex-jacket-review/",
+      "quote": "Weight: 8.4 ounces | 238 grams"
+    },
+    {
+      "brand": "Decathlon (Simond)",
+      "name": "MT100 Hooded Down Jacket",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 10.3,
+      "weight_unit": "oz",
+      "weight_source": "measured",
+      "source_url": "https://www.outdoorgearlab.com/reviews/clothing-mens/down-jacket-men/decathlon-simond-mt100-hooded-puffer",
+      "quote": "I weighed the men's Medium at just 10.3 ounces, making the MT100 one of the lightest jackets I tested."
+    },
+    {
+      "brand": "Senchi Designs",
+      "name": "Alpha 90 Hoodie",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 4.5,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://senchidesigns.com/pages/weight-chart-alpha-90-hoodie-w-pocket",
+      "quote": "M | 4.5 (oz, with a +/-10% variance note)"
+    },
+    {
+      "brand": "Senchi Designs",
+      "name": "Alpha 60 Hoodie",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 3.8,
+      "weight_unit": "oz",
+      "weight_secondary": "108 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://senchidesigns.com/pages/weight-chart-alpha-60-hoodie",
+      "quote": "M | 3.8 oz | 108g"
+    },
+    {
+      "brand": "LightHeart Gear",
+      "name": "Alpha Direct 90 Hoodie",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 5.2,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://lightheartgear.com/products/alpha-direct-90-hoodie-with-kangaroo-pocket",
+      "quote": "Men's medium weighs 5.2 oz."
+    },
+    {
+      "brand": "Appalachian Gear Company",
+      "name": "All-Paca Fleece Hoodie",
+      "variant": "Men's M (manufacturer-stated lot average)",
+      "category_hint": "clothing",
+      "weight_value": 11,
+      "weight_unit": "oz",
+      "weight_secondary": "312 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://pieonthetrail.com/appalachian-gear-company-all-paca-fleece-hoodie-review/",
+      "quote": "Medium - 11 oz / 312g"
+    },
+    {
+      "brand": "Patagonia",
+      "name": "Nano Puff Jacket",
+      "variant": "Men's (size not specified for average weight)",
+      "category_hint": "clothing",
+      "weight_value": 337.36,
+      "weight_unit": "g",
+      "weight_secondary": "11.9 oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://outdoornewengland.com/products/mens-nano-puff-jacket",
+      "quote": "337.36 g (11.9 oz)"
+    },
+    {
+      "brand": "Patagonia",
+      "name": "Micro Puff Hoody",
+      "variant": "Men's (average weight)",
+      "category_hint": "clothing",
+      "weight_value": 298,
+      "weight_unit": "g",
+      "weight_secondary": "10.5 oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.patagoniabend.com/products/ms-micro-puff-hoody-1",
+      "quote": "Average Weight 298 g (10.5 oz)"
+    },
+    {
+      "brand": "Mountain Hardwear",
+      "name": "Ghost Whisperer/2 Hoody",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 8.8,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.cleverhiker.com/apparel/mountain-hardwear-ghost-whisperer-down-hoody-review/",
+      "quote": "8.8 oz. (from the Quick Specs section)"
+    },
+    {
+      "brand": "Patagonia",
+      "name": "R1 Air Full-Zip Hoody",
+      "variant": "Men's (size not specified for spec weight)",
+      "category_hint": "clothing",
+      "weight_value": 369,
+      "weight_unit": "g",
+      "weight_secondary": "13 oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.whittakermountaineering.com/products/mens-r1-air-full-zip-hoody",
+      "quote": "369 g (13 oz)"
+    },
+    {
+      "brand": "Montbell",
+      "name": "Plasma 1000 Down Jacket",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 4.8,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.montbell.com/us/en/products/detail/2301381",
+      "quote": "Plasma 1000 Down Jacket — manufacturer advertised weight 4.8 oz (136 g) (montbell.com)"
+    },
+    {
+      "brand": "Montbell",
+      "name": "Ex Light Down Anorak",
+      "variant": "Men's (size not specified for spec weight)",
+      "category_hint": "clothing",
+      "weight_value": 7.6,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.adventurealan.com/product/montbell-ex-light-down-anorak/",
+      "quote": "Weight: 7.6 oz"
+    },
+    {
+      "brand": "Arc'teryx",
+      "name": "Atom Hoody",
+      "variant": "Men's",
+      "category_hint": "clothing",
+      "weight_value": 13.1,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.fitformiles.com/arcteryx-atom-hoody-review/",
+      "quote": "13.1 oz Men's (from the At-a-Glance product details section)"
+    },
+    {
+      "brand": "Melanzana",
+      "name": "Micro Grid Hoodie V2",
+      "variant": "Men's L (men's M weight not published)",
+      "category_hint": "clothing",
+      "weight_value": 12.1,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://melanzana.com/products/2025-micro-grid-hoodie-v2",
+      "quote": "Women's M 9.3oz, Men's L 12.1 oz"
+    }
+  ]
+}

@@ -1,0 +1,191 @@
+{
+  "rows": [
+    {
+      "brand": "MSR",
+      "name": "IsoPro Fuel Canister",
+      "variant": "110g canister (net fuel)",
+      "category_hint": "consumable",
+      "weight_value": 110,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://cascadedesigns.com/products/msr-isopro-fuel",
+      "quote": "3.9 oz / 110g ... Sold in 4, 8 and 16 oz. canisters to meet the demands of any stove or trip."
+    },
+    {
+      "brand": "MSR",
+      "name": "IsoPro Fuel Canister",
+      "variant": "227g canister (net fuel)",
+      "category_hint": "consumable",
+      "weight_value": 227,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://cascadedesigns.com/products/msr-isopro-fuel",
+      "quote": "8 oz / 227g ... Sold in 4, 8 and 16 oz. canisters to meet the demands of any stove or trip."
+    },
+    {
+      "brand": "MSR",
+      "name": "IsoPro Fuel Canister",
+      "variant": "450g canister (net fuel)",
+      "category_hint": "consumable",
+      "weight_value": 450,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://cascadedesigns.com/products/msr-isopro-fuel",
+      "quote": "16 oz / 450g ... Sold in 4, 8 and 16 oz. canisters to meet the demands of any stove or trip."
+    },
+    {
+      "brand": "Jetboil",
+      "name": "JetPower Fuel",
+      "variant": "100g (net fuel)",
+      "category_hint": "consumable",
+      "weight_value": 100,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://jetboil.johnsonoutdoors.com/us/shop/parts-accessories/fuel-related/jetpower-fuel-single/jf1001",
+      "quote": "Fuel Capacity: 100 g (approx. 12 liters of boiled water)"
+    },
+    {
+      "brand": "Jetboil",
+      "name": "JetPower Fuel",
+      "variant": "230g (net fuel)",
+      "category_hint": "consumable",
+      "weight_value": 230,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://jetboil.johnsonoutdoors.com/us/shop/parts-accessories/fuel-related/jetpower-fuel-single",
+      "quote": "Size: 100 g, 230 g (JetPower Fuel - Single)"
+    },
+    {
+      "brand": "Clif Bar",
+      "name": "Clif Bar (Chocolate Chip / original)",
+      "variant": "single bar",
+      "category_hint": "consumable",
+      "weight_value": 68,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://eu.clifbar.com/en/products/clif-bar-chocolate-chip/",
+      "quote": "Per bar (68g)"
+    },
+    {
+      "brand": "PROBAR",
+      "name": "MEAL Bar",
+      "variant": "single bar",
+      "category_hint": "consumable",
+      "weight_value": 3,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://theprobar.com/collections/meal-bar",
+      "quote": "3 oz. Bar"
+    },
+    {
+      "brand": "Snickers",
+      "name": "Snickers Singles Size Chocolate Candy Bar",
+      "variant": "1.86 oz single (full size)",
+      "category_hint": "consumable",
+      "weight_value": 1.86,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.snickers.com/products/chocolate/snickers-singles-size-chocolate-candy-bars-186-oz-bars",
+      "quote": "SNICKERS Singles Size Chocolate Candy Bars, 1.86 oz"
+    },
+    {
+      "brand": "Knorr",
+      "name": "Rice Sides Cheddar Broccoli",
+      "variant": "one pouch",
+      "category_hint": "consumable",
+      "weight_value": 5.7,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://smartlabel.unileverusa.com/041000022784-0001-en-US/index.html",
+      "quote": "NET WT 5.7 oz (161 g)"
+    },
+    {
+      "brand": "Idahoan",
+      "name": "Classic Mashed Potatoes",
+      "variant": "single pouch",
+      "category_hint": "consumable",
+      "weight_value": 4,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://idahoan.com/products/100645",
+      "quote": "Idahoan Classic Mashed, 4 oz (Single Pouch)"
+    },
+    {
+      "brand": "Mountain House",
+      "name": "Beef Stroganoff - Pro-Pak",
+      "variant": "Pro-Pak (1 serving)",
+      "category_hint": "consumable",
+      "weight_value": 4.6,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://lintonoutdoors.com/mountain-house-beef-stroganoff-propak/",
+      "quote": "Net Wt 4.6 oz (131grams)"
+    },
+    {
+      "brand": "Starbucks",
+      "name": "VIA Instant Coffee (Pike Place Roast)",
+      "variant": "single packet",
+      "category_hint": "consumable",
+      "weight_value": 0.11,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.target.com/p/starbucks-via-instant-coffee-medium-roast-packets-pike-place-roast-packets-8ct-0-11oz/-/A-15251130",
+      "quote": "8ct/0.11oz (per packet); box of 8 packets net wt 0.93 oz"
+    },
+    {
+      "brand": "Honey Stinger",
+      "name": "Organic Honey Waffle",
+      "variant": "single waffle",
+      "category_hint": "consumable",
+      "weight_value": 1.06,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://honeystinger.com/products/honey",
+      "quote": "Honey Stinger Organic Energy Waffle Snack, Honey, 1.06 oz"
+    },
+    {
+      "brand": "Pop-Tarts",
+      "name": "Frosted Strawberry Toaster Pastries",
+      "variant": "one pouch (2 pastries)",
+      "category_hint": "consumable",
+      "weight_value": 96,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://foods.fatsecret.com/calories-nutrition/kelloggs/pop-tarts-frosted---strawberry/1-pastry",
+      "quote": "2 pastries (96 g), 370 calories, 1 serving per container"
+    },
+    {
+      "brand": "Leukotape",
+      "name": "Leukotape P Sports Tape",
+      "variant": "1.5 in x 15 yd full roll",
+      "category_hint": "firstaid",
+      "weight_value": 3.9,
+      "weight_unit": "oz",
+      "weight_source": "measured",
+      "source_url": "https://www.litesmith.com/leukotape-p-blister-prevention-tape/",
+      "quote": "the standard roll (15 yd) weighs 3.9 oz (110 g)"
+    },
+    {
+      "brand": "BIC",
+      "name": "J25 Mini Lighter",
+      "variant": "Mini (J25)",
+      "category_hint": "other",
+      "weight_value": 13,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.bicgraphic.com/gb/bic-j25-lighter-3460002360.html",
+      "quote": "Weight: 13 g"
+    },
+    {
+      "brand": "TheTentLab",
+      "name": "The Deuce of Spades #2 Trowel",
+      "variant": "#2",
+      "category_hint": "other",
+      "weight_value": 0.6,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.thetentlab.com/Deuce/number2.html",
+      "quote": "The Deuce #2 - .60 oz"
+    }
+  ]
+}

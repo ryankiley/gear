@@ -37,6 +37,8 @@ function selectResult(r: CatalogResult) {
   // don't double it); the catalog link is preserved via catalogItemId.
   const name = [r.brand, r.name, r.variant].filter(Boolean).join(" ");
   emit("commit", { name, weightMg: r.weightMg, catalogItemId: r.id });
+  // self-improving ranking: tell the catalog this item was used (fire-and-forget)
+  $fetch("/api/catalog/use", { method: "POST", body: { ids: [r.id] } }).catch(() => {});
   reset();
 }
 function commitFree() {
