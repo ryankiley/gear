@@ -173,6 +173,20 @@ function onCorrected(res: { status: string; itemName?: string }) {
           : "Couldn’t submit that fix",
   );
 }
+
+function openPublish() {
+  menuOpen.value = false;
+  usePublish().open();
+}
+function onPublished(e: { status: string }) {
+  flash(
+    e.status === "private"
+      ? "List is now private"
+      : e.status === "pending"
+        ? "Published — pending review"
+        : "List is public",
+  );
+}
 </script>
 
 <template>
@@ -195,6 +209,7 @@ function onCorrected(res: { status: string; itemName?: string }) {
           <div ref="menuRef" class="menu">
             <button class="btn btn--sm btn--ghost btn--icon" aria-haspopup="true" aria-label="More actions" :aria-expanded="menuOpen" @click="menuOpen = !menuOpen"><Ellipsis :size="16" /></button>
             <ul v-if="menuOpen" class="menu__list panel">
+              <li><button @click="openPublish">{{ snapshot.isPublic ? "Public — manage…" : "Make public…" }}</button></li>
               <li><button @click="cloneList">Duplicate this list</button></li>
               <li><button @click="copyMarkdown">Copy as Markdown</button></li>
               <li><button @click="copySummary">Copy summary</button></li>
@@ -253,6 +268,7 @@ function onCorrected(res: { status: string; itemName?: string }) {
     </Transition>
 
     <CatalogCorrectionModal @done="onCorrected" />
+    <PublishModal @done="onPublished" />
   </div>
 </template>
 

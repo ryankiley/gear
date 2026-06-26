@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { STARTER_FOLDERS } from "~~/shared/categories";
+import { TRIP_TYPES, type DiscoveryCard, type FeedView } from "~~/shared/discovery";
 import type { Folder, ListData, ListSnapshot } from "~~/shared/types";
 import { formatWeight } from "~~/shared/weights";
 import { csvToListData } from "~~/shared/exporters/csv";
@@ -7,6 +8,22 @@ import { csvToListData } from "~~/shared/exporters/csv";
 const myLists = useMyLists();
 const router = useRouter();
 const creating = ref(false);
+
+// ---- discovery feed ----
+// Default browse is trip-type-led; sort is a calm secondary toggle. "Lightest"
+// is the optional leaderboard, not the front door (weight is optional).
+const trip = ref(""); // "" = all trip types
+const view = ref<FeedView>("recent");
+const VIEWS: { v: FeedView; label: string }[] = [
+  { v: "recent", label: "Recent" },
+  { v: "popular", label: "Most viewed" },
+  { v: "light", label: "Lightest" },
+];
+const { data: feed } = await useFetch<{ cards: DiscoveryCard[] }>("/api/discovery", {
+  query: computed(() => ({ view: view.value, trip: trip.value || undefined })),
+  default: () => ({ cards: [] as DiscoveryCard[] }),
+});
+const cards = computed(() => feed.value?.cards ?? []);
 
 const uid = () =>
   crypto?.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2);
@@ -172,6 +189,47 @@ function onFile(e: Event) {
         </li>
       </ul>
     </main>
+
+    <section class="wrap discovery">
+      <div class="spread discovery__head">
+        <h2 class="t-title">Discover</h2>
+        <span class="t-sm t-muted">public lists from everyone</span>
+      </div>
+
+      <div class="discovery__filters">
+        <div class="chips" role="tablist" aria-label="Trip type">
+          <button class="chip-btn" :aria-pressed="trip === ''" @click="trip = ''">All</button>
+          <button
+            v-for="t in TRIP_TYPES"
+            :key="t.slug"
+            class="chip-btn"
+            :aria-pressed="trip === t.slug"
+            @click="trip = t.slug"
+          >
+            {{ t.label }}
+          </button>
+        </div>
+        <div class="chips chips--sort">
+          <button
+            v-for="o in VIEWS"
+            :key="o.v"
+            class="chip-btn"
+            :aria-pressed="view === o.v"
+            @click="view = o.v"
+          >
+            {{ o.label }}
+          </button>
+        </div>
+      </div>
+
+      <ul v-if="cards.length" class="discovery__grid">
+        <li v-for="c in cards" :key="c.slug"><ListCard :card="c" /></li>
+      </ul>
+      <p v-else class="t-muted discovery__empty">
+        No public lists yet{{ trip ? " for this trip type" : "" }}. Publish one from the
+        editor to start the feed.
+      </p>
+    </section>
   </div>
 </template>
 
@@ -264,5 +322,59 @@ function onFile(e: Event) {
 }
 .card:hover .card__del {
   opacity: 1;
+}
+
+/* ---- discovery feed ---- */
+.discovery {
+  padding-block: var(--space-6) var(--space-9);
+}
+.discovery__head {
+  margin-bottom: var(--space-4);
+}
+.discovery__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-5);
+  margin-bottom: var(--space-5);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+}
+/* de-outlined chips: quiet text, the active one reads as ink + a hairline underline
+   (monochrome chrome — no boxed segmented control) */
+.chip-btn {
+  padding: var(--space-1) 0;
+  border: 0;
+  background: none;
+  color: var(--ink-3);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.chip-btn:hover {
+  color: var(--ink);
+}
+.chip-btn[aria-pressed="true"] {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+.chips--sort .chip-btn {
+  color: var(--ink-2);
+}
+.discovery__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-3);
+}
+.discovery__empty {
+  padding: var(--space-6) 0;
+  max-width: 46ch;
 }
 </style>
