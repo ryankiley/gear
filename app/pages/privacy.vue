@@ -22,7 +22,7 @@ useHead({
         <p>
           This policy explains what Gear collects, why, and what you can do about it. It’s written
           to be read, not just filed. If anything here is unclear, email
-          <a href="mailto:ryanekiley@gmail.com">ryanekiley@gmail.com</a>.
+          <a href="mailto:hello@ryankiley.com">hello@ryankiley.com</a>.
         </p>
 
         <h2>The short version</h2>
@@ -37,7 +37,7 @@ useHead({
         <p>
           Gear is run by an individual operator based in Oregon, USA, who is the “data controller”
           for the purposes of this policy. Contact:
-          <a href="mailto:ryanekiley@gmail.com">ryanekiley@gmail.com</a>.
+          <a href="mailto:hello@ryankiley.com">hello@ryankiley.com</a>.
         </p>
 
         <h2>What we collect</h2>
@@ -115,7 +115,7 @@ useHead({
           <li>Unpublish or stop sharing a list from its editor to remove it from our server.</li>
           <li>
             For anything else — including access, deletion, or a copy of a shared list — email
-            <a href="mailto:ryanekiley@gmail.com">ryanekiley@gmail.com</a> and we’ll respond within
+            <a href="mailto:hello@ryankiley.com">hello@ryankiley.com</a> and we’ll respond within
             a reasonable time.
           </li>
         </ul>
@@ -147,7 +147,7 @@ useHead({
 
         <h2>Contact</h2>
         <p>
-          Questions or requests: <a href="mailto:ryanekiley@gmail.com">ryanekiley@gmail.com</a>. See
+          Questions or requests: <a href="mailto:hello@ryankiley.com">hello@ryankiley.com</a>. See
           also our <NuxtLink to="/terms">Terms of Use</NuxtLink>.
         </p>
       </div>

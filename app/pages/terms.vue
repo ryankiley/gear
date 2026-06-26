@@ -75,7 +75,7 @@ useHead({
         <p>
           Public lists can be flagged with the “Report” button. To report a problem, claim that
           content infringes your rights, or request a takedown, email
-          <a href="mailto:ryanekiley@gmail.com">ryanekiley@gmail.com</a> with enough detail to
+          <a href="mailto:hello@ryankiley.com">hello@ryankiley.com</a> with enough detail to
           identify the content. We may remove content or limit access — including taking lists off
           the public feed — at our discretion, especially in response to reports.
         </p>
@@ -147,7 +147,7 @@ useHead({
 
         <h2>Contact</h2>
         <p>
-          Questions: <a href="mailto:ryanekiley@gmail.com">ryanekiley@gmail.com</a>.
+          Questions: <a href="mailto:hello@ryankiley.com">hello@ryankiley.com</a>.
         </p>
       </div>
     </main>

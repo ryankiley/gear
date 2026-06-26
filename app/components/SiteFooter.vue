@@ -2,8 +2,8 @@
 // The one site-wide footer. Mounted by the default layout, so every page gets it.
 // Monochrome chrome (no colour — the only colour on the site is the category viz).
 // Contact is a single mailto — it doubles as the Terms takedown / abuse address.
-// Swap CONTACT for a project address once Gear has its own domain.
-const CONTACT = "ryanekiley@gmail.com";
+// Public contact / takedown address. Swap if Gear gets a dedicated inbox.
+const CONTACT = "hello@ryankiley.com";
 const year = new Date().getFullYear();
 </script>
 
