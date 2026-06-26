@@ -1,7 +1,7 @@
 // Capability tokens + ids. The edit token is high-entropy and only ever stored
 // as a sha256 hash; the share code is a short, case-insensitive read capability.
 
-import { createHash, randomBytes, randomUUID } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
 
 // Crockford base32 — no I/L/O/U, case-insensitive, QR/handwriting-safe.
 const CROCKFORD = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
@@ -44,5 +44,3 @@ export function slugify(title: string): string {
 export function randomSlug(title: string): string {
   return `${slugify(title)}-${crockford(6).toLowerCase()}`;
 }
-
-export const newId = () => randomUUID();

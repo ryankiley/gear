@@ -56,9 +56,10 @@ export function seasonLabel(slug: string | null | undefined): string | undefined
 }
 
 // ---------------------------------------------------------------------------
-// Feed views. `browse` (the default) is trip-type-led; `recent` and `popular`
-// are calmer sorts; `light` is the OPTIONAL lightest-packs leaderboard (base
-// weight ascending) — one view, not the front door (weight is optional).
+// Feed views (the sort). `recent` (the default) and `popular` are the calm
+// sorts; `light` is the OPTIONAL lightest-packs leaderboard (base weight
+// ascending) — one view, not the front door (weight is optional). Trip-type is
+// an orthogonal filter (the front-page tabs), not a view.
 // ---------------------------------------------------------------------------
 export type FeedView = "recent" | "popular" | "light";
 const FEED_VIEWS = new Set<FeedView>(["recent", "popular", "light"]);

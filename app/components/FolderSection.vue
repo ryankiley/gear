@@ -152,8 +152,4 @@ function onCommit(p: {
   padding-top: var(--space-2);
   margin-top: 0;
 }
-.folder__addinput {
-  width: 100%;
-  color: var(--ink-2);
-}
 </style>

@@ -3,11 +3,7 @@
 
 import type { ListData, ListSnapshot, Unit } from "../types";
 import { effectiveClassification, fromMg, toMg } from "../weights";
-
-const uid = () =>
-  typeof crypto !== "undefined" && crypto.randomUUID
-    ? crypto.randomUUID()
-    : Math.random().toString(36).slice(2);
+import { uid } from "../id";
 
 const UNITS: Unit[] = ["g", "kg", "oz", "lb"];
 function normalizeUnit(raw: string | undefined, fallback: Unit): Unit {

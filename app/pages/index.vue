@@ -2,6 +2,7 @@
 import { CircleMinus } from "@lucide/vue";
 import { STARTER_FOLDERS } from "~~/shared/categories";
 import { type DiscoveryCard, type FeedView } from "~~/shared/discovery";
+import { uid } from "~~/shared/id";
 import type { Folder, ListData, ListSnapshot } from "~~/shared/types";
 import { formatWeight } from "~~/shared/weights";
 import { csvToListData } from "~~/shared/exporters/csv";
@@ -24,9 +25,6 @@ const { data: feed } = await useFetch<{ cards: DiscoveryCard[] }>("/api/discover
   default: () => ({ cards: [] as DiscoveryCard[] }),
 });
 const cards = computed(() => feed.value?.cards ?? []);
-
-const uid = () =>
-  crypto?.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2);
 
 async function newList() {
   if (creating.value) return;
