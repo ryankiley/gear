@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { StickyNote, X } from "@lucide/vue";
 import type { Classification, Item, ListSnapshot } from "~~/shared/types";
 import { effectiveClassification, formatWeight, lineMg, parseWeightInput } from "~~/shared/weights";
 
@@ -152,7 +153,7 @@ function openFix() {
         aria-label="Remove item"
         @click="c.removeItem(item.id)"
       >
-        ✕
+        <X :size="16" />
       </button>
     </div>
 
@@ -172,7 +173,7 @@ function openFix() {
         class="item__under-link t-sm"
         @click="noteOpen = true"
       >
-        + note
+        <StickyNote :size="13" /> Add note
       </button>
       <button v-if="showFix" type="button" class="item__under-link t-sm" @click="openFix">
         Catalog: {{ formatWeight(item.catalogWeightMgAtLink ?? 0, list.displayUnit) }} — suggest a fix
@@ -274,6 +275,9 @@ function openFix() {
   margin: calc(-1 * var(--space-1)) 0 var(--space-2);
 }
 .item__under-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
   padding: 0;
   background: none;
   border: 0;

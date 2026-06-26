@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ChevronDown } from "@lucide/vue";
 import type { ListSnapshot, Totals, Unit } from "~~/shared/types";
 import { formatWeight } from "~~/shared/weights";
 
@@ -25,27 +26,24 @@ const UNITS: Unit[] = ["g", "kg", "oz", "lb"];
     <div class="totals__main">
       <div class="totals__headline">
         <span class="t-label">Total</span>
-        <span v-if="totals.hasWeights" class="t-num totals__big">
-          {{ formatWeight(totals.totalMg, list.displayUnit) }}
-        </span>
+        <div v-if="totals.hasWeights" class="totals__amount">
+          <span class="t-num totals__big">{{ formatWeight(totals.totalMg, list.displayUnit) }}</span>
+          <ChevronDown class="totals__chev" :size="22" :stroke-width="2.25" />
+          <!-- transparent native select over the number: tap the total to change units -->
+          <select
+            class="totals__unitsel"
+            aria-label="Weight unit"
+            :value="list.displayUnit"
+            @change="emit('set-unit', ($event.target as HTMLSelectElement).value as Unit)"
+          >
+            <option v-for="u in UNITS" :key="u" :value="u">{{ u }}</option>
+          </select>
+        </div>
         <span v-else class="t-muted totals__empty">Add weights to see your pack weight</span>
       </div>
 
-      <div class="totals__controls">
-        <select
-          class="field unit-select"
-          aria-label="Display unit"
-          :value="list.displayUnit"
-          @change="emit('set-unit', ($event.target as HTMLSelectElement).value as Unit)"
-        >
-          <option v-for="u in UNITS" :key="u" :value="u">{{ u }}</option>
-        </select>
-        <button
-          v-if="!readonly"
-          class="btn btn--sm"
-          :aria-pressed="packed"
-          @click="emit('update:packed', !packed)"
-        >
+      <div v-if="!readonly" class="totals__controls">
+        <button class="btn btn--sm" :aria-pressed="packed" @click="emit('update:packed', !packed)">
           {{ packed ? "Editing" : "Packing" }}
         </button>
       </div>
@@ -79,11 +77,33 @@ const UNITS: Unit[] = ["g", "kg", "oz", "lb"];
   flex-direction: column;
   gap: var(--space-1);
 }
+.totals__amount {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
 .totals__big {
   font-size: var(--text-display);
   line-height: 0.95;
   letter-spacing: -0.02em;
   color: var(--accent);
+}
+.totals__chev {
+  flex: none;
+  color: var(--ink-3);
+  transition: color var(--dur) var(--ease);
+}
+.totals__amount:hover .totals__chev {
+  color: var(--ink);
+}
+.totals__unitsel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  border: 0;
+  opacity: 0; /* invisible — the number + chevron are the visible affordance */
+  cursor: pointer;
 }
 .totals__empty {
   font-size: var(--text-base);
@@ -93,12 +113,6 @@ const UNITS: Unit[] = ["g", "kg", "oz", "lb"];
   align-items: center;
   gap: var(--space-3);
   flex-wrap: wrap;
-}
-.unit-select {
-  width: auto;
-  min-height: 32px;
-  color: var(--ink-2);
-  cursor: pointer;
 }
 .totals__breakdown {
   margin-top: var(--space-4);

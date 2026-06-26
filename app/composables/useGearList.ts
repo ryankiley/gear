@@ -29,6 +29,26 @@ function create() {
   let epoch = 0;
   let teardownListeners: (() => void) | undefined;
 
+  // single-level undo for destructive removes — drives the "Undo" toast
+  const pendingUndo = ref<{ label: string; restore: () => void } | null>(null);
+  let undoTimer: ReturnType<typeof setTimeout> | undefined;
+  function offerUndo(label: string, restore: () => void) {
+    pendingUndo.value = { label, restore };
+    clearTimeout(undoTimer);
+    undoTimer = setTimeout(() => (pendingUndo.value = null), 6000);
+  }
+  function undoRemove() {
+    const u = pendingUndo.value;
+    if (!u) return;
+    u.restore();
+    pendingUndo.value = null;
+    clearTimeout(undoTimer);
+  }
+  function dismissUndo() {
+    pendingUndo.value = null;
+    clearTimeout(undoTimer);
+  }
+
   const totals = computed(() =>
     snapshot.value ? computeTotals(snapshot.value) : null,
   );
@@ -182,7 +202,18 @@ function create() {
   }
   const updateFolder = (id: string, patch: Partial<Folder>) =>
     dispatch({ t: "updateFolder", id, patch });
-  const removeFolder = (id: string) => dispatch({ t: "removeFolder", id });
+  function removeFolder(id: string) {
+    const folder = snapshot.value?.folders.find((f) => f.id === id);
+    const items = (snapshot.value?.items.filter((i) => i.folderId === id) ?? []).map((i) => ({ ...i }));
+    dispatch({ t: "removeFolder", id });
+    if (folder) {
+      const f = { ...folder };
+      offerUndo(folder.name || "Folder", () => {
+        dispatch({ t: "addFolder", folder: f });
+        for (const it of items) dispatch({ t: "addItem", item: it });
+      });
+    }
+  }
 
   function addItem(
     folderId: string,
@@ -220,7 +251,14 @@ function create() {
     dispatch({ t: "addItem", item });
   }
   const updateItem = (id: string, patch: Partial<Item>) => dispatch({ t: "updateItem", id, patch });
-  const removeItem = (id: string) => dispatch({ t: "removeItem", id });
+  function removeItem(id: string) {
+    const item = snapshot.value?.items.find((i) => i.id === id);
+    dispatch({ t: "removeItem", id });
+    if (item) {
+      const saved = { ...item };
+      offerUndo(item.name || "Item", () => dispatch({ t: "addItem", item: saved }));
+    }
+  }
   function setItemWeight(id: string, raw: string) {
     if (!snapshot.value) return;
     if (raw.trim() === "") return updateItem(id, { unitWeightMg: 0, weightOverridden: true });
@@ -263,6 +301,8 @@ function create() {
     epoch++; // invalidate any in-flight flush/poll responses
     stopPoll();
     clearTimeout(flushTimer);
+    clearTimeout(undoTimer);
+    pendingUndo.value = null;
     teardownListeners?.();
     snapshot.value = null;
     pending = [];
@@ -278,6 +318,7 @@ function create() {
     load, dispose, rotate,
     setMeta, setUnit, addFolder, updateFolder, removeFolder,
     addItem, updateItem, removeItem, setItemWeight,
+    pendingUndo, undoRemove, dismissUndo,
   };
 }
 

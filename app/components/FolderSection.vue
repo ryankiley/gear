@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { Classification, Folder, ListSnapshot } from "~~/shared/types";
+import { X } from "@lucide/vue";
+import type { Folder, ListSnapshot } from "~~/shared/types";
 import { lineMg, formatWeight } from "~~/shared/weights";
 
 const props = withDefaults(
@@ -27,19 +28,12 @@ function onCommit(p: {
 }) {
   c.addItem(props.folder.id, p);
 }
-
-const CLASS_OPTS: { value: Classification; label: string }[] = [
-  { value: "base", label: "Base" },
-  { value: "worn", label: "Worn" },
-  { value: "consumable", label: "Consumable" },
-];
 </script>
 
 <template>
   <section class="folder">
     <header class="folder__head">
       <div class="folder__title">
-        <span class="swatch" :style="{ background: `var(--cat-${folder.colorKey ?? 'other'})` }" />
         <span v-if="readonly" class="folder__name">{{ folder.name }}</span>
         <input
           v-else
@@ -50,15 +44,6 @@ const CLASS_OPTS: { value: Classification; label: string }[] = [
         />
       </div>
       <span v-if="folderMg > 0" class="t-num t-sm t-muted folder__weight">{{ formatWeight(folderMg, list.displayUnit) }}</span>
-      <select
-        v-if="!packed && !readonly"
-        class="field folder__class"
-        :value="folder.defaultClassification"
-        title="Default for items in this folder"
-        @change="c.updateFolder(folder.id, { defaultClassification: ($event.target as HTMLSelectElement).value as Classification })"
-      >
-        <option v-for="o in CLASS_OPTS" :key="o.value" :value="o.value">{{ o.label }}</option>
-      </select>
       <button
         v-if="!packed && !readonly"
         class="btn btn--icon btn--ghost folder__del"
@@ -66,7 +51,7 @@ const CLASS_OPTS: { value: Classification; label: string }[] = [
         aria-label="Remove folder"
         @click="c.removeFolder(folder.id)"
       >
-        ✕
+        <X :size="16" />
       </button>
     </header>
 
@@ -102,9 +87,6 @@ const CLASS_OPTS: { value: Classification; label: string }[] = [
   gap: var(--space-3);
   min-width: 0;
 }
-.folder__title .swatch {
-  align-self: center;
-}
 .folder__name {
   flex: 1;
   min-width: 0;
@@ -116,12 +98,6 @@ const CLASS_OPTS: { value: Classification; label: string }[] = [
   grid-column: 3;
   text-align: right;
   white-space: nowrap;
-}
-.folder__class {
-  grid-column: 4;
-  width: auto;
-  font-size: var(--text-sm);
-  color: var(--ink-2);
 }
 .folder__del {
   grid-column: 5;
@@ -135,9 +111,6 @@ const CLASS_OPTS: { value: Classification; label: string }[] = [
     grid-column: 1;
   }
   .folder__weight {
-    grid-column: auto;
-  }
-  .folder__class {
     grid-column: auto;
   }
   .folder__del {

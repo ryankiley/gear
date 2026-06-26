@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ArrowLeft, Ellipsis, Undo2 } from "@lucide/vue";
 import { listToMarkdown } from "~~/shared/exporters/markdown";
 import { listToCsv } from "~~/shared/exporters/csv";
 import { listToSummary } from "~~/shared/exporters/summary";
@@ -9,6 +10,7 @@ const router = useRouter();
 const snapshot = c.snapshot;
 const totals = c.totals;
 const status = c.status;
+const pendingUndo = c.pendingUndo;
 // items whose folder was removed (e.g. by a concurrent editor) land here, not as invisible ghosts
 const ungrouped = computed(() =>
   snapshot.value ? snapshot.value.items.filter((i) => !i.folderId) : [],
@@ -177,7 +179,7 @@ function onCorrected(res: { status: string; itemName?: string }) {
   <div class="editor">
     <header class="topbar">
       <div class="wrap topbar__inner">
-        <NuxtLink to="/" class="btn btn--sm btn--ghost">← Lists</NuxtLink>
+        <NuxtLink to="/" class="btn btn--sm btn--ghost"><ArrowLeft :size="15" /> Lists</NuxtLink>
         <input
           v-if="snapshot"
           class="field editor__title"
@@ -191,7 +193,7 @@ function onCorrected(res: { status: string; itemName?: string }) {
         <template v-if="snapshot">
           <button class="btn btn--sm btn--primary editor__share" @click="copyShare">Share</button>
           <div ref="menuRef" class="menu">
-            <button class="btn btn--sm btn--ghost" aria-haspopup="true" aria-label="More actions" :aria-expanded="menuOpen" @click="menuOpen = !menuOpen">⋯</button>
+            <button class="btn btn--sm btn--ghost btn--icon" aria-haspopup="true" aria-label="More actions" :aria-expanded="menuOpen" @click="menuOpen = !menuOpen"><Ellipsis :size="16" /></button>
             <ul v-if="menuOpen" class="menu__list panel">
               <li><button @click="cloneList">Duplicate this list</button></li>
               <li><button @click="copyMarkdown">Copy as Markdown</button></li>
@@ -241,7 +243,13 @@ function onCorrected(res: { status: string; itemName?: string }) {
     </main>
 
     <Transition name="toast">
-      <div v-if="toast" class="toast t-sm">{{ toast }}</div>
+      <div v-if="pendingUndo" class="toast undobar">
+        <span class="t-sm">Removed <strong>{{ pendingUndo.label }}</strong></span>
+        <button class="undobar__btn t-sm" @click="c.undoRemove()">
+          <Undo2 :size="14" /> Undo
+        </button>
+      </div>
+      <div v-else-if="toast" class="toast t-sm">{{ toast }}</div>
     </Transition>
 
     <CatalogCorrectionModal @done="onCorrected" />
@@ -365,6 +373,23 @@ function onCorrected(res: { status: string; itemName?: string }) {
   background: var(--ink);
   color: var(--paper);
   padding: var(--space-2) var(--space-4);
+}
+.undobar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+.undobar__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--paper);
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
 }
 .toast-enter-active,
 .toast-leave-active {
