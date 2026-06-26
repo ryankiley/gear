@@ -34,9 +34,3 @@ export const STARTER_FOLDERS: FolderPreset[] = [
   { name: "Sleep", colorKey: "sleep", defaultClassification: "base" },
   { name: "Pack", colorKey: "pack", defaultClassification: "base" },
 ];
-
-export const CLASSIFICATION_LABELS: Record<Classification, string> = {
-  base: "Base",
-  worn: "Worn",
-  consumable: "Consumable",
-};

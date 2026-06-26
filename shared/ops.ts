@@ -4,7 +4,7 @@
 // MERGE: two editors adding different items both succeed with no conflict; the
 // version counter only signals "you're behind, refetch", not "rejected".
 
-import type { Classification, Folder, Item, ListData, ListState, Unit } from "./types";
+import type { Classification, Folder, Item, ListState, Unit } from "./types";
 
 export type Op =
   | { t: "addItem"; item: Item }
@@ -170,5 +170,3 @@ export function normalizeFolder(raw: Folder): Folder {
     sortOrder: Number(raw.sortOrder) || 0,
   };
 }
-
-export const emptyData = (): ListData => ({ folders: [], items: [] });

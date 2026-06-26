@@ -11,26 +11,11 @@
   padding-inline: var(--space-4);
 }
 
-.stack {
-  display: flex;
-  flex-direction: column;
-}
-
-.row {
-  display: flex;
-  align-items: center;
-}
-
 .spread {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-}
-
-.hairline {
-  border: 0;
-  border-top: 1px solid var(--line);
 }
 
 // A topo/contour motif hint for hero surfaces (sparingly).

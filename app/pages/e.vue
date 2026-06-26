@@ -3,6 +3,8 @@ import { ArrowLeft, Ellipsis, SaveCheck, Undo2 } from "@lucide/vue";
 import { listToMarkdown } from "~~/shared/exporters/markdown";
 import { listToCsv } from "~~/shared/exporters/csv";
 import { listToSummary } from "~~/shared/exporters/summary";
+import { uid } from "~~/shared/id";
+import type { ListSnapshot } from "~~/shared/types";
 
 const c = useGearList();
 const router = useRouter();
@@ -90,21 +92,19 @@ async function cloneList() {
   menuOpen.value = false;
   if (!snapshot.value) return;
   // fresh ids so the copy is fully independent; keep folder→item links + notes/weights
-  const newId = () =>
-    typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.round(performance.now())}`;
   const idMap = new Map<string, string>();
   const folders = snapshot.value.folders.map((f) => {
-    const nid = newId();
+    const nid = uid();
     idMap.set(f.id, nid);
     return { ...f, id: nid };
   });
   const items = snapshot.value.items.map((i) => ({
     ...i,
-    id: newId(),
+    id: uid(),
     folderId: i.folderId ? (idMap.get(i.folderId) ?? null) : null,
     packed: false,
   }));
-  const res = await $fetch<{ editToken: string; snapshot: any }>("/api/lists/create", {
+  const res = await $fetch<{ editToken: string; snapshot: ListSnapshot }>("/api/lists/create", {
     method: "POST",
     body: { title: `${snapshot.value.title || "Untitled list"} (copy)`, data: { folders, items } },
   });
@@ -146,7 +146,7 @@ function downloadJson() {
 }
 
 async function newList() {
-  const res = await $fetch<{ editToken: string; snapshot: any }>("/api/lists/create", {
+  const res = await $fetch<{ editToken: string; snapshot: ListSnapshot }>("/api/lists/create", {
     method: "POST",
     body: { title: "Untitled list", data: { folders: [], items: [] } },
   });

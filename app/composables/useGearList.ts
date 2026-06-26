@@ -1,16 +1,12 @@
 import type { Op } from "~~/shared/ops";
 import { applyOps } from "~~/shared/ops";
+import { uid } from "~~/shared/id";
 import type { Classification, Folder, Item, ListSnapshot, Unit } from "~~/shared/types";
 import { computeTotals, parseWeightInput } from "~~/shared/weights";
 
 // Editor controller (one list open at a time → module singleton). Mutations are
 // applied optimistically via the SAME op-reducer the server uses, queued, and
 // flushed (debounced). A poll pulls other editors' merged changes live.
-
-const uid = () =>
-  typeof crypto !== "undefined" && crypto.randomUUID
-    ? crypto.randomUUID()
-    : Math.random().toString(36).slice(2);
 
 type Status = "idle" | "loading" | "saving" | "synced" | "missing" | "error";
 
