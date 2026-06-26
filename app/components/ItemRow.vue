@@ -202,11 +202,38 @@ function openFix() {
   gap: var(--space-3);
   cursor: pointer;
 }
+/* custom monochrome checkbox — sharp square, fills with ink + a paper check */
 .item__box {
   align-self: center;
+  appearance: none;
   width: 18px;
   height: 18px;
+  flex: none;
+  display: grid;
+  place-content: center;
+  border: 1.5px solid var(--ink-3);
+  background: var(--paper);
+  border-radius: var(--radius-0);
   cursor: pointer;
+  transition:
+    background var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+}
+.item__box:hover {
+  border-color: var(--ink);
+}
+.item__box:checked {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.item__box:checked::after {
+  content: "";
+  width: 4px;
+  height: 8px;
+  margin-top: -2px;
+  border: solid var(--paper);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
 .item__cname {
   min-width: 0;
