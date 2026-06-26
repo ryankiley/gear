@@ -102,17 +102,11 @@ function onCommit(p: {
 .folder__del {
   grid-column: 5;
   justify-self: end;
-  opacity: 0;
-  transition: opacity var(--dur) var(--ease);
+  color: var(--ink-3);
+  transition: color var(--dur) var(--ease);
 }
-.folder:hover .folder__del,
-.folder:focus-within .folder__del {
-  opacity: 1;
-}
-@media (hover: none) {
-  .folder__del {
-    opacity: 1;
-  }
+.folder__del:hover {
+  color: var(--ink);
 }
 
 @media (max-width: 560px) {

@@ -309,18 +309,8 @@ function openFix() {
 .item__class--consumable {
   color: var(--ink-2);
 }
-/* the default (base) classification is implicit — hide the selector at rest, reveal
-   on hover/focus; worn/consumable stay visible because they carry real info */
-.item__class--quiet {
-  opacity: 0;
-  transition: opacity var(--dur) var(--ease);
-}
-.item-wrap:hover .item__class--quiet,
-.item__class--quiet:focus {
-  opacity: 1;
-}
-/* row controls (note + remove) are quiet at rest — fade in on row hover/focus
-   (always on touch); the note button stays lit when a note exists */
+/* row controls (note + remove) stay visible at rest; the note button is lit when
+   a note exists, and hover just darkens for feedback */
 .item__actions {
   display: flex;
   align-items: center;
@@ -330,19 +320,9 @@ function openFix() {
 .item__note-btn,
 .item__del {
   color: var(--ink-3);
-  opacity: 0;
-  transition:
-    opacity var(--dur) var(--ease),
-    color var(--dur) var(--ease);
-}
-.item-wrap:hover .item__note-btn,
-.item-wrap:hover .item__del,
-.item-wrap:focus-within .item__note-btn,
-.item-wrap:focus-within .item__del {
-  opacity: 1;
+  transition: color var(--dur) var(--ease);
 }
 .item__note-btn.is-active {
-  opacity: 1;
   color: var(--ink-2);
 }
 .item__note-btn:hover,
@@ -368,14 +348,6 @@ function openFix() {
   outline: none;
   color: var(--ink);
 }
-@media (hover: none) {
-  .item__note-btn,
-  .item__del,
-  .item__class--quiet {
-    opacity: 1;
-  }
-}
-
 /* quiet "suggest a fix" link under a row */
 .item__under-link {
   display: inline-flex;
