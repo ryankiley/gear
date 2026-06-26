@@ -120,6 +120,18 @@ async function newList() {
 const statusLabel = computed(() =>
   ({ loading: "Loading…", saving: "Saving…", synced: "Saved", error: "Not saved ↻", missing: "", idle: "" })[status.value] || "",
 );
+
+function onCorrected(res: { status: string; itemName?: string }) {
+  flash(
+    res.status === "applied"
+      ? "Catalog updated for everyone — thank you"
+      : res.status === "proposed"
+        ? "Suggested — pending a citation"
+        : res.status === "noop"
+          ? "That already matches the catalog"
+          : "Couldn’t submit that fix",
+  );
+}
 </script>
 
 <template>
@@ -145,6 +157,7 @@ const statusLabel = computed(() =>
               <li><button @click="downloadJson">Download JSON (backup)</button></li>
               <li><button @click="copyEditLink">Copy edit link…</button></li>
               <li><button @click="rotate">Rotate edit link…</button></li>
+              <li><NuxtLink to="/changes" @click="menuOpen = false">Recent catalog changes</NuxtLink></li>
             </ul>
           </div>
         </template>
@@ -188,6 +201,8 @@ const statusLabel = computed(() =>
     <Transition name="toast">
       <div v-if="toast" class="toast t-sm">{{ toast }}</div>
     </Transition>
+
+    <CatalogCorrectionModal @done="onCorrected" />
   </div>
 </template>
 
@@ -231,14 +246,17 @@ const statusLabel = computed(() =>
   z-index: 20;
   padding: var(--space-1);
 }
-.menu__list button {
+.menu__list button,
+.menu__list a {
   display: block;
   width: 100%;
   text-align: left;
   padding: var(--space-2) var(--space-3);
   font-size: var(--text-sm);
+  color: var(--ink);
 }
-.menu__list button:hover {
+.menu__list button:hover,
+.menu__list a:hover {
   background: var(--paper-3);
 }
 .editor__body {

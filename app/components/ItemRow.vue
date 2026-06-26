@@ -28,6 +28,30 @@ const CLASS_OPTS: { value: Classification | ""; label: string }[] = [
   { value: "worn", label: "Worn" },
   { value: "consumable", label: "Consum." },
 ];
+
+// "Fix for everyone": only offered once the user's weight diverges from the
+// catalog value they linked — i.e. they think the canonical spec is wrong.
+// A plain free-typed override (no catalog link) never nags.
+const correction = useCatalogCorrection();
+const showFix = computed(
+  () =>
+    !props.packed &&
+    !props.readonly &&
+    props.item.catalogItemId != null &&
+    props.item.catalogWeightMgAtLink != null &&
+    props.item.unitWeightMg > 0 &&
+    props.item.unitWeightMg !== props.item.catalogWeightMgAtLink,
+);
+function openFix() {
+  if (props.item.catalogItemId == null || props.item.catalogWeightMgAtLink == null) return;
+  correction.open({
+    catalogItemId: props.item.catalogItemId,
+    itemName: props.item.name,
+    catalogWeightMg: props.item.catalogWeightMgAtLink,
+    suggestedMg: props.item.unitWeightMg,
+    displayUnit: props.list.displayUnit,
+  });
+}
 </script>
 
 <template>
@@ -43,7 +67,8 @@ const CLASS_OPTS: { value: Classification | ""; label: string }[] = [
     }}</span>
   </div>
 
-  <div v-else class="item" :class="{ 'item--packed': packed && item.packed }">
+  <template v-else>
+    <div class="item" :class="{ 'item--packed': packed && item.packed }">
     <label v-if="packed" class="item__check">
       <input
         type="checkbox"
@@ -102,7 +127,12 @@ const CLASS_OPTS: { value: Classification | ""; label: string }[] = [
     >
       ✕
     </button>
-  </div>
+    </div>
+
+    <button v-if="showFix" type="button" class="item__fix t-sm" @click="openFix">
+      Catalog: {{ formatWeight(item.catalogWeightMgAtLink ?? 0, list.displayUnit) }} — suggest a fix
+    </button>
+  </template>
 </template>
 
 <style scoped>
@@ -154,6 +184,19 @@ const CLASS_OPTS: { value: Classification | ""; label: string }[] = [
 }
 .item__del:hover {
   color: var(--cat-firstaid);
+}
+.item__fix {
+  align-self: start;
+  margin: calc(-1 * var(--space-1)) 0 var(--space-2);
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--ink-3);
+  text-align: left;
+  cursor: pointer;
+}
+.item__fix:hover {
+  color: var(--accent);
 }
 
 @media (max-width: 560px) {

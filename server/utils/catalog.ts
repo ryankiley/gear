@@ -17,8 +17,8 @@
 //     people actually carry is small by design, so this stays cheap locally.
 // Engine is detected via DATABASE_URL, the same signal db.ts uses.
 
-import { eq, inArray, sql } from "drizzle-orm";
-import { catalogItems } from "../db/schema";
+import { desc, eq, inArray, sql } from "drizzle-orm";
+import { catalogEdits, catalogItems } from "../db/schema";
 
 const isNeon = () => Boolean(process.env.DATABASE_URL);
 
@@ -55,6 +55,20 @@ export const CATALOG_DDL: string[] = [
   `CREATE UNIQUE INDEX IF NOT EXISTS idx_catalog_identity ON catalog_items ((coalesce(brand,'')), name, (coalesce(variant,'')))`,
   // autocomplete ranking: verified first, then most-used
   `CREATE INDEX IF NOT EXISTS idx_catalog_rank ON catalog_items (verified DESC, usage_count DESC) WHERE status = 'active'`,
+  // catalog_edits — the wiki history (Phase 3); see schema.ts for the rationale
+  `CREATE TABLE IF NOT EXISTS catalog_edits (
+    id serial PRIMARY KEY,
+    catalog_item_id integer NOT NULL,
+    old_weight_mg bigint NOT NULL,
+    new_weight_mg bigint NOT NULL,
+    source_url text,
+    reason text,
+    status text NOT NULL DEFAULT 'applied' CHECK (status IN ('applied','proposed','reverted','rejected')),
+    confirmations integer NOT NULL DEFAULT 0,
+    created_at timestamptz NOT NULL DEFAULT now()
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_catalog_edits_item ON catalog_edits (catalog_item_id, created_at DESC)`,
+  `CREATE INDEX IF NOT EXISTS idx_catalog_edits_recent ON catalog_edits (created_at DESC)`,
 ];
 
 let _ensured: Promise<void> | undefined;
@@ -234,4 +248,161 @@ function normalizeRows(res: unknown): CatalogSearchResult[] {
     weightSource: String(r.weight_source),
     verified: Boolean(r.verified),
   }));
+}
+
+// ===========================================================================
+// Trust-tiered wiki corrections (Phase 3) — "fix a wrong weight for everyone".
+// (A) personal weight overrides live in the user's list and never come here.
+// (B) a "fix for everyone" lands here: uncited/community values are wiki-open
+// (apply instantly); a verified value only auto-applies with a citation from a
+// trusted manufacturer/retailer domain — otherwise it's recorded as `proposed`.
+// Every change is logged to catalog_edits so it's auditable + one-click revertible.
+// ===========================================================================
+
+// Manufacturer + retailer domains whose citation lets a correction to a *verified*
+// weight auto-promote. Conservative + extensible; everything else stays proposed
+// (this is what closes the weight-poisoning hole — see the hardening notes).
+const TRUSTED_DOMAINS = new Set([
+  // retailers
+  "rei.com", "backcountry.com", "moosejaw.com", "garagegrowngear.com", "enwild.com",
+  "sectionhiker.com", "outdoorgearlab.com",
+  // mainstream brands
+  "thermarest.com", "bigagnes.com", "nemoequipment.com", "msrgear.com", "osprey.com",
+  "ospreyeurope.com", "patagonia.com", "arcteryx.com", "montbell.com", "montbell.us",
+  "seatosummit.com", "exped.com", "gregorypacks.com", "marmot.com", "rab.equipment",
+  // cottage / UL brands
+  "zpacks.com", "durstongear.com", "gossamergear.com", "hyperlitemountaingear.com",
+  "ula-equipment.com", "enlightenedequipment.com", "katabaticgear.com", "tarptent.com",
+  "sixmoondesigns.com", "mountainlaureldesigns.com", "borahgear.com", "nunatakusa.com",
+  "westernmountaineering.com", "featheredfriends.com", "timmermade.com", "bonfus.com",
+  "palantepacks.com", "swdbackpacks.com", "litesmith.com", "garagegrowngear.com",
+]);
+
+/** True if `url` cites a trusted manufacturer/retailer domain (host or subdomain). */
+export function isTrustedSource(url: string | undefined | null): boolean {
+  if (!url) return false;
+  try {
+    const host = new URL(url).hostname.toLowerCase().replace(/^www\./, "");
+    for (const d of TRUSTED_DOMAINS) if (host === d || host.endsWith(`.${d}`)) return true;
+    return false;
+  } catch {
+    return false;
+  }
+}
+
+const MAX_WEIGHT_MG = 100_000_000; // 100 kg — matches the list reducer's per-item cap
+
+export type CorrectionStatus = "applied" | "proposed" | "noop" | "rejected" | "notfound";
+export interface CorrectionOutcome {
+  status: CorrectionStatus;
+  weightMg?: number; // the catalog's current weight after the call
+  itemName?: string;
+}
+
+/** Submit a "fix for everyone" correction; applies or proposes per the trust tier. */
+export async function proposeCorrection(
+  db: unknown,
+  input: { catalogItemId: number; newWeightMg: number; sourceUrl?: string; reason?: string },
+): Promise<CorrectionOutcome> {
+  const d = db as {
+    select: (...a: unknown[]) => any;
+    insert: (t: unknown) => any;
+    update: (t: unknown) => any;
+  };
+  const id = Number(input.catalogItemId);
+  if (!Number.isInteger(id) || id <= 0) return { status: "rejected" };
+  const newW = Math.round(input.newWeightMg);
+  if (!Number.isFinite(newW) || newW <= 0 || newW > MAX_WEIGHT_MG) return { status: "rejected" };
+
+  const rows = await d.select().from(catalogItems).where(eq(catalogItems.id, id)).limit(1);
+  const item = rows[0];
+  if (!item) return { status: "notfound" };
+  const itemName = [item.brand, item.name, item.variant].filter(Boolean).join(" ");
+  const oldW = Number(item.weightMg);
+  if (newW === oldW) return { status: "noop", weightMg: oldW, itemName };
+
+  const cited = isTrustedSource(input.sourceUrl);
+  // uncited/community values are wiki-open; a verified value needs a trusted citation
+  const applies = !item.verified || cited;
+  const status: "applied" | "proposed" = applies ? "applied" : "proposed";
+
+  await d.insert(catalogEdits).values({
+    catalogItemId: id,
+    oldWeightMg: oldW,
+    newWeightMg: newW,
+    sourceUrl: input.sourceUrl?.slice(0, 2000) ?? null,
+    reason: input.reason?.slice(0, 500) ?? null,
+    status,
+  });
+
+  if (applies) {
+    await d
+      .update(catalogItems)
+      .set({
+        weightMg: newW,
+        updatedAt: new Date(),
+        // a cited fix also (re)anchors the citation
+        ...(cited && input.sourceUrl ? { sourceUrl: input.sourceUrl.slice(0, 2000) } : {}),
+      })
+      .where(eq(catalogItems.id, id));
+  }
+  return { status, weightMg: applies ? newW : oldW, itemName };
+}
+
+export interface RecentChange {
+  id: number;
+  itemName: string;
+  oldWeightMg: number;
+  newWeightMg: number;
+  status: string;
+  sourceUrl: string | null;
+  createdAt: string;
+}
+
+/** Recent catalog weight changes (newest first) — the patrol / transparency feed. */
+export async function recentChanges(db: unknown, limit = 50): Promise<RecentChange[]> {
+  const d = db as { select: (...a: unknown[]) => any };
+  const rows = await d
+    .select({
+      id: catalogEdits.id,
+      brand: catalogItems.brand,
+      name: catalogItems.name,
+      variant: catalogItems.variant,
+      oldWeightMg: catalogEdits.oldWeightMg,
+      newWeightMg: catalogEdits.newWeightMg,
+      status: catalogEdits.status,
+      sourceUrl: catalogEdits.sourceUrl,
+      createdAt: catalogEdits.createdAt,
+    })
+    .from(catalogEdits)
+    .leftJoin(catalogItems, eq(catalogEdits.catalogItemId, catalogItems.id))
+    .orderBy(desc(catalogEdits.createdAt))
+    .limit(Math.min(100, Math.max(1, limit)));
+  return (rows as Array<Record<string, unknown>>).map((r) => ({
+    id: Number(r.id),
+    itemName: [r.brand, r.name, r.variant].filter(Boolean).join(" ") || "(removed item)",
+    oldWeightMg: Number(r.oldWeightMg),
+    newWeightMg: Number(r.newWeightMg),
+    status: String(r.status),
+    sourceUrl: (r.sourceUrl as string | null) ?? null,
+    createdAt:
+      r.createdAt instanceof Date ? r.createdAt.toISOString() : String(r.createdAt ?? ""),
+  }));
+}
+
+/** One-click revert (admin): restore an applied edit's prior weight + mark it reverted. */
+export async function revertEdit(db: unknown, editId: number): Promise<CorrectionOutcome> {
+  const d = db as { select: (...a: unknown[]) => any; update: (t: unknown) => any };
+  const id = Number(editId);
+  if (!Number.isInteger(id) || id <= 0) return { status: "rejected" };
+  const rows = await d.select().from(catalogEdits).where(eq(catalogEdits.id, id)).limit(1);
+  const edit = rows[0];
+  if (!edit) return { status: "notfound" };
+  if (edit.status !== "applied") return { status: "rejected" }; // only applied edits moved a weight
+  await d
+    .update(catalogItems)
+    .set({ weightMg: Number(edit.oldWeightMg), updatedAt: new Date() })
+    .where(eq(catalogItems.id, Number(edit.catalogItemId)));
+  await d.update(catalogEdits).set({ status: "reverted" }).where(eq(catalogEdits.id, id));
+  return { status: "applied", weightMg: Number(edit.oldWeightMg) };
 }

@@ -145,3 +145,39 @@ export const catalogItems = pgTable(
 
 export type CatalogItemRow = typeof catalogItems.$inferSelect;
 export type NewCatalogItemRow = typeof catalogItems.$inferInsert;
+
+// ---------------------------------------------------------------------------
+// catalog_edits — the wiki history (Phase 3). One row per change to a catalog
+// weight. No accounts, so we identify a change by the change itself, not a user.
+// Every weight change is recorded here so any edit is revertible and the history
+// is auditable (powers the recent-changes feed + one-click revert).
+//
+// Trust-tiered: editing an uncited/community value applies instantly; editing a
+// verified value becomes a `proposed` row unless the correction carries a
+// citation from a trusted manufacturer/retailer domain (then it auto-applies).
+// ---------------------------------------------------------------------------
+export const catalogEdits = pgTable(
+  "catalog_edits",
+  {
+    id: serial("id").primaryKey(),
+    catalogItemId: integer("catalog_item_id").notNull(),
+    oldWeightMg: bigint("old_weight_mg", { mode: "number" }).notNull(),
+    newWeightMg: bigint("new_weight_mg", { mode: "number" }).notNull(),
+    sourceUrl: text("source_url"), // citation; validated against a domain allowlist for auto-promote
+    reason: text("reason"),
+    status: text("status").notNull().default("applied"), // applied|proposed|reverted|rejected
+    confirmations: integer("confirmations").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    check(
+      "catalog_edit_status_ck",
+      sql`${t.status} in ('applied','proposed','reverted','rejected')`,
+    ),
+    index("idx_catalog_edits_item").on(t.catalogItemId, t.createdAt.desc()),
+    index("idx_catalog_edits_recent").on(t.createdAt.desc()),
+  ],
+);
+
+export type CatalogEditRow = typeof catalogEdits.$inferSelect;
+export type NewCatalogEditRow = typeof catalogEdits.$inferInsert;

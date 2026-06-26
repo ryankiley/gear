@@ -1,4 +1,8 @@
+import { PGlite } from "@electric-sql/pglite";
+import { eq, sql } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/pglite";
 import { describe, expect, it } from "vitest";
+import * as schema from "../server/db/schema";
 import { MG_PER_UNIT } from "../shared/weights";
 import {
   csvToCatalogRows,
@@ -6,7 +10,22 @@ import {
   serializeCsv,
   specToMg,
 } from "../scripts/catalogCsv";
-import { trigramScore, trigrams } from "../server/utils/catalog";
+import {
+  CATALOG_DDL,
+  isTrustedSource,
+  proposeCorrection,
+  recentChanges,
+  revertEdit,
+  trigramScore,
+  trigrams,
+} from "../server/utils/catalog";
+
+// A fresh in-memory catalog DB (PGlite, no disk) with the catalog DDL applied.
+async function freshCatalogDb() {
+  const db = drizzle(new PGlite(), { schema });
+  for (const stmt of CATALOG_DDL) await db.execute(sql.raw(stmt));
+  return db;
+}
 
 describe("specToMg — cited spec → integer milligrams", () => {
   it("converts a simple oz spec (Zpacks Duplex: 19.4 oz)", () => {
@@ -142,5 +161,111 @@ describe("trigram fuzzy scoring (local PGlite search fallback)", () => {
   });
   it("produces padded trigrams per word", () => {
     expect(trigrams("cat")).toEqual(new Set(["  c", " ca", "cat", "at "]));
+  });
+});
+
+describe("isTrustedSource — citation domain allowlist", () => {
+  it("accepts a manufacturer/retailer domain, its www, and subdomains", () => {
+    expect(isTrustedSource("https://zpacks.com/products/duplex")).toBe(true);
+    expect(isTrustedSource("https://www.thermarest.com/x")).toBe(true);
+    expect(isTrustedSource("https://shop.bigagnes.com/x")).toBe(true);
+  });
+  it("rejects untrusted, malformed, and empty sources", () => {
+    expect(isTrustedSource("https://random-blog.example.com/x")).toBe(false);
+    expect(isTrustedSource("not a url")).toBe(false);
+    expect(isTrustedSource("")).toBe(false);
+    expect(isTrustedSource(undefined)).toBe(false);
+  });
+  it("is not fooled by lookalike hosts (the poisoning vector)", () => {
+    expect(isTrustedSource("https://zpacks.com.evil.example/x")).toBe(false);
+    expect(isTrustedSource("https://notzpacks.com/x")).toBe(false);
+  });
+});
+
+describe("proposeCorrection — trust-tiered wiki edits", () => {
+  it("applies instantly to an UNVERIFIED (community) value", async () => {
+    const db = await freshCatalogDb();
+    const [row] = await db
+      .insert(schema.catalogItems)
+      .values({ name: "Generic stake", weightMg: 12_000, weightSource: "community", verified: false })
+      .returning();
+    const out = await proposeCorrection(db, { catalogItemId: row.id, newWeightMg: 9_000 });
+    expect(out.status).toBe("applied");
+    const [after] = await db
+      .select()
+      .from(schema.catalogItems)
+      .where(eq(schema.catalogItems.id, row.id));
+    expect(Number(after.weightMg)).toBe(9_000);
+  });
+
+  it("only PROPOSES an uncited change to a VERIFIED value (weight untouched)", async () => {
+    const db = await freshCatalogDb();
+    const [row] = await db
+      .insert(schema.catalogItems)
+      .values({ name: "Zpacks Duplex", weightMg: 504_622, weightSource: "manufacturer", verified: true })
+      .returning();
+    const out = await proposeCorrection(db, { catalogItemId: row.id, newWeightMg: 600_000 });
+    expect(out.status).toBe("proposed");
+    const [after] = await db
+      .select()
+      .from(schema.catalogItems)
+      .where(eq(schema.catalogItems.id, row.id));
+    expect(Number(after.weightMg)).toBe(504_622);
+  });
+
+  it("APPLIES a cited change to a verified value when the citation is trusted", async () => {
+    const db = await freshCatalogDb();
+    const [row] = await db
+      .insert(schema.catalogItems)
+      .values({ name: "Zpacks Duplex", weightMg: 504_622, weightSource: "manufacturer", verified: true })
+      .returning();
+    const out = await proposeCorrection(db, {
+      catalogItemId: row.id,
+      newWeightMg: 540_000,
+      sourceUrl: "https://zpacks.com/products/duplex-tent",
+    });
+    expect(out.status).toBe("applied");
+    const [after] = await db
+      .select()
+      .from(schema.catalogItems)
+      .where(eq(schema.catalogItems.id, row.id));
+    expect(Number(after.weightMg)).toBe(540_000);
+    expect(after.sourceUrl).toContain("zpacks.com");
+  });
+
+  it("rejects bad weights / no-ops / missing items", async () => {
+    const db = await freshCatalogDb();
+    const [row] = await db
+      .insert(schema.catalogItems)
+      .values({ name: "X", weightMg: 1_000, weightSource: "community", verified: false })
+      .returning();
+    expect((await proposeCorrection(db, { catalogItemId: row.id, newWeightMg: 0 })).status).toBe("rejected");
+    expect((await proposeCorrection(db, { catalogItemId: row.id, newWeightMg: 1e12 })).status).toBe("rejected");
+    expect((await proposeCorrection(db, { catalogItemId: row.id, newWeightMg: 1_000 })).status).toBe("noop");
+    expect((await proposeCorrection(db, { catalogItemId: 99_999, newWeightMg: 500 })).status).toBe("notfound");
+  });
+});
+
+describe("revertEdit — one-click undo of an applied edit", () => {
+  it("restores the prior weight and won't double-revert", async () => {
+    const db = await freshCatalogDb();
+    const [row] = await db
+      .insert(schema.catalogItems)
+      .values({ name: "Stake", weightMg: 12_000, weightSource: "community", verified: false })
+      .returning();
+    await proposeCorrection(db, { catalogItemId: row.id, newWeightMg: 9_000 });
+    const changes = await recentChanges(db, 10);
+    expect(changes[0].newWeightMg).toBe(9_000);
+    expect(changes[0].itemName).toBe("Stake");
+
+    const out = await revertEdit(db, changes[0].id);
+    expect(out.status).toBe("applied");
+    const [after] = await db
+      .select()
+      .from(schema.catalogItems)
+      .where(eq(schema.catalogItems.id, row.id));
+    expect(Number(after.weightMg)).toBe(12_000);
+    // reverting a non-applied edit is rejected
+    expect((await revertEdit(db, changes[0].id)).status).toBe("rejected");
   });
 });
