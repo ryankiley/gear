@@ -11,7 +11,7 @@ const season = ref("");
 const copied = ref(false);
 
 const isPublic = computed(() => !!state.value?.isPublic);
-const pendingReview = computed(() => isPublic.value && state.value?.status === "hidden");
+const pendingReview = computed(() => isPublic.value && !!state.value?.flagged);
 const publicPath = computed(() => (state.value ? `/l/${state.value.slug}` : ""));
 const origin = () => (typeof location !== "undefined" ? location.origin : "");
 const publicUrl = computed(() => origin() + publicPath.value);
@@ -30,7 +30,7 @@ async function save(makePublic: boolean) {
   });
   if (res)
     emit("done", {
-      status: !res.isPublic ? "private" : res.status === "hidden" ? "pending" : "public",
+      status: !res.isPublic ? "private" : res.flagged ? "pending" : "public",
     });
 }
 

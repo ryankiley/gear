@@ -56,6 +56,7 @@ async function findRowByEditToken(db: Db, editToken: string): Promise<ListRow | 
 function publicState(row: {
   isPublic: boolean;
   status: string;
+  flagged: boolean;
   tripType: string | null;
   season: string | null;
   publicSlug: string;
@@ -64,6 +65,7 @@ function publicState(row: {
   return {
     isPublic: row.isPublic,
     status: row.status,
+    flagged: row.flagged,
     tripType: row.tripType ?? undefined,
     season: row.season ?? undefined,
     slug: row.publicSlug,
@@ -95,16 +97,19 @@ export async function publishList(
   const tripType = normalizeTripType(input.tripType) ?? null;
   const season = normalizeSeason(input.season) ?? null;
   const decision = decidePublish(
-    { status: row.status, hasPublishedAt: !!row.publishedAt, title: row.title, description: row.description },
+    { hasPublishedAt: !!row.publishedAt, title: row.title, description: row.description },
     { isPublic: !!input.isPublic },
   );
   const publishedAt = decision.stampPublishedAt ? new Date() : row.publishedAt;
+  // flagging is sticky: a republish can never self-clear a flag (only admin review can).
+  // `status` is left untouched — publishing never affects the owner's edit/share access.
+  const flagged = row.flagged || decision.flagged;
 
   await d
     .update(lists)
     .set({
       isPublic: decision.isPublic,
-      status: decision.status,
+      flagged,
       tripType,
       season,
       publishedAt,
@@ -112,7 +117,7 @@ export async function publishList(
     })
     .where(eq(lists.id, row.id));
 
-  return publicState({ ...row, isPublic: decision.isPublic, status: decision.status, tripType, season });
+  return publicState({ ...row, isPublic: decision.isPublic, flagged, tripType, season });
 }
 
 // ---------------------------------------------------------------------------
@@ -150,6 +155,7 @@ export async function getPublicBySlug(slug: string, db?: Db): Promise<ListSnapsh
         eq(lists.publicSlug, s),
         eq(lists.isPublic, true),
         eq(lists.status, "active"),
+        eq(lists.flagged, false),
         isNull(lists.deletedAt),
       ),
     )
@@ -171,6 +177,7 @@ export async function bumpView(slug: string, db?: Db): Promise<void> {
           eq(lists.publicSlug, s),
           eq(lists.isPublic, true),
           eq(lists.status, "active"),
+          eq(lists.flagged, false),
           isNull(lists.deletedAt),
         ),
       );
@@ -199,6 +206,7 @@ export async function getFeed(q: FeedQuery, db?: Db): Promise<DiscoveryCard[]> {
   const conds = [
     eq(lists.isPublic, true),
     eq(lists.status, "active"),
+    eq(lists.flagged, false), // withheld (reported / spam-flagged) lists never appear
     isNull(lists.deletedAt),
     gt(lists.itemCount, 0), // de-rank/hide empty lists
   ];
@@ -240,15 +248,17 @@ export async function getFeed(q: FeedQuery, db?: Db): Promise<DiscoveryCard[]> {
 }
 
 // ---------------------------------------------------------------------------
-// Report — a public affordance to flag a list. Sets status='hidden' (the
-// moderation state the plan calls for, "pending review"). NOTE: 'hidden' takes
-// the list fully down — listRepo's edit/share lookups also gate on
-// status='active', so a reported list is removed from the feed AND its /e + /s
-// links stop resolving until an admin clears it. Rate-limited at the endpoint;
-// answers generically whether or not a row matched (no existence oracle).
-// TRADEOFFS / FOLLOW-UPS (no admin surface yet — Phase 5): a single anonymous
-// report currently hides a list, so this wants (1) a confirmations threshold to
-// resist griefing and (2) an admin review/restore queue. Documented, not built.
+// Report — a public affordance to flag a list. Sets `flagged=true`, which
+// WITHHOLDS the list from the public feed + /l read view pending review, but
+// leaves `status='active'` so the OWNER keeps full edit + share access (/e, /s).
+// So a malicious report can, at worst, pull a list out of public discovery — it
+// can never lock an owner out of their own list (that needs an admin takedown to
+// status='hidden'/'removed', which nothing user-facing does). Rate-limited at the
+// endpoint; answers generically whether or not a row matched (no existence oracle).
+// FOLLOW-UPS (no admin surface yet — Phase 5): a single report currently flags a
+// list, so this still wants (1) a distinct-reporter threshold (needs IP dedup —
+// the rate-limiter session's Upstash territory) and (2) an admin review/restore
+// queue. The blast radius is now small (feed-only), so these are no longer urgent.
 // ---------------------------------------------------------------------------
 export async function reportList(slug: string, db?: Db): Promise<boolean> {
   const s = normalizeSlug(slug);
@@ -256,12 +266,13 @@ export async function reportList(slug: string, db?: Db): Promise<boolean> {
   const d = db ?? (await useDb());
   const res = await d
     .update(lists)
-    .set({ status: "hidden", updatedAt: new Date() })
+    .set({ flagged: true, updatedAt: new Date() })
     .where(
       and(
         eq(lists.publicSlug, s),
         eq(lists.isPublic, true),
         eq(lists.status, "active"),
+        eq(lists.flagged, false), // first report only → idempotent
         isNull(lists.deletedAt),
       ),
     )

@@ -73,28 +73,24 @@ describe("spam heuristic — link count", () => {
 });
 
 describe("decidePublish — the publish rule (pure)", () => {
-  it("publishes a clean active list (stamps published_at once)", () => {
-    const d = decidePublish({ status: "active", hasPublishedAt: false, title: "Kit", description: "" }, { isPublic: true });
-    expect(d).toEqual({ isPublic: true, status: "active", stampPublishedAt: true });
+  it("publishes a clean list (stamps published_at once, not flagged)", () => {
+    const d = decidePublish({ hasPublishedAt: false, title: "Kit", description: "" }, { isPublic: true });
+    expect(d).toEqual({ isPublic: true, flagged: false, stampPublishedAt: true });
   });
   it("does not re-stamp published_at on a republish", () => {
-    const d = decidePublish({ status: "active", hasPublishedAt: true }, { isPublic: true });
+    const d = decidePublish({ hasPublishedAt: true }, { isPublic: true });
     expect(d.stampPublishedAt).toBe(false);
   });
-  it("holds a link-spam list back as hidden", () => {
+  it("flags a link-spam list (withheld from the feed — never a status change)", () => {
     const d = decidePublish(
-      { status: "active", hasPublishedAt: false, description: "https://a.com https://b.com c.shop" },
+      { hasPublishedAt: false, description: "https://a.com https://b.com c.shop" },
       { isPublic: true },
     );
-    expect(d.status).toBe("hidden");
+    expect(d.flagged).toBe(true);
   });
-  it("never resurrects a moderated (hidden) list via republish", () => {
-    const d = decidePublish({ status: "hidden", hasPublishedAt: true, title: "ok" }, { isPublic: true });
-    expect(d.status).toBe("hidden");
-  });
-  it("unpublishing keeps the existing status and never stamps", () => {
-    const d = decidePublish({ status: "active", hasPublishedAt: true }, { isPublic: false });
-    expect(d).toEqual({ isPublic: false, status: "active", stampPublishedAt: false });
+  it("unpublishing never flags and never stamps", () => {
+    const d = decidePublish({ hasPublishedAt: true }, { isPublic: false });
+    expect(d).toEqual({ isPublic: false, flagged: false, stampPublishedAt: false });
   });
 });
 
@@ -194,6 +190,7 @@ async function seed(
       totalWeightMg: o.totalWeightMg ?? 0,
       isPublic: o.isPublic ?? false,
       status: o.status ?? "active",
+      flagged: o.flagged ?? false,
       publishedAt: o.publishedAt ?? null,
       tripType: o.tripType ?? null,
       season: o.season ?? null,
@@ -216,11 +213,19 @@ describe("publishList — capability write, decision applied", () => {
     expect(after.publishedAt).toBeInstanceOf(Date);
   });
 
-  it("holds a link-spam list as hidden", async () => {
+  it("flags a link-spam list but keeps it active (owner not locked out)", async () => {
     const db = await freshDb();
     const { editToken } = await seed(db, { itemCount: 2, description: "https://a.com https://b.com c.shop d.store" });
     const state = await publishList(editToken, { isPublic: true }, db);
-    expect(state?.status).toBe("hidden");
+    expect(state?.flagged).toBe(true);
+    expect(state?.status).toBe("active"); // status untouched → /e + /s still resolve
+  });
+
+  it("flagging is sticky — a clean republish can't self-clear it", async () => {
+    const db = await freshDb();
+    const { editToken } = await seed(db, { itemCount: 1, flagged: true });
+    const state = await publishList(editToken, { isPublic: true }, db);
+    expect(state?.flagged).toBe(true);
   });
 
   it("rejects an unknown trip type (drops to null)", async () => {
@@ -252,9 +257,14 @@ describe("getPublicBySlug — public-only, no id/token leak", () => {
     const { row } = await seed(db, { itemCount: 2, isPublic: false });
     expect(await getPublicBySlug(row.publicSlug, db)).toBeNull();
   });
-  it("404s (null) for a hidden/reported list", async () => {
+  it("404s (null) for an admin-hidden list (status takedown)", async () => {
     const db = await freshDb();
     const { row } = await seed(db, { itemCount: 2, isPublic: true, status: "hidden" });
+    expect(await getPublicBySlug(row.publicSlug, db)).toBeNull();
+  });
+  it("404s (null) for a flagged (reported/spam) list — withheld from public discovery", async () => {
+    const db = await freshDb();
+    const { row } = await seed(db, { itemCount: 2, isPublic: true, flagged: true });
     expect(await getPublicBySlug(row.publicSlug, db)).toBeNull();
   });
   it("404s (null) for a malformed slug before any query", async () => {
@@ -278,6 +288,8 @@ describe("getFeed — filters + sort", () => {
     await seed(db, { isPublic: false, itemCount: 5, baseWeightMg: 200_000, publishedAt: new Date("2026-05-01") });
     // excluded: hidden
     await seed(db, { isPublic: true, status: "hidden", itemCount: 5, baseWeightMg: 100_000, publishedAt: new Date("2026-06-01") });
+    // excluded: flagged (reported/spam) — NEWEST, so its absence from `recent` proves exclusion
+    await seed(db, { isPublic: true, flagged: true, itemCount: 5, baseWeightMg: 50_000, publishedAt: new Date("2026-07-01"), tripType: "thru-hike" });
     return db;
   }
 
@@ -307,13 +319,19 @@ describe("getFeed — filters + sort", () => {
 });
 
 describe("reportList + bumpView", () => {
-  it("report hides a public list so it drops from the feed + read view", async () => {
+  it("report withholds a list from the feed + read view but keeps the owner's access", async () => {
     const db = await freshDb();
     const { row } = await seed(db, { isPublic: true, itemCount: 3, baseWeightMg: 1_000_000, publishedAt: new Date() });
     expect(await getFeed({}, db)).toHaveLength(1);
     expect(await reportList(row.publicSlug, db)).toBe(true);
     expect(await getFeed({}, db)).toHaveLength(0);
     expect(await getPublicBySlug(row.publicSlug, db)).toBeNull();
+    // owner is NOT locked out: status stays active, so listRepo's /e + /s still resolve
+    const after = (await db.select().from(lists))[0]!;
+    expect(after.status).toBe("active");
+    expect(after.flagged).toBe(true);
+    // idempotent: a second report on an already-flagged list changes nothing
+    expect(await reportList(row.publicSlug, db)).toBe(false);
   });
   it("bumpView increments the counter for a public list", async () => {
     const db = await freshDb();

@@ -150,28 +150,32 @@ export function sparkTop3(data: ListData): SparkSegment[] {
 
 // ---------------------------------------------------------------------------
 // Publish decision — the pure rule for what a publish/unpublish does to a row,
-// extracted from the repo so it unit-tests without a database. Spam flagging,
-// the "re-publish can't un-hide a moderated list" guard, and the stamp-once
-// published_at all live here.
+// extracted from the repo so it unit-tests without a database.
+//
+// `flagged` withholds a list from the PUBLIC feed pending review (the spam
+// heuristic tripping here, or a user report in the repo). It is deliberately
+// NOT `status`: a flagged list stays `status='active'`, so the OWNER keeps full
+// edit + share access — only public discovery is withheld. `status='hidden'/
+// 'removed'` is reserved for real admin takedowns (which DO cut owner access);
+// nothing user-facing sets it, so one bad actor can never lock a list's owner
+// out of their own list.
 // ---------------------------------------------------------------------------
 export interface PublishDecision {
   isPublic: boolean;
-  status: string; // active | hidden | removed
+  flagged: boolean; // spam heuristic tripped → withhold from the feed (owner unaffected)
   stampPublishedAt: boolean; // caller stamps now() iff true
 }
 
 export function decidePublish(
-  current: { status: string; hasPublishedAt: boolean; title?: string | null; description?: string | null },
+  current: { hasPublishedAt: boolean; title?: string | null; description?: string | null },
   input: { isPublic: boolean },
 ): PublishDecision {
   const isPublic = !!input.isPublic;
-  // a link-heavy list publishes hidden (pending review); only an `active` list
-  // can be flagged here, so re-publishing never resurrects a moderated one.
+  // a link-heavy list is withheld from the feed pending review — never a takedown
   const flagged = isPublic && isLikelySpam({ title: current.title, description: current.description });
-  const status = isPublic && current.status === "active" && flagged ? "hidden" : current.status;
   // published_at is stamped once — the first time the list goes public.
   const stampPublishedAt = isPublic && !current.hasPublishedAt;
-  return { isPublic, status, stampPublishedAt };
+  return { isPublic, flagged, stampPublishedAt };
 }
 
 /** Publish state shared by the editor dialog and the publish endpoint/repo.
@@ -179,6 +183,7 @@ export function decidePublish(
 export interface PublishState {
   isPublic: boolean;
   status: string; // active | hidden | removed
+  flagged: boolean; // withheld from the public feed pending review (owner access intact)
   tripType?: string;
   season?: string;
   slug: string;

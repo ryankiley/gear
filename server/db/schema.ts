@@ -52,6 +52,10 @@ export const lists = pgTable(
     primaryCategory: text("primary_category"),
     // cheap "most-viewed" signal for the feed; best-effort bumped on public reads
     viewCount: integer("view_count").notNull().default(0),
+    // withheld from the public feed pending review (spam heuristic or a user
+    // report). Distinct from `status`: a flagged list stays active, so the OWNER
+    // keeps edit + share access — only public discovery is withheld.
+    flagged: boolean("flagged").notNull().default(false),
     // optional recovery (generated phrase only); not used yet
     claimPhraseHash: text("claim_phrase_hash"),
     // optimistic concurrency + live-sync counter
