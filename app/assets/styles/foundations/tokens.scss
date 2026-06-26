@@ -52,6 +52,7 @@
   --text-display: clamp(2.5rem, 6vw, 3.5rem); /* hero headline + the live total */
 
   /* ---- spacing (4/8 grid) ---- */
+  --space-px: 2px; /* hairline — sub-grid micro-gap (bar segments, chip stacks) */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;

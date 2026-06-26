@@ -191,7 +191,7 @@ const badge = (r: CatalogResult) => (r.verified ? "✓" : (r.weightSource[0] || 
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(100% + 2px);
+  top: calc(100% + var(--space-px));
   z-index: 30;
   max-height: 320px;
   overflow-y: auto;

@@ -230,7 +230,7 @@ function openFix() {
   content: "";
   width: 4px;
   height: 8px;
-  margin-top: -2px;
+  margin-top: calc(-1 * var(--space-px));
   border: solid var(--paper);
   border-width: 0 2px 2px 0;
   /* checkmark pops in with a springy overshoot on check (SPACE10's easeOutBack) */

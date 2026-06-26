@@ -43,7 +43,7 @@ const segments = computed(() => {
 <style scoped>
 .catbar__track {
   display: flex;
-  gap: 2px;
+  gap: var(--space-px);
   height: 6px;
 }
 .catbar__seg {

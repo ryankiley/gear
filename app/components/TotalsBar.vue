@@ -128,6 +128,6 @@ const UNITS: Unit[] = ["g", "kg", "oz", "lb"];
 .chip {
   display: inline-flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-px);
 }
 </style>
