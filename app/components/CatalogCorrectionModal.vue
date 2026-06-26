@@ -44,7 +44,7 @@ onKeyStroke("Escape", () => target.value && close());
       <div class="dlg panel" role="dialog" aria-modal="true" aria-label="Fix catalog weight">
         <div class="dlg__top">
           <p class="t-label">Fix catalog weight</p>
-          <button class="btn btn--icon btn--ghost dlg__close" aria-label="Close" @click="close()">
+          <button class="btn btn--icon btn--ghost dlg__close" title="Close" aria-label="Close" @click="close()">
             <X :size="16" />
           </button>
         </div>

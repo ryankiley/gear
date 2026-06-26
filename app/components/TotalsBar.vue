@@ -32,6 +32,7 @@ const UNITS: Unit[] = ["g", "kg", "oz", "lb"];
           <!-- transparent native select over the number: tap the total to change units -->
           <select
             class="totals__unitsel"
+            title="Change unit"
             aria-label="Weight unit"
             :value="list.displayUnit"
             @change="emit('set-unit', ($event.target as HTMLSelectElement).value as Unit)"

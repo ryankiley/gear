@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CircleMinus } from "@lucide/vue";
 import { STARTER_FOLDERS } from "~~/shared/categories";
-import { TRIP_TYPES, type DiscoveryCard, type FeedView } from "~~/shared/discovery";
+import { type DiscoveryCard, type FeedView } from "~~/shared/discovery";
 import type { Folder, ListData, ListSnapshot } from "~~/shared/types";
 import { formatWeight } from "~~/shared/weights";
 import { csvToListData } from "~~/shared/exporters/csv";
@@ -11,9 +11,8 @@ const router = useRouter();
 const creating = ref(false);
 
 // ---- discovery feed ----
-// Default browse is trip-type-led; sort is a calm secondary toggle. "Lightest"
-// is the optional leaderboard, not the front door (weight is optional).
-const trip = ref(""); // "" = all trip types
+// Browse defaults to Recent; sort is a calm toggle. "Lightest" is the optional
+// leaderboard, not the front door (weight is optional).
 const view = ref<FeedView>("recent");
 const VIEWS: { v: FeedView; label: string }[] = [
   { v: "recent", label: "Recent" },
@@ -21,7 +20,7 @@ const VIEWS: { v: FeedView; label: string }[] = [
   { v: "light", label: "Lightest" },
 ];
 const { data: feed } = await useFetch<{ cards: DiscoveryCard[] }>("/api/discovery", {
-  query: computed(() => ({ view: view.value, trip: trip.value || undefined })),
+  query: computed(() => ({ view: view.value })),
   default: () => ({ cards: [] as DiscoveryCard[] }),
 });
 const cards = computed(() => feed.value?.cards ?? []);
@@ -123,8 +122,8 @@ function onFile(e: Event) {
         <p class="t-label">Gear · pack lists, weighed</p>
         <h1 class="t-display hero__title">Make a packing list.<br />See what it weighs.</h1>
         <p class="hero__sub t-muted">
-          A calm place to build a list and share it. Weights are optional — add
-          them when you care. No login.
+          Share your list with anyone via a link. Weights are optional — add them
+          when you care. No login.
         </p>
         <div class="hero__ctas">
           <button class="btn btn--primary hero__cta" :disabled="creating" @click="newList">
@@ -198,18 +197,6 @@ function onFile(e: Event) {
       </div>
 
       <div class="discovery__filters">
-        <div class="chips" role="tablist" aria-label="Trip type">
-          <button class="chip-btn" :aria-pressed="trip === ''" @click="trip = ''">All</button>
-          <button
-            v-for="t in TRIP_TYPES"
-            :key="t.slug"
-            class="chip-btn"
-            :aria-pressed="trip === t.slug"
-            @click="trip = t.slug"
-          >
-            {{ t.label }}
-          </button>
-        </div>
         <div class="chips chips--sort">
           <button
             v-for="o in VIEWS"
@@ -227,8 +214,7 @@ function onFile(e: Event) {
         <li v-for="c in cards" :key="c.slug"><ListCard :card="c" /></li>
       </ul>
       <p v-else class="t-muted discovery__empty">
-        No public lists yet{{ trip ? " for this trip type" : "" }}. Publish one from the
-        editor to start the feed.
+        No public lists yet. Publish one from the editor to start the feed.
       </p>
     </section>
   </div>
@@ -336,7 +322,6 @@ function onFile(e: Event) {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
   gap: var(--space-3) var(--space-5);
   margin-bottom: var(--space-5);
 }

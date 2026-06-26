@@ -214,7 +214,7 @@ function onPublished(e: { status: string }) {
         <template v-if="snapshot">
           <button class="btn btn--sm btn--primary editor__share" @click="copyShare">Share</button>
           <div ref="menuRef" class="menu">
-            <button class="btn btn--sm btn--ghost btn--icon" aria-haspopup="true" aria-label="More actions" :aria-expanded="menuOpen" @click="menuOpen = !menuOpen"><Ellipsis :size="16" /></button>
+            <button class="btn btn--sm btn--ghost btn--icon" aria-haspopup="true" title="More actions" aria-label="More actions" :aria-expanded="menuOpen" @click="menuOpen = !menuOpen"><Ellipsis :size="16" /></button>
             <ul v-if="menuOpen" class="menu__list panel">
               <li><button @click="openPublish">{{ snapshot.isPublic ? "Public — manage…" : "Make public…" }}</button></li>
               <li><button @click="cloneList">Duplicate this list</button></li>
@@ -252,7 +252,7 @@ function onPublished(e: { status: string }) {
         <ItemRow v-for="it in ungrouped" :key="it.id" :list="snapshot" :item="it" :packed="packed" />
       </section>
 
-      <button v-if="!packed" class="btn editor__addfolder" @click="c.addFolder()">+ Add folder</button>
+      <button v-if="!packed" class="btn editor__addfolder" @click="c.addFolder()">Add folder</button>
     </main>
 
     <main v-else-if="status === 'missing'" class="wrap editor__missing">
@@ -393,6 +393,14 @@ function onPublished(e: { status: string }) {
 }
 .editor__addfolder {
   align-self: flex-start;
+  /* a quiet text affordance paired with "Add an item…": text aligns to the
+     content left edge, no padded hover fill */
+  padding-inline: 0;
+  color: var(--ink-2);
+}
+.editor__addfolder:hover {
+  background: transparent;
+  color: var(--ink);
 }
 .editor__missing {
   padding-block: var(--space-9);

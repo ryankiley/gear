@@ -57,8 +57,7 @@ function onCommit(p: {
 
     <TransitionGroup name="item" tag="div" class="folder__items">
       <ItemRow v-for="it in items" :key="it.id" :list="list" :item="it" :packed="packed" :readonly="readonly" />
-      <p v-if="!items.length && !packed && !readonly" key="empty" class="t-sm t-muted folder__empty">No items yet.</p>
-      <p v-else-if="!items.length && readonly" key="empty-ro" class="t-sm t-muted folder__empty">—</p>
+      <p v-if="!items.length && readonly" key="empty-ro" class="t-sm t-muted folder__empty">—</p>
     </TransitionGroup>
 
     <div v-if="!packed && !readonly" class="folder__add">

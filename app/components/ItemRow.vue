@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CircleMinus, StickyNoteMinus, StickyNotePlus } from "@lucide/vue";
+import { ChevronDown, CircleMinus, StickyNoteMinus, StickyNotePlus } from "@lucide/vue";
 import type { Classification, Item, ListSnapshot } from "~~/shared/types";
 import { effectiveClassification, formatWeight, lineMg, parseWeightInput } from "~~/shared/weights";
 
@@ -158,15 +158,18 @@ function openFix() {
         <span class="t-sm t-muted item__unit">{{ list.displayUnit }}</span>
       </div>
 
-      <select
-        class="field item__class"
-        :class="[`item__class--${effClass}`, { 'item__class--quiet': effClass === 'base' }]"
-        :value="effClass"
-        :title="`Counts as ${effClass}`"
-        @change="onClass"
-      >
-        <option v-for="o in CLASS_OPTS" :key="o.value" :value="o.value">{{ o.label }}</option>
-      </select>
+      <div class="item__classwrap">
+        <select
+          class="field item__class"
+          :class="`item__class--${effClass}`"
+          :value="effClass"
+          :title="`Counts as ${effClass}`"
+          @change="onClass"
+        >
+          <option v-for="o in CLASS_OPTS" :key="o.value" :value="o.value">{{ o.label }}</option>
+        </select>
+        <ChevronDown class="item__classchev" :size="13" :stroke-width="2" aria-hidden="true" />
+      </div>
 
       <div class="item__actions">
         <button
@@ -300,9 +303,27 @@ function openFix() {
 .item__unit {
   flex: none;
 }
+.item__classwrap {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  min-width: 0;
+}
 .item__class {
+  /* de-chrome the native select so its text aligns to the column edge (native
+     selects carry a UA text inset); the chevron restores the dropdown affordance */
+  appearance: none;
+  -webkit-appearance: none;
+  width: auto;
+  min-width: 0;
   font-size: var(--text-sm);
   color: var(--ink-2);
+}
+.item__classchev {
+  flex: none;
+  align-self: center;
+  color: var(--ink-3);
+  pointer-events: none;
 }
 /* classification reads from its text label, not colour (chrome stays monochrome) */
 .item__class--worn,
@@ -386,7 +407,7 @@ function openFix() {
   .item__weight {
     grid-area: weight;
   }
-  .item__class {
+  .item__classwrap {
     grid-area: class;
     justify-self: start;
   }
