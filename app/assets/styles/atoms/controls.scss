@@ -90,6 +90,15 @@
   text-align: right;
 }
 
+// Category colour chip — the ONE colour mark (data viz). Same size everywhere
+// (the bar legend + folder headings) so squares never mismatch.
+.swatch {
+  width: 10px;
+  height: 10px;
+  flex: none;
+  border-radius: var(--radius-0);
+}
+
 // .panel — reserved for genuinely floating surfaces (dropdown menu). Quiet.
 .panel {
   border: 1px solid var(--line-2);

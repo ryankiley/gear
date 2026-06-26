@@ -7,16 +7,12 @@ const props = defineProps<{ list: ListSnapshot }>();
 const segments = computed(() => {
   const total = props.list.items.reduce((s, i) => s + lineMg(i), 0);
   if (total <= 0) return [];
-  let offset = 0;
   return props.list.folders
     .map((f) => {
       const mg = props.list.items
         .filter((i) => i.folderId === f.id)
         .reduce((s, i) => s + lineMg(i), 0);
-      const pct = (mg / total) * 100;
-      const seg = { id: f.id, name: f.name, colorKey: f.colorKey ?? "other", mg, pct, offset };
-      offset += pct;
-      return seg;
+      return { id: f.id, name: f.name, colorKey: f.colorKey ?? "other", mg };
     })
     .filter((s) => s.mg > 0);
 });
@@ -24,26 +20,19 @@ const segments = computed(() => {
 
 <template>
   <div v-if="segments.length" class="catbar">
-    <svg
-      class="catbar__svg"
-      viewBox="0 0 100 6"
-      preserveAspectRatio="none"
-      role="img"
-      aria-label="Weight by folder"
-    >
-      <rect
+    <!-- flex track: a small gap separates adjacent colours so they always read as distinct -->
+    <div class="catbar__track" role="img" aria-label="Weight by folder">
+      <span
         v-for="s in segments"
         :key="s.id"
-        :x="s.offset"
-        :width="s.pct"
-        y="0"
-        height="6"
-        :style="{ fill: `var(--cat-${s.colorKey})` }"
+        class="catbar__seg"
+        :style="{ flexGrow: s.mg, background: `var(--cat-${s.colorKey})` }"
+        :title="`${s.name} · ${formatWeight(s.mg, list.displayUnit)}`"
       />
-    </svg>
+    </div>
     <ul class="catbar__legend">
       <li v-for="s in segments" :key="s.id" class="catbar__item">
-        <span class="catbar__swatch" :style="{ background: `var(--cat-${s.colorKey})` }" />
+        <span class="swatch" :style="{ background: `var(--cat-${s.colorKey})` }" />
         <span class="catbar__name">{{ s.name }}</span>
         <span class="t-num t-sm t-muted">{{ formatWeight(s.mg, list.displayUnit) }}</span>
       </li>
@@ -52,10 +41,14 @@ const segments = computed(() => {
 </template>
 
 <style scoped>
-.catbar__svg {
-  width: 100%;
+.catbar__track {
+  display: flex;
+  gap: 2px;
   height: 6px;
-  display: block;
+}
+.catbar__seg {
+  flex-basis: 0;
+  min-width: 3px;
 }
 .catbar__legend {
   display: flex;
@@ -68,11 +61,6 @@ const segments = computed(() => {
   align-items: center;
   gap: var(--space-2);
   font-size: var(--text-sm);
-}
-.catbar__swatch {
-  width: 10px;
-  height: 10px;
-  flex: none;
 }
 .catbar__name {
   color: var(--ink-2);

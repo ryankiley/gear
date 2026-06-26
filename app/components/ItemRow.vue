@@ -68,6 +68,7 @@ const showFix = computed(
     props.item.unitWeightMg > 0 &&
     props.item.unitWeightMg !== props.item.catalogWeightMgAtLink,
 );
+const noteOpen = ref(false);
 function openFix() {
   if (props.item.catalogItemId == null || props.item.catalogWeightMgAtLink == null) return;
   correction.open({
@@ -93,74 +94,90 @@ function openFix() {
     }}</span>
   </div>
 
-  <template v-else>
-    <div class="item" :class="{ 'item--packed': packed && item.packed }">
-    <label v-if="packed" class="item__check">
-      <input
-        type="checkbox"
-        :checked="item.packed"
-        @change="c.updateItem(item.id, { packed: ($event.target as HTMLInputElement).checked })"
-      />
-    </label>
-
-    <span v-if="packed" class="item__name item__name--ro">{{ item.name }}</span>
-    <ItemInput
-      v-else
-      class="item__name"
-      :unit="list.displayUnit"
-      :initial="item.name"
-      placeholder="Item name"
-      :clear-on-commit="false"
-      @commit="onNameCommit"
-    />
-
+  <!-- packing / checklist: a big tap target — check off the item; name + line weight only -->
+  <label v-else-if="packed" class="item item--check" :class="{ 'item--done': item.packed }">
     <input
-      class="field field--num item__qty"
-      type="number"
-      min="1"
-      :value="item.qty"
-      :disabled="packed"
-      @change="c.updateItem(item.id, { qty: Math.max(1, Number(($event.target as HTMLInputElement).value) || 1) })"
+      type="checkbox"
+      class="item__box"
+      :checked="item.packed"
+      @change="c.updateItem(item.id, { packed: ($event.target as HTMLInputElement).checked })"
+    />
+    <span class="item__cname">{{ item.name }}</span>
+    <span class="t-num t-sm t-muted">×{{ item.qty }}</span>
+    <span class="t-num item__cweight">{{
+      item.unitWeightMg > 0 ? formatWeight(lineMg(item), list.displayUnit) : "—"
+    }}</span>
+  </label>
+
+  <!-- editable row (default) -->
+  <template v-else>
+    <div class="item">
+      <ItemInput
+        class="item__name"
+        :unit="list.displayUnit"
+        :initial="item.name"
+        placeholder="Item name"
+        :clear-on-commit="false"
+        @commit="onNameCommit"
+      />
+
+      <input
+        class="field field--num item__qty"
+        type="number"
+        min="1"
+        :value="item.qty"
+        @change="c.updateItem(item.id, { qty: Math.max(1, Number(($event.target as HTMLInputElement).value) || 1) })"
+      />
+
+      <div class="item__weight">
+        <input class="field field--num" :value="weightDisplay" placeholder="—" @change="onWeight" />
+        <span class="t-sm t-muted item__unit">{{ list.displayUnit }}</span>
+      </div>
+
+      <select
+        class="field item__class"
+        :class="`item__class--${effClass}`"
+        :value="item.classification ?? ''"
+        :title="`Counts as ${effClass}`"
+        @change="c.updateItem(item.id, { classification: (($event.target as HTMLSelectElement).value || null) as any })"
+      >
+        <option v-for="o in CLASS_OPTS" :key="o.label" :value="o.value">
+          {{ o.value === "" ? `Auto · ${effClass}` : o.label }}
+        </option>
+      </select>
+
+      <button
+        class="btn btn--icon btn--ghost item__del"
+        title="Remove item"
+        aria-label="Remove item"
+        @click="c.removeItem(item.id)"
+      >
+        ✕
+      </button>
+    </div>
+
+    <textarea
+      v-if="noteOpen || item.description"
+      class="field item__notebox"
+      :value="item.description ?? ''"
+      rows="2"
+      placeholder="Add a note — pack location, condition, a reminder…"
+      @change="c.updateItem(item.id, { description: ($event.target as HTMLTextAreaElement).value })"
     />
 
-    <div class="item__weight">
-      <input
-        class="field field--num"
-        :value="weightDisplay"
-        placeholder="—"
-        :disabled="packed"
-        @change="onWeight"
-      />
-      <span class="t-sm t-muted item__unit">{{ list.displayUnit }}</span>
+    <div v-if="showFix || (!noteOpen && !item.description)" class="item__under">
+      <button
+        v-if="!noteOpen && !item.description"
+        type="button"
+        class="item__under-link t-sm"
+        @click="noteOpen = true"
+      >
+        + note
+      </button>
+      <button v-if="showFix" type="button" class="item__under-link t-sm" @click="openFix">
+        Catalog: {{ formatWeight(item.catalogWeightMgAtLink ?? 0, list.displayUnit) }} — suggest a fix
+      </button>
     </div>
-
-    <select
-      class="field item__class"
-      :class="`item__class--${effClass}`"
-      :value="item.classification ?? ''"
-      :disabled="packed"
-      :title="`Counts as ${effClass}`"
-      @change="c.updateItem(item.id, { classification: (($event.target as HTMLSelectElement).value || null) as any })"
-    >
-      <option v-for="o in CLASS_OPTS" :key="o.label" :value="o.value">
-        {{ o.value === "" ? `Auto · ${effClass}` : o.label }}
-      </option>
-    </select>
-
-    <button
-      v-if="!packed"
-      class="btn btn--icon btn--ghost item__del"
-      title="Remove item"
-      aria-label="Remove item"
-      @click="c.removeItem(item.id)"
-    >
-      ✕
-    </button>
-    </div>
-
-    <button v-if="showFix" type="button" class="item__fix t-sm" @click="openFix">
-      Catalog: {{ formatWeight(item.catalogWeightMgAtLink ?? 0, list.displayUnit) }} — suggest a fix
-    </button>
   </template>
 </template>
 
@@ -173,13 +190,10 @@ function openFix() {
   gap: var(--space-3);
   padding: var(--space-1) 0;
 }
-.item--packed {
-  opacity: 0.45;
-  text-decoration: line-through;
-}
+
+/* read-only (share view) */
 .item--ro {
   grid-template-columns: 1fr 44px 96px;
-  align-items: baseline;
 }
 .item__roname {
   min-width: 0;
@@ -187,11 +201,34 @@ function openFix() {
 .item__roweight {
   text-align: right;
 }
-.item__check {
-  display: flex;
-  align-items: center;
-  align-self: center;
+
+/* packing / checklist — a big tap target */
+.item--check {
+  display: grid;
+  grid-template-columns: auto 1fr 44px 96px;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  cursor: pointer;
 }
+.item__box {
+  align-self: center;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+.item__cname {
+  min-width: 0;
+}
+.item__cweight {
+  text-align: right;
+}
+.item--done {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+/* editable */
 .item__weight {
   display: flex;
   align-items: baseline;
@@ -199,13 +236,6 @@ function openFix() {
 }
 .item__unit {
   flex: none;
-}
-.item__name--ro {
-  align-self: center;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 .item__class {
   font-size: var(--text-sm);
@@ -222,9 +252,28 @@ function openFix() {
 .item__del:hover {
   color: var(--ink);
 }
-.item__fix {
-  align-self: start;
+
+/* per-item note */
+.item__notebox {
+  width: 100%;
+  min-height: 0;
   margin: calc(-1 * var(--space-1)) 0 var(--space-2);
+  padding: var(--space-2);
+  resize: vertical;
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+  background: var(--paper-2);
+  border-bottom: 1px solid var(--line);
+}
+
+/* quiet links under a row ("+ note", "suggest a fix") */
+.item__under {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin: calc(-1 * var(--space-1)) 0 var(--space-2);
+}
+.item__under-link {
   padding: 0;
   background: none;
   border: 0;
@@ -232,8 +281,8 @@ function openFix() {
   text-align: left;
   cursor: pointer;
 }
-.item__fix:hover {
-  color: var(--accent);
+.item__under-link:hover {
+  color: var(--ink);
 }
 
 @media (max-width: 560px) {
@@ -241,25 +290,28 @@ function openFix() {
     /* baseline is for the single-row desktop layout; the stacked mobile grid
        wants its cells centered in each track (baseline inflates the rows) */
     align-items: center;
-    grid-template-columns: 44px 1fr 84px;
-    grid-template-areas:
-      "check name name"
-      "check qty weight"
-      "check class del";
-    gap: var(--space-2);
-  }
-  .item:not(.item--packed) {
     grid-template-columns: 1fr 56px 84px;
     grid-template-areas:
       "name name name"
       "qty weight class"
       "del del del";
+    gap: var(--space-2);
   }
-  .item__check { grid-area: check; }
-  .item__name { grid-area: name; }
-  .item__qty { grid-area: qty; }
-  .item__weight { grid-area: weight; }
-  .item__class { grid-area: class; }
-  .item__del { grid-area: del; justify-self: end; }
+  .item__name {
+    grid-area: name;
+  }
+  .item__qty {
+    grid-area: qty;
+  }
+  .item__weight {
+    grid-area: weight;
+  }
+  .item__class {
+    grid-area: class;
+  }
+  .item__del {
+    grid-area: del;
+    justify-self: end;
+  }
 }
 </style>

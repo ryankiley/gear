@@ -12,8 +12,9 @@ const props = withDefaults(
     initial?: string;
     placeholder?: string;
     clearOnCommit?: boolean;
+    withWeight?: boolean; // add mode: show a companion weight field in the weight column
   }>(),
-  { initial: "", placeholder: "Add an item…", clearOnCommit: true },
+  { initial: "", placeholder: "Add an item…", clearOnCommit: true, withWeight: false },
 );
 const emit = defineEmits<{
   commit: [
@@ -23,6 +24,7 @@ const emit = defineEmits<{
 
 const { results, search, clear } = useCatalogSearch();
 const draft = ref(props.initial);
+const weightDraft = ref(""); // add mode only — the companion weight field
 const open = ref(false);
 const active = ref(-1);
 const focused = ref(false);
@@ -60,21 +62,28 @@ function selectResult(r: CatalogResult) {
   // self-improving ranking: tell the catalog this item was used (fire-and-forget)
   $fetch("/api/catalog/use", { method: "POST", body: { ids: [r.id] } }).catch(() => {});
   draft.value = props.clearOnCommit ? "" : name;
+  weightDraft.value = "";
   close();
 }
 function commitFree() {
   const raw = draft.value.trim();
   if (!raw) return;
-  // editing an unchanged name shouldn't emit a redundant update
-  if (!props.clearOnCommit && raw === props.initial.trim()) return close();
+  // editing an unchanged name (with no new weight typed) shouldn't emit a redundant update
+  if (!props.clearOnCommit && raw === props.initial.trim() && !weightDraft.value.trim())
+    return close();
   const m = raw.match(WEIGHT_TAIL);
   const name = (m ? raw.slice(0, m.index) : raw).trim();
   if (!name) return;
-  emit("commit", { name, weight: m ? m[1] : undefined });
+  // the companion weight field wins; else a trailing weight in the typed name
+  const weight = weightDraft.value.trim() || (m ? m[1] : undefined);
+  emit("commit", { name, weight });
   draft.value = props.clearOnCommit ? "" : name;
+  weightDraft.value = "";
   close();
 }
-function onBlur() {
+// commit when focus leaves the whole control (so tabbing name → weight doesn't commit early)
+function onFocusOut(e: FocusEvent) {
+  if (rootRef.value?.contains(e.relatedTarget as Node | null)) return;
   focused.value = false;
   commitFree();
 }
@@ -92,7 +101,7 @@ function onKeydown(e: KeyboardEvent) {
   } else if (e.key === "Enter") {
     e.preventDefault();
     if (open.value && active.value >= 0 && results.value[active.value])
-      selectResult(results.value[active.value]);
+      selectResult(results.value[active.value]!);
     else commitFree();
   } else if (e.key === "Escape") {
     open.value = false;
@@ -104,7 +113,7 @@ const badge = (r: CatalogResult) => (r.verified ? "✓" : (r.weightSource[0] || 
 </script>
 
 <template>
-  <div ref="rootRef" class="ac">
+  <div ref="rootRef" class="ac" :class="{ 'ac--add': withWeight }" @focusout="onFocusOut">
     <input
       v-model="draft"
       class="field ac__input"
@@ -113,8 +122,18 @@ const badge = (r: CatalogResult) => (r.verified ? "✓" : (r.weightSource[0] || 
       autocomplete="off"
       @keydown="onKeydown"
       @focus="focused = true; open = true"
-      @blur="onBlur"
     />
+    <div v-if="withWeight" class="ac__weightcell">
+      <input
+        v-model="weightDraft"
+        class="field field--num"
+        placeholder="—"
+        inputmode="decimal"
+        aria-label="Weight"
+        @keydown.enter="commitFree"
+      />
+      <span class="t-sm t-muted ac__unit">{{ unit }}</span>
+    </div>
     <ul v-if="open && results.length" class="ac__menu panel">
       <li
         v-for="(r, i) in results"
@@ -144,6 +163,25 @@ const badge = (r: CatalogResult) => (r.verified ? "✓" : (r.weightSource[0] || 
 <style scoped>
 .ac {
   position: relative;
+}
+/* add mode: name + weight laid out in the same columns as item rows */
+.ac--add {
+  display: grid;
+  grid-template-columns: 1fr 56px 84px;
+  gap: var(--space-3);
+  align-items: baseline;
+}
+.ac--add .ac__input {
+  grid-column: 1;
+}
+.ac__weightcell {
+  grid-column: 3;
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+}
+.ac__unit {
+  flex: none;
 }
 .ac__input {
   width: 100%;
