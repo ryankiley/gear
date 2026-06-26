@@ -1,6 +1,6 @@
 # Gear
 
-A no-login ultralight gear-list / pack-weight tracker — a better LighterPack.
+A no-login ultralight gear-list.
 
 Make a packing list, see what it weighs, share it. No account, no closet, no trip log,
 no AI. The list is the hero; weight is optional. Build and share a list with zero weights
