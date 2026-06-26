@@ -46,11 +46,10 @@
   --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas,
     monospace;
 
-  /* ---- type scale — exactly 5 sizes, deliberately tight ---- */
-  --text-xs: 0.75rem; /* labels, meta, units */
-  --text-sm: 0.8125rem; /* secondary text, controls */
+  /* ---- type scale — 4 sizes, deliberately tight ---- */
+  --text-sm: 0.8125rem; /* labels, meta, units, controls, secondary */
   --text-base: 1rem; /* body, inputs, item names */
-  --text-title: 1.375rem; /* every heading: folders, page + section titles */
+  --text-title: 1.375rem; /* the one heading size (folders, page + section titles) */
   --text-display: clamp(2.5rem, 6vw, 3.5rem); /* hero headline + the live total */
 
   /* ---- spacing (4/8 grid) ---- */

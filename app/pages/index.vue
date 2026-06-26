@@ -143,7 +143,7 @@ function onFile(e: Event) {
     <main class="wrap mylists">
       <div class="spread mylists__head">
         <h2 class="t-title">Your lists</h2>
-        <span class="t-xs t-faint">saved in this browser</span>
+        <span class="t-sm t-muted">saved in this browser</span>
       </div>
 
       <p v-if="!myLists.all.value.length" class="t-muted mylists__empty">
@@ -154,7 +154,7 @@ function onFile(e: Event) {
         <li v-for="l in myLists.all.value" :key="l.editToken">
           <NuxtLink :to="`/e#${l.editToken}`" class="card">
             <span class="card__title t-title">{{ l.title || "Untitled list" }}</span>
-            <span class="card__meta t-xs t-muted">
+            <span class="card__meta t-sm t-muted">
               <template v-if="l.totalMg > 0">
                 <span class="t-num">{{ formatWeight(l.totalMg, "g") }}</span> total
               </template>

@@ -47,7 +47,7 @@ const CLASS_OPTS: { value: Classification; label: string }[] = [
         :disabled="packed"
         @change="c.updateFolder(folder.id, { name: ($event.target as HTMLInputElement).value })"
       />
-      <span v-if="folderMg > 0" class="t-num t-xs t-muted">{{ formatWeight(folderMg, list.displayUnit) }}</span>
+      <span v-if="folderMg > 0" class="t-num t-sm t-muted">{{ formatWeight(folderMg, list.displayUnit) }}</span>
       <select
         v-if="!packed && !readonly"
         class="field folder__class"
@@ -70,8 +70,8 @@ const CLASS_OPTS: { value: Classification; label: string }[] = [
 
     <div class="folder__items">
       <ItemRow v-for="it in items" :key="it.id" :list="list" :item="it" :packed="packed" :readonly="readonly" />
-      <p v-if="!items.length && !packed && !readonly" class="t-sm t-faint folder__empty">No items yet.</p>
-      <p v-else-if="!items.length && readonly" class="t-sm t-faint folder__empty">—</p>
+      <p v-if="!items.length && !packed && !readonly" class="t-sm t-muted folder__empty">No items yet.</p>
+      <p v-else-if="!items.length && readonly" class="t-sm t-muted folder__empty">—</p>
     </div>
 
     <div v-if="!packed && !readonly" class="folder__add">
@@ -98,13 +98,13 @@ const CLASS_OPTS: { value: Classification; label: string }[] = [
 }
 .folder__name {
   flex: 1;
-  font-weight: 700;
+  font-weight: 600;
   font-size: var(--text-title);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 .folder__class {
   width: auto;
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   color: var(--ink-2);
 }
 .folder__empty {

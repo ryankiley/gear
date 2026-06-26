@@ -35,9 +35,9 @@ const CLASS_OPTS: { value: Classification | ""; label: string }[] = [
   <div v-if="readonly" class="item item--ro">
     <span class="item__roname">
       {{ item.name
-      }}<span v-if="effClass !== 'base'" class="t-xs" :class="`item__class--${effClass}`"> · {{ effClass }}</span>
+      }}<span v-if="effClass !== 'base'" class="t-sm" :class="`item__class--${effClass}`"> · {{ effClass }}</span>
     </span>
-    <span class="t-num t-xs t-muted">×{{ item.qty }}</span>
+    <span class="t-num t-sm t-muted">×{{ item.qty }}</span>
     <span class="t-num item__roweight">{{
       item.unitWeightMg > 0 ? formatWeight(lineMg(item), list.displayUnit) : "—"
     }}</span>
@@ -77,7 +77,7 @@ const CLASS_OPTS: { value: Classification | ""; label: string }[] = [
         :disabled="packed"
         @change="onWeight"
       />
-      <span class="t-xs t-faint item__unit">{{ list.displayUnit }}</span>
+      <span class="t-sm t-muted item__unit">{{ list.displayUnit }}</span>
     </div>
 
     <select
@@ -140,7 +140,7 @@ const CLASS_OPTS: { value: Classification | ""; label: string }[] = [
   flex: none;
 }
 .item__class {
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   color: var(--ink-2);
 }
 .item__class--worn {

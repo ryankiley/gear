@@ -30,7 +30,7 @@ const UNITS: Unit[] = ["g", "kg", "oz", "lb"];
         <span v-if="totals.hasWeights" class="t-num totals__big">
           {{ formatWeight(showBreakdown ? totals.baseMg : totals.totalMg, list.displayUnit) }}
         </span>
-        <span v-else class="t-faint totals__empty">Add weights to see your pack weight</span>
+        <span v-else class="t-muted totals__empty">Add weights to see your pack weight</span>
       </div>
 
       <div class="totals__controls">

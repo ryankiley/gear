@@ -134,7 +134,7 @@ const statusLabel = computed(() =>
           placeholder="Untitled list"
           @change="c.setMeta({ title: ($event.target as HTMLInputElement).value })"
         />
-        <span v-if="snapshot" class="t-xs t-faint editor__status">{{ statusLabel }}</span>
+        <span v-if="snapshot" class="t-sm t-muted editor__status">{{ statusLabel }}</span>
         <template v-if="snapshot">
           <button class="btn btn--sm btn--primary" @click="copyShare">Share</button>
           <div ref="menuRef" class="menu">
@@ -182,7 +182,7 @@ const statusLabel = computed(() =>
     </main>
 
     <main v-else class="wrap editor__missing">
-      <p class="t-faint">Loading…</p>
+      <p class="t-muted">Loading…</p>
     </main>
 
     <Transition name="toast">

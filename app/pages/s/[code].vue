@@ -55,7 +55,7 @@ onBeforeUnmount(() => poll && clearInterval(poll));
     <header class="topbar">
       <div class="wrap topbar__inner">
         <NuxtLink to="/" class="t-label brand">GEAR</NuxtLink>
-        <span class="t-xs t-faint">Read-only</span>
+        <span class="t-sm t-muted">Read-only</span>
         <NuxtLink to="/" class="btn btn--sm">Make your own</NuxtLink>
       </div>
     </header>
@@ -98,7 +98,7 @@ onBeforeUnmount(() => poll && clearInterval(poll));
   padding-block: var(--space-3);
 }
 .brand {
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
 }
 .topbar__inner .btn {
   margin-left: auto;

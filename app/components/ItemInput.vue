@@ -97,7 +97,7 @@ const badge = (r: CatalogResult) =>
         <span class="ac__name">
           <span v-if="r.brand" class="ac__brand">{{ r.brand }}</span> {{ r.name }}<span
             v-if="r.variant"
-            class="t-faint"
+            class="t-muted"
           >
             · {{ r.variant }}</span
           >
@@ -148,7 +148,7 @@ const badge = (r: CatalogResult) =>
   white-space: nowrap;
 }
 .ac__brand {
-  font-weight: 700;
+  font-weight: 600;
 }
 .ac__metaright {
   display: inline-flex;
@@ -157,11 +157,11 @@ const badge = (r: CatalogResult) =>
   flex: none;
 }
 .ac__w {
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   color: var(--ink-2);
 }
 .ac__src {
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   color: var(--accent);
   width: 1.2em;
   text-align: center;
