@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { listToMarkdown } from "~~/shared/exporters/markdown";
 import { listToCsv } from "~~/shared/exporters/csv";
+import { listToSummary } from "~~/shared/exporters/summary";
 
 const c = useGearList();
 const router = useRouter();
@@ -78,6 +79,45 @@ function copyMarkdown() {
   menuOpen.value = false;
   if (snapshot.value) copy(listToMarkdown(snapshot.value), "Copied as Markdown");
 }
+function copySummary() {
+  menuOpen.value = false;
+  if (snapshot.value)
+    copy(listToSummary(snapshot.value, `${origin()}/s/${snapshot.value.shareCode}`), "Summary copied");
+}
+async function cloneList() {
+  menuOpen.value = false;
+  if (!snapshot.value) return;
+  // fresh ids so the copy is fully independent; keep folder→item links + notes/weights
+  const newId = () =>
+    typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.round(performance.now())}`;
+  const idMap = new Map<string, string>();
+  const folders = snapshot.value.folders.map((f) => {
+    const nid = newId();
+    idMap.set(f.id, nid);
+    return { ...f, id: nid };
+  });
+  const items = snapshot.value.items.map((i) => ({
+    ...i,
+    id: newId(),
+    folderId: i.folderId ? (idMap.get(i.folderId) ?? null) : null,
+    packed: false,
+  }));
+  const res = await $fetch<{ editToken: string; snapshot: any }>("/api/lists/create", {
+    method: "POST",
+    body: { title: `${snapshot.value.title || "Untitled list"} (copy)`, data: { folders, items } },
+  });
+  useMyLists().upsert({
+    editToken: res.editToken,
+    shareCode: res.snapshot.shareCode,
+    slug: res.snapshot.slug,
+    title: res.snapshot.title,
+    totalMg: totals.value?.totalMg ?? 0,
+    version: res.snapshot.version,
+    lastOpened: Date.now(),
+  });
+  router.push(`/e#${res.editToken}`);
+  flash("List duplicated");
+}
 function download(filename: string, text: string, type: string) {
   menuOpen.value = false;
   const url = URL.createObjectURL(new Blob([text], { type }));
@@ -153,7 +193,9 @@ function onCorrected(res: { status: string; itemName?: string }) {
           <div ref="menuRef" class="menu">
             <button class="btn btn--sm btn--ghost" aria-haspopup="true" aria-label="More actions" :aria-expanded="menuOpen" @click="menuOpen = !menuOpen">⋯</button>
             <ul v-if="menuOpen" class="menu__list panel">
+              <li><button @click="cloneList">Duplicate this list</button></li>
               <li><button @click="copyMarkdown">Copy as Markdown</button></li>
+              <li><button @click="copySummary">Copy summary</button></li>
               <li><button @click="downloadCsv">Download CSV</button></li>
               <li><button @click="downloadJson">Download JSON (backup)</button></li>
               <li><button @click="copyEditLink">Copy edit link…</button></li>
