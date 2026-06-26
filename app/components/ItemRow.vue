@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import type { Classification, Item, ListSnapshot } from "~~/shared/types";
-import { effectiveClassification, formatWeight } from "~~/shared/weights";
+import { effectiveClassification, formatWeight, lineMg } from "~~/shared/weights";
 
-const props = defineProps<{ list: ListSnapshot; item: Item; packed: boolean }>();
+const props = withDefaults(
+  defineProps<{ list: ListSnapshot; item: Item; packed?: boolean; readonly?: boolean }>(),
+  { packed: false, readonly: false },
+);
 const c = useGearList();
 
 const weightDisplay = computed(() =>
@@ -28,7 +31,19 @@ const CLASS_OPTS: { value: Classification | ""; label: string }[] = [
 </script>
 
 <template>
-  <div class="item" :class="{ 'item--packed': packed && item.packed }">
+  <!-- read-only row (shared with the public /s view) -->
+  <div v-if="readonly" class="item item--ro">
+    <span class="item__roname">
+      {{ item.name
+      }}<span v-if="effClass !== 'base'" class="t-xs" :class="`item__class--${effClass}`"> · {{ effClass }}</span>
+    </span>
+    <span class="t-num t-xs t-muted">×{{ item.qty }}</span>
+    <span class="t-num item__roweight">{{
+      item.unitWeightMg > 0 ? formatWeight(lineMg(item), list.displayUnit) : "—"
+    }}</span>
+  </div>
+
+  <div v-else class="item" :class="{ 'item--packed': packed && item.packed }">
     <label v-if="packed" class="item__check">
       <input
         type="checkbox"
@@ -101,6 +116,16 @@ const CLASS_OPTS: { value: Classification | ""; label: string }[] = [
 .item--packed {
   opacity: 0.45;
   text-decoration: line-through;
+}
+.item--ro {
+  grid-template-columns: 1fr 44px 96px;
+  align-items: baseline;
+}
+.item__roname {
+  min-width: 0;
+}
+.item__roweight {
+  text-align: right;
 }
 .item__check {
   display: flex;

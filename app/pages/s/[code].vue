@@ -1,22 +1,30 @@
 <script setup lang="ts">
 import type { ListSnapshot, Unit } from "~~/shared/types";
-import { computeTotals, effectiveClassification, formatWeight, lineMg } from "~~/shared/weights";
+import { computeTotals } from "~~/shared/weights";
 
 const route = useRoute();
 const code = String(route.params.code || "");
 
 // SSR fetch so a shared link is readable before hydration + indexable structure.
-const { data, error } = await useFetch<{ snapshot: ListSnapshot }>(`/api/s/${code}`);
+const { data } = await useFetch<{ snapshot: ListSnapshot }>(`/api/s/${code}`);
 const snapshot = ref<ListSnapshot | null>(data.value?.snapshot ?? null);
 
 const unit = ref<Unit>(snapshot.value?.displayUnit ?? "g");
 const showBreakdown = ref(false);
 const totals = computed(() => (snapshot.value ? computeTotals(snapshot.value) : null));
-
-const itemsIn = (fid: string) =>
-  (snapshot.value?.items ?? [])
-    .filter((i) => i.folderId === fid)
-    .sort((a, b) => a.sortOrder - b.sortOrder);
+// re-skin the snapshot with the viewer's chosen unit; the editor components read list.displayUnit
+const roList = computed(() =>
+  snapshot.value ? { ...snapshot.value, displayUnit: unit.value } : null,
+);
+const ungrouped = computed(() =>
+  snapshot.value ? snapshot.value.items.filter((i) => !i.folderId) : [],
+);
+// a shared list shouldn't show empty folders
+const shownFolders = computed(() =>
+  roList.value
+    ? roList.value.folders.filter((f) => snapshot.value!.items.some((i) => i.folderId === f.id))
+    : [],
+);
 
 useHead({
   title: () => (snapshot.value ? `${snapshot.value.title} — Gear` : "Gear"),
@@ -52,49 +60,24 @@ onBeforeUnmount(() => poll && clearInterval(poll));
       </div>
     </header>
 
-    <main v-if="snapshot && totals" class="wrap view">
-      <h1 class="t-title view__title">{{ snapshot.title }}</h1>
+    <main v-if="roList && totals" class="wrap view">
+      <h1 class="t-title view__title">{{ roList.title }}</h1>
 
       <TotalsBar
-        :list="{ ...snapshot, displayUnit: unit }"
+        :list="roList"
         :totals="totals"
         v-model:show-breakdown="showBreakdown"
         readonly
         @set-unit="(u) => (unit = u)"
       />
 
-      <section v-for="f in snapshot.folders" :key="f.id" class="folder">
-        <header class="folder__head">
-          <span class="folder__dot" :style="{ background: `var(--cat-${f.colorKey ?? 'other'})` }" />
-          <span class="folder__name">{{ f.name }}</span>
-        </header>
-        <ul class="rows">
-          <li v-for="it in itemsIn(f.id)" :key="it.id" class="vrow" :class="`vrow--${effectiveClassification(it, snapshot.folders)}`">
-            <span class="vrow__name">
-              <template v-if="it.brand">{{ it.brand }} </template>{{ it.name }}
-            </span>
-            <span class="t-num t-xs t-muted">×{{ it.qty }}</span>
-            <span class="t-num vrow__w">{{ it.unitWeightMg > 0 ? formatWeight(lineMg(it), unit) : "—" }}</span>
-          </li>
-          <li v-if="!itemsIn(f.id).length" class="t-sm t-faint">—</li>
-        </ul>
-      </section>
-
-      <section v-if="snapshot.items.some((i) => !i.folderId)" class="folder">
-        <header class="folder__head"><span class="folder__name">Ungrouped</span></header>
-        <ul class="rows">
-          <li
-            v-for="it in snapshot.items.filter((i) => !i.folderId)"
-            :key="it.id"
-            class="vrow"
-            :class="`vrow--${effectiveClassification(it, snapshot.folders)}`"
-          >
-            <span class="vrow__name"><template v-if="it.brand">{{ it.brand }} </template>{{ it.name }}</span>
-            <span class="t-num t-xs t-muted">×{{ it.qty }}</span>
-            <span class="t-num vrow__w">{{ it.unitWeightMg > 0 ? formatWeight(lineMg(it), unit) : "—" }}</span>
-          </li>
-        </ul>
-      </section>
+      <div class="view__folders">
+        <FolderSection v-for="f in shownFolders" :key="f.id" :list="roList" :folder="f" readonly />
+        <section v-if="ungrouped.length">
+          <p class="t-label view__ungrouped">Ungrouped</p>
+          <ItemRow v-for="it in ungrouped" :key="it.id" :list="roList" :item="it" readonly />
+        </section>
+      </div>
     </main>
 
     <main v-else class="wrap view view--missing">
@@ -105,20 +88,40 @@ onBeforeUnmount(() => poll && clearInterval(poll));
 </template>
 
 <style scoped>
-.topbar { border-bottom: 1px solid var(--line); }
-.topbar__inner { display: flex; align-items: center; gap: var(--space-3); padding-block: var(--space-3); }
-.brand { letter-spacing: 0.1em; }
-.topbar__inner .btn { margin-left: auto; }
-.view { padding-block: var(--space-5) var(--space-9); display: flex; flex-direction: column; gap: var(--space-6); }
-.view__title { font-family: var(--font-serif); }
-.folder { padding: 0; }
-.folder__head { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-2); }
-.folder__dot { width: 8px; height: 8px; flex: none; }
-.folder__name { font-weight: 700; font-size: var(--text-title); letter-spacing: -0.01em; }
-.rows { display: flex; flex-direction: column; }
-.vrow { display: grid; grid-template-columns: 1fr 44px 96px; align-items: baseline; gap: var(--space-3); padding: var(--space-1) 0; }
-.vrow__w { text-align: right; }
-.vrow--worn .vrow__name::after { content: " · worn"; color: var(--cat-worn); font-size: var(--text-xs); }
-.vrow--consumable .vrow__name::after { content: " · consumable"; color: var(--cat-consumable); font-size: var(--text-xs); }
-.view--missing { padding-block: var(--space-9); align-items: flex-start; }
+.topbar {
+  border-bottom: 1px solid var(--line);
+}
+.topbar__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-3);
+}
+.brand {
+  letter-spacing: 0.1em;
+}
+.topbar__inner .btn {
+  margin-left: auto;
+}
+.view {
+  padding-block: var(--space-5) var(--space-9);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+.view__title {
+  font-family: var(--font-serif);
+}
+.view__folders {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+}
+.view__ungrouped {
+  margin-bottom: var(--space-1);
+}
+.view--missing {
+  padding-block: var(--space-9);
+  align-items: flex-start;
+}
 </style>

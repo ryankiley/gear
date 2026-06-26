@@ -2,7 +2,10 @@
 import type { Classification, Folder, ListSnapshot } from "~~/shared/types";
 import { lineMg, formatWeight } from "~~/shared/weights";
 
-const props = defineProps<{ list: ListSnapshot; folder: Folder; packed: boolean }>();
+const props = withDefaults(
+  defineProps<{ list: ListSnapshot; folder: Folder; packed?: boolean; readonly?: boolean }>(),
+  { packed: false, readonly: false },
+);
 const c = useGearList();
 
 const items = computed(() =>
@@ -36,7 +39,9 @@ const CLASS_OPTS: { value: Classification; label: string }[] = [
   <section class="folder">
     <header class="folder__head">
       <span class="folder__dot" :style="{ background: `var(--cat-${folder.colorKey ?? 'other'})` }" />
+      <span v-if="readonly" class="folder__name">{{ folder.name }}</span>
       <input
+        v-else
         class="field folder__name"
         :value="folder.name"
         :disabled="packed"
@@ -44,7 +49,7 @@ const CLASS_OPTS: { value: Classification; label: string }[] = [
       />
       <span v-if="folderMg > 0" class="t-num t-xs t-muted">{{ formatWeight(folderMg, list.displayUnit) }}</span>
       <select
-        v-if="!packed"
+        v-if="!packed && !readonly"
         class="field folder__class"
         :value="folder.defaultClassification"
         title="Default for items in this folder"
@@ -53,7 +58,7 @@ const CLASS_OPTS: { value: Classification; label: string }[] = [
         <option v-for="o in CLASS_OPTS" :key="o.value" :value="o.value">{{ o.label }}</option>
       </select>
       <button
-        v-if="!packed"
+        v-if="!packed && !readonly"
         class="btn btn--icon btn--ghost"
         title="Remove folder"
         aria-label="Remove folder"
@@ -64,11 +69,12 @@ const CLASS_OPTS: { value: Classification; label: string }[] = [
     </header>
 
     <div class="folder__items">
-      <ItemRow v-for="it in items" :key="it.id" :list="list" :item="it" :packed="packed" />
-      <p v-if="!items.length && !packed" class="t-sm t-faint folder__empty">No items yet.</p>
+      <ItemRow v-for="it in items" :key="it.id" :list="list" :item="it" :packed="packed" :readonly="readonly" />
+      <p v-if="!items.length && !packed && !readonly" class="t-sm t-faint folder__empty">No items yet.</p>
+      <p v-else-if="!items.length && readonly" class="t-sm t-faint folder__empty">—</p>
     </div>
 
-    <div v-if="!packed" class="folder__add">
+    <div v-if="!packed && !readonly" class="folder__add">
       <ItemInput :unit="list.displayUnit" @commit="onCommit" />
     </div>
   </section>
