@@ -3,6 +3,7 @@ import { CircleMinus } from "@lucide/vue";
 import { STARTER_FOLDERS } from "~~/shared/categories";
 import { type DiscoveryCard, type FeedView } from "~~/shared/discovery";
 import { uid } from "~~/shared/id";
+import { lighterpackId } from "~~/shared/lighterpack";
 import type { Folder, ListData, ListSnapshot } from "~~/shared/types";
 import { formatWeight } from "~~/shared/weights";
 import { csvToListData } from "~~/shared/exporters/csv";
@@ -83,8 +84,24 @@ async function importData(data: ListData) {
     importing.value = false;
   }
 }
-function importFromText() {
-  importData(csvToListData(importText.value));
+async function importFromText() {
+  const text = importText.value.trim();
+  if (!text) return;
+  // a LighterPack share link → fetch + parse its sanctioned CSV export server-side
+  if (lighterpackId(text)) {
+    importing.value = true;
+    importError.value = "";
+    try {
+      const { data } = await $fetch<{ data: ListData }>("/api/import", { method: "POST", body: { url: text } });
+      await importData(data);
+    } catch (e: unknown) {
+      const err = e as { data?: { statusMessage?: string; message?: string } };
+      importError.value = err?.data?.statusMessage || err?.data?.message || "Couldn’t import that LighterPack link.";
+      importing.value = false;
+    }
+    return;
+  }
+  importData(csvToListData(text));
 }
 function onFile(e: Event) {
   const file = (e.target as HTMLInputElement).files?.[0];
@@ -114,13 +131,14 @@ function onFile(e: Event) {
 
         <div v-if="showImport" class="import panel">
           <p class="t-sm t-muted">
-            Paste a CSV — LighterPack’s “Export to CSV”, or any spreadsheet — or choose a file.
+            Paste a LighterPack share link, a CSV (LighterPack’s “Export to CSV” or any
+            spreadsheet), or choose a file.
           </p>
           <textarea
             v-model="importText"
             class="field import__text"
             rows="5"
-            placeholder="Category,Item Name,Qty,Weight,Unit,Worn,Consumable…"
+            placeholder="https://lighterpack.com/r/… — or — Category,Item Name,Qty,Weight,Unit,Worn,Consumable…"
           />
           <div class="import__actions">
             <input type="file" accept=".csv,.tsv,text/csv,text/plain" @change="onFile" />
