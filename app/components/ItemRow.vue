@@ -69,6 +69,7 @@ function onClass(e: Event) {
   const v = (e.target as HTMLSelectElement).value as Classification;
   c.updateItem(props.item.id, { classification: v === "base" ? null : v });
 }
+const effClassLabel = computed(() => CLASS_OPTS.find((o) => o.value === effClass.value)?.label ?? "Base");
 
 // notes: toggled via an always-visible icon button (add/remove), not an
 // always-present field; the note shows as live text once it has content
@@ -174,16 +175,17 @@ function openFix() {
       </div>
 
       <div class="item__classwrap">
+        <span class="item__classlabel">{{ effClassLabel }}</span>
+        <ChevronDown class="item__classchev" :size="13" :stroke-width="2" aria-hidden="true" />
         <select
-          class="field item__class"
-          :class="`item__class--${effClass}`"
+          class="item__classsel"
           :value="effClass"
           :title="`Counts as ${effClass}`"
+          aria-label="Classification"
           @change="onClass"
         >
           <option v-for="o in CLASS_OPTS" :key="o.value" :value="o.value">{{ o.label }}</option>
         </select>
-        <ChevronDown class="item__classchev" :size="13" :stroke-width="2" aria-hidden="true" />
       </div>
 
       <div class="item__actions">
@@ -327,20 +329,26 @@ function openFix() {
   flex: none;
 }
 .item__classwrap {
+  position: relative;
   display: inline-flex;
   align-items: baseline;
-  gap: var(--space-1);
+  gap: var(--space-px);
   min-width: 0;
 }
-.item__class {
-  /* de-chrome the native select so its text aligns to the column edge (native
-     selects carry a UA text inset); the chevron restores the dropdown affordance */
-  appearance: none;
-  -webkit-appearance: none;
-  width: auto;
-  min-width: 0;
+.item__classlabel {
   font-size: var(--text-sm);
   color: var(--ink-2);
+  white-space: nowrap;
+}
+/* transparent native select over the label + chevron: the visible label hugs the
+   chevron tight (a styled <select> sizes to its widest option, leaving a big gap),
+   while the real select keeps full keyboard + native-picker behaviour */
+.item__classsel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
 }
 .item__classchev {
   flex: none;
@@ -390,7 +398,7 @@ function openFix() {
   top: 0;
   left: 0;
   right: 0;
-  height: 2px;
+  height: var(--space-px);
   background: var(--ink);
   pointer-events: none;
 }
@@ -439,13 +447,15 @@ function openFix() {
 
 @media (max-width: 560px) {
   /* the item reads as ONE data row — name · qty · weight; the controls
-     (classification + remove) sit on a quiet second row */
+     (classification + grip/note/remove) sit on a quiet second row. The actions
+     cluster spans two tracks so all three icons fit (the single track is too
+     narrow for grip + note + remove). */
   .item {
     align-items: baseline;
     grid-template-columns: var(--item-cols-mobile);
     grid-template-areas:
       "name qty weight"
-      "class class del";
+      "class actions actions";
     gap: var(--space-2) var(--space-3);
   }
   .item__name {
@@ -463,7 +473,7 @@ function openFix() {
     justify-self: start;
   }
   .item__actions {
-    grid-area: del;
+    grid-area: actions;
     justify-self: end;
   }
 }

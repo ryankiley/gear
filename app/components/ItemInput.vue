@@ -40,7 +40,16 @@ watch(
   },
 );
 
+// guard so a programmatic commit/select (which changes `draft`) doesn't
+// immediately re-open the menu via this watcher
+let suppressOpen = false;
+function setDraftQuiet(v: string) {
+  suppressOpen = true;
+  draft.value = v;
+  nextTick(() => (suppressOpen = false));
+}
 watch(draft, (v) => {
+  if (suppressOpen) return;
   search(v);
   active.value = -1;
   open.value = true;
@@ -62,7 +71,7 @@ function selectResult(r: CatalogResult) {
   emit("commit", { name, weightMg: r.weightMg, catalogItemId: r.id });
   // self-improving ranking: tell the catalog this item was used (fire-and-forget)
   $fetch("/api/catalog/use", { method: "POST", body: { ids: [r.id] } }).catch(() => {});
-  draft.value = props.clearOnCommit ? "" : name;
+  setDraftQuiet(props.clearOnCommit ? "" : name);
   weightDraft.value = "";
   close();
 }
@@ -78,7 +87,7 @@ function commitFree() {
   // the companion weight field wins; else a trailing weight in the typed name
   const weight = weightDraft.value.trim() || (m ? m[1] : undefined);
   emit("commit", { name, weight });
-  draft.value = props.clearOnCommit ? "" : name;
+  setDraftQuiet(props.clearOnCommit ? "" : name);
   weightDraft.value = "";
   close();
 }

@@ -42,7 +42,7 @@ function onCommit(p: {
 
 <template>
   <section class="folder" :data-folder="folder.id">
-    <header class="folder__head" :class="{ 'folder__head--ro': readonly }">
+    <header class="folder__head" :class="{ 'folder__head--ro': readonly, 'folder__head--packed': packed }">
       <div class="folder__title">
         <span v-if="readonly" class="folder__name">{{ folder.name }}</span>
         <input
@@ -95,6 +95,17 @@ function onCommit(p: {
 .folder__head--ro {
   grid-template-columns: var(--item-cols-ro);
 }
+/* packing mode: match the checklist item grid (auto 1fr 44px 96px) so the folder
+   total lines up with the per-item weights (both right-aligned in the last col) */
+.folder__head--packed {
+  grid-template-columns: auto var(--item-cols-ro);
+}
+.folder__head--packed .folder__title {
+  grid-column: 1 / 4;
+}
+.folder__head--packed .folder__weight {
+  grid-column: 4;
+}
 .folder__title {
   grid-column: 1 / 3;
   display: flex;
@@ -141,7 +152,7 @@ function onCommit(p: {
 /* rule lines between items — a quiet spec-sheet rhythm; padding here (not on the
    rows) keeps the gap above/below each rule consistent across all row types */
 .folder__items > * {
-  padding-block: var(--space-2);
+  padding-block: var(--space-3);
 }
 .folder__items > * + * {
   border-top: 1px solid var(--line);
@@ -151,7 +162,7 @@ function onCommit(p: {
 }
 /* drag-to-reorder: insertion line when dropping at the end of this folder */
 .folder__droptail {
-  height: 2px;
+  height: var(--space-px);
   background: var(--ink);
   margin: var(--space-1) 0;
 }

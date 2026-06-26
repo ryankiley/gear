@@ -47,27 +47,46 @@ function create() {
     }
   }
 
-  function onUp() {
+  function detach() {
     window.removeEventListener("pointermove", onMove);
     window.removeEventListener("pointerup", onUp);
-    document.body.style.userSelect = "";
-    const id = dragId.value;
-    const target = drop.value;
+    window.removeEventListener("pointercancel", onCancel);
+  }
+
+  // Clear all drag state + listeners without committing. Safe to call any time
+  // (re-entrant drag start, interrupted gesture, list dispose).
+  function reset() {
+    detach();
+    if (typeof document !== "undefined") document.body.style.userSelect = "";
     dragId.value = null;
     drop.value = null;
+  }
+
+  function onUp() {
+    const id = dragId.value;
+    const target = drop.value;
+    reset();
     if (id && target) useGearList().moveItem(id, target.folderId, target.beforeId);
   }
 
+  // touch/OS can end a gesture with pointercancel (second finger, edge-swipe,
+  // scroll steal) instead of pointerup — drop the drag, commit nothing.
+  function onCancel() {
+    reset();
+  }
+
   function start(itemId: string, ev: PointerEvent) {
+    if (dragId.value) reset(); // never stack a second gesture's listeners
     ev.preventDefault();
     dragId.value = itemId;
     drop.value = null;
     document.body.style.userSelect = "none";
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onCancel);
   }
 
-  return { dragId, drop, start };
+  return { dragId, drop, start, reset };
 }
 
 export function useItemDnd() {

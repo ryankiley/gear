@@ -316,6 +316,7 @@ function create() {
 
   function dispose() {
     epoch++; // invalidate any in-flight flush/poll responses
+    useItemDnd().reset(); // drop any in-flight drag so it can't commit against a new list
     stopPoll();
     clearTimeout(flushTimer);
     clearTimeout(undoTimer);
