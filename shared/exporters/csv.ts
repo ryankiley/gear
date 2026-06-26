@@ -87,7 +87,7 @@ export function parseCsv(text: string): string[][] {
 export function csvToListData(text: string, defaultUnit: Unit = "g"): ListData {
   const rows = parseCsv(text);
   if (rows.length < 2) return { folders: [], items: [] };
-  const header = rows[0].map((h) => h.trim().toLowerCase());
+  const header = rows[0]!.map((h) => h.trim().toLowerCase());
   const idx = (names: string[]) => {
     for (const n of names) { const i = header.indexOf(n); if (i >= 0) return i; }
     return -1;
@@ -120,7 +120,7 @@ export function csvToListData(text: string, defaultUnit: Unit = "g"): ListData {
 
   const items: ListData["items"] = [];
   for (let r = 1; r < rows.length; r++) {
-    const row = rows[r];
+    const row = rows[r]!;
     const name = (row[nameCol] || "").trim();
     if (!name) continue;
     const cat = iCat >= 0 ? row[iCat] : "";
@@ -128,7 +128,7 @@ export function csvToListData(text: string, defaultUnit: Unit = "g"): ListData {
     const unit = normalizeUnit(iUnit >= 0 ? row[iUnit] : undefined, defaultUnit);
     const weightNum = iWeight >= 0 ? parseFloat((row[iWeight] || "").replace(/,/g, "")) : 0;
     const unitWeightMg = isFinite(weightNum) && weightNum > 0 ? toMg(weightNum, unit) : 0;
-    const qty = iQty >= 0 ? Math.max(1, Math.round(parseFloat(row[iQty]) || 1)) : 1;
+    const qty = iQty >= 0 ? Math.max(1, Math.round(parseFloat(row[iQty] || "") || 1)) : 1;
     const classification = iWorn >= 0 && truthy(row[iWorn])
       ? "worn"
       : iCons >= 0 && truthy(row[iCons])

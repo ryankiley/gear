@@ -6,7 +6,7 @@ import type { ListData, Unit } from "../../../shared/types";
 const UNITS: Unit[] = ["g", "kg", "oz", "lb"];
 
 export default defineEventHandler(async (event) => {
-  rateLimit(event, "create", 30, 60_000);
+  await rateLimit(event, "create", 30, 60_000);
   assertMaxBody(event, 512_000);
   const body = (await readBody(event).catch(() => ({}))) as {
     title?: string;

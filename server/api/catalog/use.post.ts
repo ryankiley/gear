@@ -8,7 +8,7 @@ import { assertMaxBody, rateLimit } from "../../utils/rateLimit";
 export default defineEventHandler(async (event) => {
   setHeader(event, "X-Robots-Tag", "noindex");
   assertMaxBody(event, 8_000);
-  rateLimit(event, "catalog-use", 120, 60_000);
+  await rateLimit(event, "catalog-use", 120, 60_000);
   const body = (await readBody(event).catch(() => ({}))) as { ids?: unknown };
   const ids = Array.isArray(body?.ids)
     ? body.ids.filter((n): n is number => typeof n === "number")

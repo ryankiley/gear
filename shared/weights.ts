@@ -87,11 +87,11 @@ export function parseWeightInput(
   let m: RegExpExecArray | null;
 
   while ((m = re.exec(text)) !== null) {
-    const num = numFromGroup(m[1]);
+    const num = numFromGroup(m[1]!);
     if (!isFinite(num)) continue;
     const unitWord = m[2];
     const unit = unitWord ? UNIT_ALIASES[unitWord] : defaultUnit;
-    if (unitWord && !unit) continue; // an unknown word like "stuff sack" — skip
+    if (!unit) continue; // an unknown word like "stuff sack" — skip
     matched = true;
     mg += num * MG_PER_UNIT[unit];
   }

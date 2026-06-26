@@ -1,5 +1,5 @@
 import type { H3Event } from "h3";
-import { createError, getHeader, getRequestIP } from "h3";
+import { createError, getHeader, getRequestHeader, getRequestIP } from "h3";
 
 /** Reject oversized request bodies before parsing (defense-in-depth vs DoS). */
 export function assertMaxBody(event: H3Event, maxBytes: number) {
@@ -7,27 +7,87 @@ export function assertMaxBody(event: H3Event, maxBytes: number) {
   if (len > maxBytes) throw createError({ statusCode: 413, statusMessage: "Payload too large" });
 }
 
-// Interim per-IP token bucket (single-instance dev). Production should swap this
-// for an Upstash/Redis counter so the limit holds across serverless instances —
-// tracked as part of the planned rate-limiting phase.
+/**
+ * Resolve the client IP for rate limiting.
+ *
+ * NOT `getRequestIP(event, { xForwardedFor: true })`: that returns the LEFTMOST
+ * `X-Forwarded-For` entry, which is client-supplied and trivially spoofable. A
+ * client can rotate the header to land in a fresh bucket on every request
+ * (defeating the limit entirely), or pin a victim's IP to get the victim limited.
+ *
+ * This app deploys on Vercel, so trust only the headers Vercel's edge sets — and
+ * which it overwrites on any client-supplied copy:
+ *   1. `x-vercel-forwarded-for` — Vercel's canonical real-client-IP header.
+ *   2. `x-real-ip` — also set by Vercel's proxy.
+ *   3. socket remote address (bare `getRequestIP`, no XFF) — last resort, never
+ *      client-controlled; this is what dev/PGlite (no edge in front) falls to.
+ *
+ * Residual: a request sent straight to the `*.vercel.app` origin (bypassing the
+ * edge) could forge these headers, but that's a pre-existing platform exposure
+ * and out of scope here — the fix that matters is no longer trusting the
+ * leftmost XFF. Returns undefined when nothing resolves so callers fall back.
+ */
+export function getClientIp(event: H3Event): string | undefined {
+  const vercel = getRequestHeader(event, "x-vercel-forwarded-for");
+  if (vercel) return vercel.split(",")[0]!.trim();
+  const real = getRequestHeader(event, "x-real-ip");
+  if (real) return real.trim();
+  return getRequestIP(event);
+}
+
 type Bucket = { count: number; resetAt: number };
-const buckets = new Map<string, Bucket>();
 
-export function rateLimit(event: H3Event, action: string, limit: number, windowMs: number) {
-  const ip = getRequestIP(event, { xForwardedFor: true }) || "unknown";
-  const key = `${action}:${ip}`;
-  const now = Date.now();
+// The subset of Nitro's `useStorage("kv")` API the limiter touches. Prod binds
+// it to Upstash Redis, dev to an in-memory driver (both in nuxt.config.ts);
+// tests inject a Map-backed fake.
+export interface KvStorage {
+  getItem: <T>(key: string) => Promise<T | null>;
+  setItem: <T>(key: string, value: T, opts?: { ttl?: number }) => Promise<void>;
+}
 
-  // opportunistic prune so the map can't grow unbounded
-  if (buckets.size > 5000) {
-    for (const [k, b] of buckets) if (b.resetAt <= now) buckets.delete(k);
-  }
+/**
+ * Fixed-window counter against a SHARED store. Returns true when the request is
+ * over the limit. Clock + storage are injected so it's pure and unit-testable —
+ * and, crucially, instance-independent: backing this with one shared Upstash
+ * counter (not a per-process Map) is what makes the limit hold globally across
+ * Vercel's serverless instances instead of per-instance.
+ *
+ * Concurrency: get→increment→set is not an atomic Redis INCR, so two requests
+ * racing at the boundary can each read the same count and both pass (±1 over the
+ * limit). Acceptable for these coarse per-IP budgets.
+ */
+export async function consumeRateLimit(
+  storage: KvStorage,
+  key: string,
+  limit: number,
+  windowMs: number,
+  now: number,
+): Promise<boolean> {
+  const existing = await storage.getItem<Bucket>(key);
+  const bucket: Bucket =
+    !existing || existing.resetAt <= now
+      ? { count: 1, resetAt: now + windowMs }
+      : { count: existing.count + 1, resetAt: existing.resetAt };
+  // TTL bounds the key to the remaining window so expired windows self-evict on
+  // Upstash and the in-memory dev driver can't grow unbounded.
+  const ttl = Math.max(1, Math.ceil((bucket.resetAt - now) / 1000));
+  await storage.setItem(key, bucket, { ttl });
+  return bucket.count > limit;
+}
 
-  let b = buckets.get(key);
-  if (!b || b.resetAt <= now) {
-    b = { count: 0, resetAt: now + windowMs };
-    buckets.set(key, b);
-  }
-  b.count += 1;
-  if (b.count > limit) throw createError({ statusCode: 429, statusMessage: "Too many requests" });
+/**
+ * Per-IP rate limit for a public mutating endpoint. Backed by Nitro's
+ * `useStorage("kv")` — Upstash Redis in prod (shared across every serverless
+ * instance), in-memory in dev. Throws 429 once the window's limit is exceeded.
+ */
+export async function rateLimit(
+  event: H3Event,
+  action: string,
+  limit: number,
+  windowMs: number,
+): Promise<void> {
+  const ip = getClientIp(event) || "unknown";
+  const storage = useStorage("kv") as unknown as KvStorage;
+  const over = await consumeRateLimit(storage, `rl:${action}:${ip}`, limit, windowMs, Date.now());
+  if (over) throw createError({ statusCode: 429, statusMessage: "Too many requests" });
 }

@@ -2,6 +2,32 @@
 export default defineNuxtConfig({
   modules: ["@vueuse/nuxt"],
 
+  // Rate-limit counter store (server/utils/rateLimit.ts). Prod is Upstash Redis
+  // — a single shared store across every Vercel serverless instance, so the
+  // per-IP limit holds globally instead of per-instance. Provisioned via the
+  // Vercel Marketplace Upstash KV integration, which auto-populates
+  // KV_REST_API_URL + KV_REST_API_TOKEN; the unstorage upstash driver defaults
+  // to UPSTASH_REDIS_REST_* names, so we point url/token at Vercel's vars
+  // explicitly. Dev uses an in-memory driver so local runs need no Upstash.
+  $development: {
+    nitro: {
+      storage: {
+        kv: { driver: "memory" },
+      },
+    },
+  },
+  $production: {
+    nitro: {
+      storage: {
+        kv: {
+          driver: "upstash",
+          url: process.env.KV_REST_API_URL,
+          token: process.env.KV_REST_API_TOKEN,
+        },
+      },
+    },
+  },
+
   css: ["~/assets/styles/main.scss"],
 
   components: [

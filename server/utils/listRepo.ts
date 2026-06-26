@@ -138,7 +138,7 @@ export async function createList(init?: {
           version: 1,
         })
         .returning();
-      return { editToken, snapshot: rowToSnapshot(inserted[0]) };
+      return { editToken, snapshot: rowToSnapshot(inserted[0]!) };
     } catch (e) {
       if ((e as { code?: string })?.code === "23505" && attempt < 4) continue;
       throw e;

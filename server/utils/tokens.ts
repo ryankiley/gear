@@ -9,7 +9,7 @@ const CROCKFORD = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
 function crockford(byteLen: number): string {
   const bytes = randomBytes(byteLen);
   let out = "";
-  for (let i = 0; i < bytes.length; i++) out += CROCKFORD[bytes[i] & 31];
+  for (let i = 0; i < bytes.length; i++) out += CROCKFORD[bytes[i]! & 31];
   return out;
 }
 
