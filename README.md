@@ -70,9 +70,9 @@ tests/      Vitest unit tests
   and it's rotatable. Read sharing is a separate short Crockford-base32 code at `/s/{code}`.
 - **Concurrency.** A `version` column with 409 optimistic concurrency, since a shared edit link
   can have two editors.
-- **Rate limiting.** Per-IP token buckets on the public mutating endpoints, backed by a shared
-  Upstash store and keyed on Vercel's trusted client-IP header (never the spoofable leftmost
-  `X-Forwarded-For`).
+- **Rate limiting.** Per-IP limits on the public endpoints — both the mutating routes and the
+  catalog read/search APIs — backed by a shared Upstash store and keyed on Vercel's trusted
+  client-IP header (never the spoofable leftmost `X-Forwarded-For`).
 - **Privacy.** No stored IP hashes; partial unique indexes with real hard-delete; snapshots for
   vandalism recovery.
 
@@ -115,4 +115,8 @@ empty git diff). To add gear: write a new research file → `catalog:build` → 
 
 ## License
 
-Private, for now.
+Source **code** is licensed under the [MIT License](LICENSE).
+
+The curated gear catalog under `seed/` — `catalog.csv` and `_research/` — is **not**
+covered by MIT. It is © 2026 Ryan Kiley, all rights reserved as a compiled dataset
+(see [seed/LICENSE.md](seed/LICENSE.md)).
