@@ -52,6 +52,10 @@ export interface ListSnapshot extends ListMeta, ListData {
   slug: string;
   version: number;
   isPublic: boolean;
+  // public-feed metadata (only populated on the public read view / publish flow)
+  tripType?: string;
+  season?: string;
+  publishedAt?: string;
 }
 
 /** The reducer's state: meta + content + version. */

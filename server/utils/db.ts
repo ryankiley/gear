@@ -30,7 +30,11 @@ async function build() {
   return db;
 }
 
-const DDL = [
+// lists DDL — single-sourced here (mirrors CATALOG_DDL) so tests can build a
+// fresh DB with the exact production-faithful shape. Safe on PGlite + Neon.
+// The ALTERs make column additions idempotent on a pre-existing dev database
+// (CREATE TABLE IF NOT EXISTS won't add a column to a table that already exists).
+export const LISTS_DDL: string[] = [
   `CREATE TABLE IF NOT EXISTS lists (
     id serial PRIMARY KEY,
     public_slug text NOT NULL,
@@ -47,8 +51,10 @@ const DDL = [
     item_count integer NOT NULL DEFAULT 0,
     is_public boolean NOT NULL DEFAULT false,
     published_at timestamptz,
+    trip_type text,
     season text,
     primary_category text,
+    view_count integer NOT NULL DEFAULT 0,
     claim_phrase_hash text,
     version integer NOT NULL DEFAULT 1,
     status text NOT NULL DEFAULT 'active',
@@ -56,10 +62,21 @@ const DDL = [
     updated_at timestamptz NOT NULL DEFAULT now(),
     deleted_at timestamptz
   )`,
+  `ALTER TABLE lists ADD COLUMN IF NOT EXISTS trip_type text`,
+  `ALTER TABLE lists ADD COLUMN IF NOT EXISTS view_count integer NOT NULL DEFAULT 0`,
   `CREATE UNIQUE INDEX IF NOT EXISTS idx_lists_edit_token ON lists(edit_token_hash) WHERE deleted_at IS NULL`,
   `CREATE UNIQUE INDEX IF NOT EXISTS idx_lists_share_code ON lists(share_code) WHERE deleted_at IS NULL`,
   `CREATE UNIQUE INDEX IF NOT EXISTS idx_lists_slug ON lists(public_slug) WHERE deleted_at IS NULL`,
+  // feed sort: lightest-packs leaderboard (base weight asc)
   `CREATE INDEX IF NOT EXISTS idx_lists_feed ON lists(base_weight_mg) WHERE is_public AND status='active' AND deleted_at IS NULL`,
+  // feed sort: recent (published_at desc)
+  `CREATE INDEX IF NOT EXISTS idx_lists_feed_recent ON lists(published_at DESC) WHERE is_public AND status='active' AND deleted_at IS NULL`,
+  // browse-by-trip-type (the default feed): trip then recency
+  `CREATE INDEX IF NOT EXISTS idx_lists_feed_trip ON lists(trip_type, published_at DESC) WHERE is_public AND status='active' AND deleted_at IS NULL`,
+];
+
+const DDL = [
+  ...LISTS_DDL,
   // catalog_items (Phase 2) — single-sourced in server/utils/catalog.ts so the
   // seed script + search endpoint can ensure it on Neon too. These are safe on
   // both engines; the pg_trgm GIN index is created Neon-only (see catalog.ts).

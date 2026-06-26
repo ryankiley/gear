@@ -46,8 +46,12 @@ export const lists = pgTable(
     itemCount: integer("item_count").notNull().default(0),
     isPublic: boolean("is_public").notNull().default(false),
     publishedAt: timestamp("published_at", { withTimezone: true }),
+    // public-feed facets (closed enums, normalized in shared/discovery.ts)
+    tripType: text("trip_type"),
     season: text("season"),
     primaryCategory: text("primary_category"),
+    // cheap "most-viewed" signal for the feed; best-effort bumped on public reads
+    viewCount: integer("view_count").notNull().default(0),
     // optional recovery (generated phrase only); not used yet
     claimPhraseHash: text("claim_phrase_hash"),
     // optimistic concurrency + live-sync counter
@@ -68,8 +72,17 @@ export const lists = pgTable(
     uniqueIndex("idx_lists_slug")
       .on(t.publicSlug)
       .where(sql`${t.deletedAt} is null`),
+    // feed sort: lightest-packs leaderboard (base weight asc)
     index("idx_lists_feed")
       .on(t.baseWeightMg)
+      .where(sql`${t.isPublic} and ${t.status} = 'active' and ${t.deletedAt} is null`),
+    // feed sort: recent (published_at desc)
+    index("idx_lists_feed_recent")
+      .on(t.publishedAt.desc())
+      .where(sql`${t.isPublic} and ${t.status} = 'active' and ${t.deletedAt} is null`),
+    // browse-by-trip-type (the default feed): trip then recency
+    index("idx_lists_feed_trip")
+      .on(t.tripType, t.publishedAt.desc())
       .where(sql`${t.isPublic} and ${t.status} = 'active' and ${t.deletedAt} is null`),
   ],
 );
