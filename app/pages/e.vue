@@ -363,9 +363,14 @@ function onPublished(e: { status: string }) {
   flex-direction: column;
   gap: var(--space-7);
 }
-/* load reveal: folders cascade in (SPACE10 signature), ~50ms apart */
+/* load reveal: folders cascade in (SPACE10 signature), ~50ms apart.
+   fill-mode `backwards` (not `both`): holds the hidden start-state during each
+   folder's stagger delay, then settles to the natural style afterwards. `both`
+   would retain an identity `transform` post-animation, making every folder a
+   stacking context that traps the add-item autocomplete dropdown's z-index
+   inside its folder (so later folders paint over it). */
 .editor__folders > * {
-  animation: rise var(--dur-slow) var(--ease) both;
+  animation: rise var(--dur-slow) var(--ease) backwards;
 }
 .editor__folders > *:nth-child(2) {
   animation-delay: 50ms;
