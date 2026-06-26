@@ -198,3 +198,27 @@ export const catalogEdits = pgTable(
 
 export type CatalogEditRow = typeof catalogEdits.$inferSelect;
 export type NewCatalogEditRow = typeof catalogEdits.$inferInsert;
+
+// ---------------------------------------------------------------------------
+// list_snapshots — periodic recovery points for the shared-edit-link model.
+// An edit link is a SHARED capability, so a clumsy/malicious editor can wreck a
+// list; a throttled snapshot of the pre-mutation state (plus one before any
+// restore) lets the owner roll back. Capped + pruned per list (see listRepo).
+// ---------------------------------------------------------------------------
+export const listSnapshots = pgTable(
+  "list_snapshots",
+  {
+    id: serial("id").primaryKey(),
+    listId: integer("list_id").notNull(),
+    // the restorable payload: list meta + the op-reducer content
+    snapshot: jsonb("snapshot")
+      .$type<{ title: string; description: string | null; displayUnit: string; data: ListData }>()
+      .notNull(),
+    version: integer("version").notNull(),
+    reason: text("reason"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("idx_list_snapshots_list").on(t.listId, t.createdAt.desc())],
+);
+
+export type ListSnapshotRow = typeof listSnapshots.$inferSelect;

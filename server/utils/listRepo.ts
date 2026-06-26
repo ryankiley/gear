@@ -3,8 +3,8 @@
 // leaves this module.
 
 import { createError } from "h3";
-import { and, eq, isNull } from "drizzle-orm";
-import { lists, type ListRow } from "../db/schema";
+import { and, desc, eq, inArray, isNull } from "drizzle-orm";
+import { lists, listSnapshots, type ListRow } from "../db/schema";
 import {
   applyOps,
   MAX_FOLDERS,
@@ -15,8 +15,10 @@ import {
 } from "../../shared/ops";
 import { computeTotals } from "../../shared/weights";
 import type { ListData, ListSnapshot, ListState, Unit } from "../../shared/types";
-import { useDb } from "./db";
+import { ensureSnapshotSchema, useDb } from "./db";
 import { randomEditToken, randomShareCode, randomSlug, sha256Hex } from "./tokens";
+
+type Db = Awaited<ReturnType<typeof useDb>>;
 
 export function rowToSnapshot(row: ListRow): ListSnapshot {
   const data = (row.data ?? { folders: [], items: [] }) as ListData;
@@ -56,11 +58,141 @@ function normShareCode(raw: string): string | null {
   return CROCKFORD_RE.test(c) ? c : null;
 }
 
-async function findByEditToken(editToken: string): Promise<ListRow | null> {
-  const db = await useDb();
+async function findByEditToken(editToken: string, db?: Db): Promise<ListRow | null> {
+  const d = db ?? (await useDb());
   const hash = sha256Hex(editToken);
-  const rows = await db.select().from(lists).where(liveOnly(lists.editTokenHash, hash)).limit(1);
+  const rows = await d.select().from(lists).where(liveOnly(lists.editTokenHash, hash)).limit(1);
   return rows[0] ?? null;
+}
+
+// ---- snapshots (vandalism recovery for the shared-edit-link model) ----
+const SNAPSHOT_THROTTLE_MS = 5 * 60_000; // at most one auto-snapshot per list / 5 min
+const SNAPSHOT_CAP = 20; // keep the most recent N per list (older are pruned)
+
+/**
+ * Best-effort recovery point of a list row's CURRENT state. `force` skips the
+ * throttle (used before a restore). NEVER throws — a snapshot failure must not
+ * break the actual write.
+ */
+async function snapshotRow(db: Db, row: ListRow, reason: string, force = false): Promise<void> {
+  try {
+    await ensureSnapshotSchema(db);
+    if (!force) {
+      const last = await db
+        .select({ createdAt: listSnapshots.createdAt })
+        .from(listSnapshots)
+        .where(eq(listSnapshots.listId, row.id))
+        .orderBy(desc(listSnapshots.createdAt))
+        .limit(1);
+      if (last[0] && Date.now() - new Date(last[0].createdAt).getTime() < SNAPSHOT_THROTTLE_MS) return;
+    }
+    await db.insert(listSnapshots).values({
+      listId: row.id,
+      snapshot: {
+        title: row.title,
+        description: row.description ?? null,
+        displayUnit: row.displayUnit,
+        data: (row.data ?? { folders: [], items: [] }) as ListData,
+      },
+      version: row.version,
+      reason,
+    });
+    // prune beyond the cap (oldest first), so storage stays bounded per list
+    const all = await db
+      .select({ id: listSnapshots.id })
+      .from(listSnapshots)
+      .where(eq(listSnapshots.listId, row.id))
+      .orderBy(desc(listSnapshots.createdAt));
+    const stale = all.slice(SNAPSHOT_CAP).map((r) => r.id);
+    if (stale.length) await db.delete(listSnapshots).where(inArray(listSnapshots.id, stale));
+  } catch {
+    /* best-effort: never block a write on snapshotting */
+  }
+}
+
+export interface SnapshotMeta {
+  id: number;
+  version: number;
+  reason: string | null;
+  createdAt: string;
+  itemCount: number;
+}
+
+/** List a list's recovery points (newest first), edit-token-gated. */
+export async function listSnapshotsByEditToken(
+  editToken: string,
+  db?: Db,
+): Promise<SnapshotMeta[] | null> {
+  const d = db ?? (await useDb());
+  const row = await findByEditToken(editToken, d);
+  if (!row) return null;
+  await ensureSnapshotSchema(d);
+  const rows = await d
+    .select()
+    .from(listSnapshots)
+    .where(eq(listSnapshots.listId, row.id))
+    .orderBy(desc(listSnapshots.createdAt))
+    .limit(SNAPSHOT_CAP);
+  return rows.map((r) => ({
+    id: r.id,
+    version: r.version,
+    reason: r.reason ?? null,
+    createdAt: r.createdAt instanceof Date ? r.createdAt.toISOString() : String(r.createdAt),
+    itemCount: r.snapshot?.data?.items?.length ?? 0,
+  }));
+}
+
+/**
+ * Restore a list to one of its snapshots (edit-token-gated). The current state is
+ * snapshotted first ("before restore") so a restore is itself undoable. Returns
+ * null when the token or snapshot id doesn't resolve to THIS caller's list (→ 404,
+ * no cross-list oracle).
+ */
+export async function restoreSnapshotByEditToken(
+  editToken: string,
+  snapshotId: number,
+  db?: Db,
+): Promise<ListSnapshot | null> {
+  const d = db ?? (await useDb());
+  const row = await findByEditToken(editToken, d);
+  if (!row) return null;
+  await ensureSnapshotSchema(d);
+  const snaps = await d
+    .select()
+    .from(listSnapshots)
+    .where(and(eq(listSnapshots.id, snapshotId), eq(listSnapshots.listId, row.id)))
+    .limit(1);
+  const snap = snaps[0];
+  if (!snap) return null; // unknown id, or not this caller's list
+
+  await snapshotRow(d, row, "before restore", true);
+
+  const s = snap.snapshot;
+  // re-normalize through the SAME reducer helpers (defensive — a snapshot must
+  // not be a clamp-bypass back into raw JSONB)
+  const data: ListData = {
+    folders: (s.data?.folders ?? []).slice(0, MAX_FOLDERS).map(normalizeFolder),
+    items: (s.data?.items ?? []).slice(0, MAX_ITEMS).map(normalizeItem),
+  };
+  const totals = computeTotals(data);
+  const updated = await d
+    .update(lists)
+    .set({
+      title: (s.title ?? "Untitled list").slice(0, 200),
+      description: s.description ?? null,
+      displayUnit: s.displayUnit,
+      data,
+      baseWeightMg: totals.baseMg,
+      wornWeightMg: totals.wornMg,
+      consumableWeightMg: totals.consumableMg,
+      totalWeightMg: totals.totalMg,
+      itemCount: totals.itemCount,
+      version: row.version + 1,
+      updatedAt: new Date(),
+    })
+    .where(eq(lists.id, row.id))
+    .returning();
+  return updated[0] ? rowToSnapshot(updated[0]) : null;
 }
 
 export async function getByShareCode(code: string): Promise<ListSnapshot | null> {
@@ -156,10 +288,11 @@ export async function createList(init?: {
 export async function applyOpsByEditToken(
   editToken: string,
   ops: Op[],
+  db?: Db,
 ): Promise<ListSnapshot | null> {
-  const db = await useDb();
+  const d = db ?? (await useDb());
   for (let attempt = 0; attempt < 5; attempt++) {
-    const row = await findByEditToken(editToken);
+    const row = await findByEditToken(editToken, d);
     if (!row) return null;
 
     const state = rowToState(row);
@@ -167,7 +300,7 @@ export async function applyOpsByEditToken(
     const data: ListData = { folders: state.folders, items: state.items };
     const totals = computeTotals(data);
 
-    const updated = await db
+    const updated = await d
       .update(lists)
       .set({
         title: state.title,
@@ -185,7 +318,11 @@ export async function applyOpsByEditToken(
       .where(and(eq(lists.id, row.id), eq(lists.version, row.version)))
       .returning();
 
-    if (updated[0]) return rowToSnapshot(updated[0]);
+    if (updated[0]) {
+      // throttled recovery point of the PRE-edit state (best-effort; never blocks)
+      await snapshotRow(d, row, "edit");
+      return rowToSnapshot(updated[0]);
+    }
     // version moved under us — retry against the latest
   }
   // extreme contention: refuse rather than silently drop the caller's ops.

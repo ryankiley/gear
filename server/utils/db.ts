@@ -77,12 +77,43 @@ export const LISTS_DDL: string[] = [
   `CREATE INDEX IF NOT EXISTS idx_lists_feed_trip ON lists(trip_type, published_at DESC) WHERE is_public AND status='active' AND deleted_at IS NULL`,
 ];
 
+// list_snapshots (vandalism-recovery) — single-sourced here. Idempotent + safe on
+// both engines; ensured on the request path too (ensureSnapshotSchema) so it
+// exists on Neon without a migration, mirroring CATALOG_DDL.
+export const SNAPSHOTS_DDL: string[] = [
+  `CREATE TABLE IF NOT EXISTS list_snapshots (
+    id serial PRIMARY KEY,
+    list_id integer NOT NULL,
+    snapshot jsonb NOT NULL,
+    version integer NOT NULL,
+    reason text,
+    created_at timestamptz NOT NULL DEFAULT now()
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_list_snapshots_list ON list_snapshots(list_id, created_at DESC)`,
+];
+
+let _snapEnsured: Promise<void> | undefined;
+/** Idempotently create list_snapshots (memoized) — for Neon (no build-time DDL). */
+export function ensureSnapshotSchema(db: Db): Promise<void> {
+  if (!_snapEnsured) {
+    _snapEnsured = (async () => {
+      for (const stmt of SNAPSHOTS_DDL) await db.execute(sql.raw(stmt));
+    })();
+  }
+  return _snapEnsured;
+}
+/** Reset the ensure-memo — for tests that spin up a fresh database. */
+export function _resetSnapshotEnsured(): void {
+  _snapEnsured = undefined;
+}
+
 const DDL = [
   ...LISTS_DDL,
   // catalog_items (Phase 2) — single-sourced in server/utils/catalog.ts so the
   // seed script + search endpoint can ensure it on Neon too. These are safe on
   // both engines; the pg_trgm GIN index is created Neon-only (see catalog.ts).
   ...CATALOG_DDL,
+  ...SNAPSHOTS_DDL,
 ];
 
 async function ensureSchema(db: Db) {
