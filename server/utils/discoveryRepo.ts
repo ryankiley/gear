@@ -240,6 +240,27 @@ export async function getFeed(q: FeedQuery, db?: Db): Promise<DiscoveryCard[]> {
   );
 }
 
+/** Public list slugs for the sitemap — same visibility gate as the feed. */
+export async function listPublicSlugs(
+  db?: Db,
+): Promise<{ slug: string; updatedAt: Date | string | null }[]> {
+  const d = db ?? (await useDb());
+  return d
+    .select({ slug: lists.publicSlug, updatedAt: lists.updatedAt })
+    .from(lists)
+    .where(
+      and(
+        eq(lists.isPublic, true),
+        eq(lists.status, "active"),
+        eq(lists.flagged, false),
+        isNull(lists.deletedAt),
+        gt(lists.itemCount, 0),
+      ),
+    )
+    .orderBy(desc(lists.publishedAt))
+    .limit(5000);
+}
+
 // ---------------------------------------------------------------------------
 // Report — a public affordance to flag a list. Sets `flagged=true`, which
 // WITHHOLDS the list from the public feed + /l read view pending review, but

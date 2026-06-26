@@ -143,31 +143,35 @@ function onFile(e: Event) {
         <span class="t-sm t-muted">saved in this browser</span>
       </div>
 
-      <p v-if="!myLists.all.value.length" class="t-muted mylists__empty">
-        Nothing yet. Start a list above — it’ll show up here next time you visit.
-      </p>
+      <!-- My Lists is localStorage-only → client-rendered, so the ISR/SSR home
+           page doesn't hydration-mismatch (server has no localStorage) -->
+      <ClientOnly>
+        <p v-if="!myLists.all.value.length" class="t-muted mylists__empty">
+          Nothing yet. Start a list above — it’ll show up here next time you visit.
+        </p>
 
-      <ul v-else class="mylists__grid">
-        <li v-for="l in myLists.all.value" :key="l.editToken">
-          <NuxtLink :to="`/e#${l.editToken}`" class="card">
-            <span class="card__title t-title">{{ l.title || "Untitled list" }}</span>
-            <span class="card__meta t-sm t-muted">
-              <template v-if="l.totalMg > 0">
-                <span class="t-num">{{ formatWeight(l.totalMg, "g") }}</span> total
-              </template>
-              <template v-else>no weights yet</template>
-            </span>
-            <button
-              class="btn btn--icon btn--ghost card__del"
-              title="Remove from this device (you lose edit access)"
-              aria-label="Remove from this device (you lose edit access)"
-              @click.prevent="removeList(l.editToken)"
-            >
-              <CircleMinus :size="15" />
-            </button>
-          </NuxtLink>
-        </li>
-      </ul>
+        <ul v-else class="mylists__grid">
+          <li v-for="l in myLists.all.value" :key="l.editToken">
+            <NuxtLink :to="`/e#${l.editToken}`" class="card">
+              <span class="card__title t-title">{{ l.title || "Untitled list" }}</span>
+              <span class="card__meta t-sm t-muted">
+                <template v-if="l.totalMg > 0">
+                  <span class="t-num">{{ formatWeight(l.totalMg, "g") }}</span> total
+                </template>
+                <template v-else>no weights yet</template>
+              </span>
+              <button
+                class="btn btn--icon btn--ghost card__del"
+                title="Remove from this device (you lose edit access)"
+                aria-label="Remove from this device (you lose edit access)"
+                @click.prevent="removeList(l.editToken)"
+              >
+                <CircleMinus :size="15" />
+              </button>
+            </NuxtLink>
+          </li>
+        </ul>
+      </ClientOnly>
     </main>
 
     <section class="wrap discovery">

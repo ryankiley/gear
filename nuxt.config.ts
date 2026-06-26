@@ -70,11 +70,12 @@ export default defineNuxtConfig({
     },
   },
 
-  // The editor is a client island; read views SSR. Per-route rendering is
-  // tuned in a later phase (ISR feed, SSR read views, ssr:false editor).
-  // For the client-first slice both routes are localStorage-driven → ssr:false.
+  // Per-route rendering. The home discovery feed is ISR (server-rendered + cached,
+  // revalidated every 10 min) for SEO/FCP; its localStorage "My Lists" section is
+  // wrapped in <ClientOnly> so it can't cause a hydration mismatch. The editor
+  // stays a pure client island (edit token in the URL fragment, no SSR value).
   routeRules: {
-    "/": { ssr: false },
+    "/": { isr: 600 },
     "/e": { ssr: false },
   },
 
