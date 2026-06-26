@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { STARTER_FOLDERS } from "~~/shared/categories";
-import type { Folder, ListSnapshot } from "~~/shared/types";
+import type { Folder, ListData, ListSnapshot } from "~~/shared/types";
 import { formatWeight } from "~~/shared/weights";
+import { csvToListData } from "~~/shared/exporters/csv";
 
 const myLists = useMyLists();
 const router = useRouter();
@@ -50,6 +51,51 @@ function removeList(editToken: string) {
     myLists.forget(editToken);
   }
 }
+
+// ---- import (LighterPack CSV / spreadsheet) ----
+const showImport = ref(false);
+const importText = ref("");
+const importing = ref(false);
+const importError = ref("");
+
+async function importData(data: ListData) {
+  if (!data.items.length) {
+    importError.value = "No items found — paste a CSV with a header row.";
+    return;
+  }
+  importing.value = true;
+  importError.value = "";
+  try {
+    const res = await $fetch<{ editToken: string; snapshot: ListSnapshot }>("/api/lists/create", {
+      method: "POST",
+      body: { title: "Imported list", data },
+    });
+    myLists.upsert({
+      editToken: res.editToken,
+      shareCode: res.snapshot.shareCode,
+      slug: res.snapshot.slug,
+      title: res.snapshot.title,
+      totalMg: 0,
+      version: res.snapshot.version,
+      lastOpened: Date.now(),
+    });
+    router.push(`/e#${res.editToken}`);
+  } catch {
+    importError.value = "Import failed — check the CSV and try again.";
+  } finally {
+    importing.value = false;
+  }
+}
+function importFromText() {
+  importData(csvToListData(importText.value));
+}
+function onFile(e: Event) {
+  const file = (e.target as HTMLInputElement).files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => importData(csvToListData(String(reader.result)));
+  reader.readAsText(file);
+}
 </script>
 
 <template>
@@ -62,9 +108,35 @@ function removeList(editToken: string) {
           A calm place to build a list and share it. Weights are optional — add
           them when you care. No login.
         </p>
-        <button class="btn btn--primary hero__cta" :disabled="creating" @click="newList">
-          {{ creating ? "Starting…" : "Start a list" }}
-        </button>
+        <div class="hero__ctas">
+          <button class="btn btn--primary hero__cta" :disabled="creating" @click="newList">
+            {{ creating ? "Starting…" : "Start a list" }}
+          </button>
+          <button class="btn btn--ghost" @click="showImport = !showImport">Import a list</button>
+        </div>
+
+        <div v-if="showImport" class="import panel">
+          <p class="t-small t-muted">
+            Paste a CSV — LighterPack’s “Export to CSV”, or any spreadsheet — or choose a file.
+          </p>
+          <textarea
+            v-model="importText"
+            class="field import__text"
+            rows="5"
+            placeholder="Category,Item Name,Qty,Weight,Unit,Worn,Consumable…"
+          />
+          <div class="import__actions">
+            <input type="file" accept=".csv,.tsv,text/csv,text/plain" @change="onFile" />
+            <button
+              class="btn btn--sm btn--primary"
+              :disabled="importing || !importText.trim()"
+              @click="importFromText"
+            >
+              {{ importing ? "Importing…" : "Import" }}
+            </button>
+          </div>
+          <p v-if="importError" class="t-small import__err">{{ importError }}</p>
+        </div>
       </div>
     </header>
 
@@ -120,11 +192,42 @@ function removeList(editToken: string) {
   max-width: 46ch;
   font-size: var(--t-base);
 }
-.hero__cta {
-  align-self: flex-start;
+.hero__ctas {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
   margin-top: var(--space-2);
+  flex-wrap: wrap;
+}
+.hero__cta {
   min-height: 48px;
   padding-inline: var(--space-6);
+}
+.import {
+  margin-top: var(--space-4);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 48rem;
+}
+.import__text {
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: var(--t-small);
+  border: 1px solid var(--line);
+  padding: var(--space-3);
+  resize: vertical;
+}
+.import__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+.import__err {
+  color: var(--cat-firstaid);
 }
 .mylists {
   padding-block: var(--space-7);

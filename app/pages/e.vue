@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { listToMarkdown } from "~~/shared/exporters/markdown";
+import { listToCsv } from "~~/shared/exporters/csv";
 
 const c = useGearList();
 const router = useRouter();
@@ -78,6 +79,30 @@ function copyMarkdown() {
   menuOpen.value = false;
   if (snapshot.value) copy(listToMarkdown(snapshot.value), "Copied as Markdown");
 }
+function download(filename: string, text: string, type: string) {
+  menuOpen.value = false;
+  const url = URL.createObjectURL(new Blob([text], { type }));
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+function downloadCsv() {
+  if (!snapshot.value) return;
+  download(`${snapshot.value.slug || "gear"}.csv`, listToCsv(snapshot.value), "text/csv");
+  flash("CSV downloaded");
+}
+function downloadJson() {
+  if (!snapshot.value) return;
+  const { title, description, displayUnit, folders, items } = snapshot.value;
+  download(
+    `${snapshot.value.slug || "gear"}.json`,
+    JSON.stringify({ title, description, displayUnit, folders, items }, null, 2),
+    "application/json",
+  );
+  flash("JSON downloaded");
+}
 
 async function newList() {
   const res = await $fetch<{ editToken: string; snapshot: any }>("/api/lists/create", {
@@ -116,6 +141,8 @@ const statusLabel = computed(() =>
             <button class="btn btn--sm btn--ghost" aria-haspopup="true" aria-label="More actions" :aria-expanded="menuOpen" @click="menuOpen = !menuOpen">⋯</button>
             <ul v-if="menuOpen" class="menu__list panel">
               <li><button @click="copyMarkdown">Copy as Markdown</button></li>
+              <li><button @click="downloadCsv">Download CSV</button></li>
+              <li><button @click="downloadJson">Download JSON (backup)</button></li>
               <li><button @click="copyEditLink">Copy edit link…</button></li>
               <li><button @click="rotate">Rotate edit link…</button></li>
             </ul>
