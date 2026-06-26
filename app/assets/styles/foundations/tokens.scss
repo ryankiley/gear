@@ -8,9 +8,9 @@
 
   /* ---- surfaces: ROA warm naturals (sampled from roa-hiking.com) ---- */
   /* warm bone / warm OFF-black (never pure #000 — ROA + SPACE10 both avoid it) */
-  --paper: light-dark(#efece4, #1c1b19);
-  --paper-2: light-dark(#f6f4ef, #232220); /* faintly raised */
-  --paper-3: light-dark(#e4e0d5, #2b2a26); /* stone (ROA #d2cfc4) — for quiet surfaces, not borders */
+  --paper: light-dark(#efece4, #0f0e0d); /* dark = deep warm off-black (still not pure #000) */
+  --paper-2: light-dark(#f6f4ef, #181614); /* faintly raised */
+  --paper-3: light-dark(#e4e0d5, #211f1c); /* stone (ROA #d2cfc4) — for quiet surfaces, not borders */
 
   /* ---- ink (warm) ---- */
   --ink: light-dark(#1d1c1c, #ece8e0);
