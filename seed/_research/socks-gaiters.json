@@ -89,18 +89,6 @@
       "weight_source": "manufacturer",
       "source_url": "https://www.rei.com/product/738915/smartwool-thermal-merino-reversible-cuffed-beanie",
       "quote": "Smartwool Merino 250 Cuffed Beanie — 2.1 oz / 60 g (REI)"
-    },
-    {
-      "brand": "Outdoor Research",
-      "name": "Sun Runner Cap",
-      "variant": "Unisex (with removable cape)",
-      "category_hint": "clothing",
-      "weight_value": 2.98,
-      "weight_unit": "oz",
-      "weight_secondary": "85 g",
-      "weight_source": "manufacturer",
-      "source_url": "https://www.outdoorresearch.com/products/sun-runner-cap-300299",
-      "quote": "2.98 oz/ 85 g"
     }
   ]
 }
