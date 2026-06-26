@@ -20,25 +20,14 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { specToMg, WEIGHT_SOURCES, type SpecUnit } from "./catalogCsv";
+import { csvToCatalogRows, specToMg, WEIGHT_SOURCES, type SpecUnit } from "./catalogCsv";
+import { RANGE_G, runCatalogChecks } from "./catalogChecks";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const researchDir = join(here, "..", "seed", "_research");
 
-// Plausible weight range per category, in grams. Loose on purpose — this catches
-// gross errors (a 50 g tent, a 5 kg stove), not borderline judgment calls.
-const RANGE_G: Record<string, [number, number]> = {
-  shelter: [120, 3500],
-  sleep: [40, 2600],
-  pack: [120, 2800],
-  cook: [8, 1300],
-  water: [10, 800],
-  clothing: [10, 1200], // socks/gloves ~25g … trail-runners/boots ~1.1kg/pair
-  electronics: [4, 700],
-  firstaid: [3, 600],
-  consumable: [1, 1600],
-  other: [4, 1600], // umbrella ~190g, ice axe ~400g, bear can ~1.2kg, chair ~500g
-};
+// Plausible per-category weight ranges (RANGE_G) are single-sourced in
+// catalogChecks.ts so the CLI audit and the gating test agree exactly.
 
 interface Row {
   brand?: string | null;
@@ -137,8 +126,24 @@ function main() {
     }
   }
 
+  // Standing CSV-level checks over the BUILT artifact (the shipped source of
+  // truth): commentary-in-variant, same-product dups, case collisions,
+  // colour-as-variant, provenance laundering, plausibility, pole units. These
+  // are the same checks the gating vitest test enforces.
+  let csvChecked = 0;
+  try {
+    const csv = readFileSync(join(here, "..", "seed", "catalog.csv"), "utf8");
+    const csvRows = csvToCatalogRows(csv);
+    csvChecked = csvRows.length;
+    for (const f of runCatalogChecks(csvRows)) {
+      (f.level === "error" ? errors : warns).push(`[${f.code}] ${f.message}`);
+    }
+  } catch (e) {
+    warns.push(`[csv] could not run CSV checks (run catalog:build first?): ${(e as Error).message}`);
+  }
+
   console.log(`\n=== Catalog accuracy audit (stage 1) ===`);
-  console.log(`rows: ${total} | quote-cross-checked: ${quoteChecked} | unique identities: ${identity.size}`);
+  console.log(`research rows: ${total} | quote-cross-checked: ${quoteChecked} | csv rows: ${csvChecked} | unique identities: ${identity.size}`);
   if (warns.length) {
     console.log(`\nWARNINGS (${warns.length}) — review, may be legit (heavy boots, per-pair poles, etc.):`);
     for (const w of warns) console.log("  ! " + w);
