@@ -51,6 +51,26 @@ const UNIT_ALIASES: Record<string, Unit> = {
  * Handles "1.36kg", "48 oz", "2 lb 3 oz", "820g", "1,360 g".
  * A bare number with no unit uses `defaultUnit`. Returns null if nothing parses.
  */
+// Parse one captured number group, disambiguating ',' vs '.' as decimal point so
+// "1,5 kg" (comma-decimal locales) reads as 1.5, not 15. Rules:
+//  - both separators present → the RIGHTMOST one is the decimal point
+//  - only commas, single comma + 1–2 trailing digits → decimal (else thousands)
+//  - only dots → standard decimal
+function numFromGroup(s: string): number {
+  const hasComma = s.includes(",");
+  const hasDot = s.includes(".");
+  let norm = s;
+  if (hasComma && hasDot) {
+    norm =
+      s.lastIndexOf(",") > s.lastIndexOf(".")
+        ? s.replace(/\./g, "").replace(",", ".") // 1.234,56 → 1234.56
+        : s.replace(/,/g, ""); // 1,234.56 → 1234.56
+  } else if (hasComma) {
+    norm = /^-?\d+,\d{1,2}$/.test(s) ? s.replace(",", ".") : s.replace(/,/g, "");
+  }
+  return parseFloat(norm);
+}
+
 export function parseWeightInput(
   raw: string,
   defaultUnit: Unit = "g",
@@ -59,14 +79,15 @@ export function parseWeightInput(
   const text = String(raw).trim().toLowerCase();
   if (!text) return null;
 
-  // number, optionally followed by a unit word
-  const re = /(-?[\d][\d,]*\.?\d*)\s*([a-z]+)?/g;
+  // number (digits with any mix of ',' / '.' separators), optionally + a unit word;
+  // numFromGroup() below decides which separator is the decimal point
+  const re = /(-?[\d][\d.,]*)\s*([a-z]+)?/g;
   let mg = 0;
   let matched = false;
   let m: RegExpExecArray | null;
 
   while ((m = re.exec(text)) !== null) {
-    const num = parseFloat(m[1].replace(/,/g, ""));
+    const num = numFromGroup(m[1]);
     if (!isFinite(num)) continue;
     const unitWord = m[2];
     const unit = unitWord ? UNIT_ALIASES[unitWord] : defaultUnit;

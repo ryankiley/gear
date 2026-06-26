@@ -7,6 +7,7 @@ const emit = defineEmits<{ done: [{ status: string; itemName?: string }] }>();
 const weight = ref("");
 const sourceUrl = ref("");
 const reason = ref("");
+const edited = ref(false); // did the user touch the weight field?
 
 // prefill the user's current weight as the suggestion whenever the dialog opens
 watch(target, (t) => {
@@ -14,12 +15,16 @@ watch(target, (t) => {
     weight.value = formatWeight(t.suggestedMg, t.displayUnit);
     sourceUrl.value = "";
     reason.value = "";
+    edited.value = false;
   }
 });
 
 async function onSubmit() {
+  // if the field is untouched, send the EXACT integer mg (formatWeight→parse is
+  // lossy and locale-dependent); only parse the string when the user edited it
   const res = await submit({
-    weight: weight.value,
+    weight: edited.value ? weight.value : undefined,
+    weightMg: edited.value ? undefined : target.value?.suggestedMg,
     sourceUrl: sourceUrl.value.trim() || undefined,
     reason: reason.value.trim() || undefined,
   });
@@ -45,7 +50,7 @@ onKeyStroke("Escape", () => target.value && close());
 
         <label class="dlg__field">
           <span class="t-sm t-muted">Correct weight</span>
-          <input v-model="weight" class="field" inputmode="decimal" @keydown.enter="onSubmit" />
+          <input v-model="weight" class="field" inputmode="decimal" @input="edited = true" @keydown.enter="onSubmit" />
         </label>
         <label class="dlg__field">
           <span class="t-sm t-muted">Source link <em>— a manufacturer/retailer page applies it instantly</em></span>

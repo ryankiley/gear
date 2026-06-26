@@ -268,4 +268,23 @@ describe("revertEdit — one-click undo of an applied edit", () => {
     // reverting a non-applied edit is rejected
     expect((await revertEdit(db, changes[0].id)).status).toBe("rejected");
   });
+
+  it("refuses to revert a stale (non-latest) applied edit", async () => {
+    const db = await freshCatalogDb();
+    const [row] = await db
+      .insert(schema.catalogItems)
+      .values({ name: "Stake", weightMg: 100_000, weightSource: "community", verified: false })
+      .returning();
+    await proposeCorrection(db, { catalogItemId: row.id, newWeightMg: 200_000 }); // edit A
+    await proposeCorrection(db, { catalogItemId: row.id, newWeightMg: 300_000 }); // edit B (newest)
+    const changes = await recentChanges(db, 10); // newest first → [B, A]
+    const editA = changes[1].id;
+    // reverting the older edit A would silently drop B → must be rejected
+    expect((await revertEdit(db, editA)).status).toBe("rejected");
+    const [after] = await db
+      .select()
+      .from(schema.catalogItems)
+      .where(eq(schema.catalogItems.id, row.id));
+    expect(Number(after.weightMg)).toBe(300_000); // unchanged
+  });
 });

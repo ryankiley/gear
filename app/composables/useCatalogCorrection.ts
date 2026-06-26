@@ -30,7 +30,8 @@ export function useCatalogCorrection() {
     submitting.value = false;
   }
   async function submit(payload: {
-    weight: string;
+    weight?: string;
+    weightMg?: number; // exact mg — preferred over the parsed string when present
     sourceUrl?: string;
     reason?: string;
   }): Promise<CorrectionResult | null> {
@@ -42,6 +43,7 @@ export function useCatalogCorrection() {
         body: {
           catalogItemId: target.value.catalogItemId,
           weight: payload.weight,
+          weightMg: payload.weightMg,
           sourceUrl: payload.sourceUrl,
           reason: payload.reason,
         },

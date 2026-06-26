@@ -17,7 +17,7 @@
 //     people actually carry is small by design, so this stays cheap locally.
 // Engine is detected via DATABASE_URL, the same signal db.ts uses.
 
-import { desc, eq, inArray, sql } from "drizzle-orm";
+import { and, desc, eq, gt, inArray, sql } from "drizzle-orm";
 import { catalogEdits, catalogItems } from "../db/schema";
 
 const isNeon = () => Boolean(process.env.DATABASE_URL);
@@ -399,6 +399,20 @@ export async function revertEdit(db: unknown, editId: number): Promise<Correctio
   const edit = rows[0];
   if (!edit) return { status: "notfound" };
   if (edit.status !== "applied") return { status: "rejected" }; // only applied edits moved a weight
+  // only the MOST RECENT applied edit can be reverted — reverting an older one
+  // would silently discard newer changes and desync the weight from the feed
+  const newer = await d
+    .select({ id: catalogEdits.id })
+    .from(catalogEdits)
+    .where(
+      and(
+        eq(catalogEdits.catalogItemId, Number(edit.catalogItemId)),
+        eq(catalogEdits.status, "applied"),
+        gt(catalogEdits.id, id),
+      ),
+    )
+    .limit(1);
+  if (newer.length) return { status: "rejected" };
   await d
     .update(catalogItems)
     .set({ weightMg: Number(edit.oldWeightMg), updatedAt: new Date() })

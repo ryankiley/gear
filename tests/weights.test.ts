@@ -55,6 +55,16 @@ describe("parseWeightInput", () => {
   it("strips thousands separators", () => {
     expect(parseWeightInput("1,360 g")).toBe(1_360_000);
   });
+  it("reads a comma as a DECIMAL point (comma-decimal locales)", () => {
+    // "1,5 kg" means 1.5 kg, not 15 kg — the bug that silently 10x'd weights
+    expect(parseWeightInput("1,5 kg")).toBe(1_500_000);
+    expect(parseWeightInput("1,36 kg")).toBe(1_360_000);
+    expect(parseWeightInput("540,5 g")).toBe(540_500);
+  });
+  it("disambiguates mixed separators by rightmost = decimal", () => {
+    expect(parseWeightInput("1,234.56 g")).toBe(Math.round(1234.56 * 1000)); // US grouping
+    expect(parseWeightInput("1.234,56 g")).toBe(Math.round(1234.56 * 1000)); // EU grouping
+  });
   it("returns null for junk", () => {
     expect(parseWeightInput("")).toBeNull();
     expect(parseWeightInput("stuff sack")).toBeNull();

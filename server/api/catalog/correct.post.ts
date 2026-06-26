@@ -2,13 +2,14 @@ import { createError, defineEventHandler, readBody, setHeader } from "h3";
 import { parseWeightInput } from "../../../shared/weights";
 import { ensureCatalogSchema, proposeCorrection } from "../../utils/catalog";
 import { useDb } from "../../utils/db";
-import { rateLimit } from "../../utils/rateLimit";
+import { assertMaxBody, rateLimit } from "../../utils/rateLimit";
 
 // "Fix a weight for everyone" (wiki edit). Trust-tiered in proposeCorrection:
 // uncited/community values apply instantly; verified values need a trusted
 // citation to auto-apply, else they're recorded as `proposed`.
 export default defineEventHandler(async (event) => {
   setHeader(event, "X-Robots-Tag", "noindex");
+  assertMaxBody(event, 8_000);
   rateLimit(event, "catalog-correct", 20, 60_000);
 
   const body = (await readBody(event).catch(() => ({}))) as {
