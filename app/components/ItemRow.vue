@@ -611,20 +611,28 @@ function dismissFix() {
   }
 }
 
-/* note — a single-line live-text field under the item (no box, no resize handle) */
+/* note — a single-line live-text field under the item (no box, no resize handle).
+   reads as a caption: the lightest ink (matching the "Add an item" placeholder) and
+   italic, to sit quietly beneath the item name. */
 .item__note {
   width: 100%;
   min-height: 0;
-  margin: var(--space-1) 0 0;
+  /* sit tight under the item line it captions. The editing name field is 36px tall
+     with its text vertically centred, leaving dead space below the name; a negative
+     top margin pulls the caption up into that gap so it reads as the name's second
+     line. (mobile fields are compact — see the override in the media query.) */
+  margin: calc(-1 * var(--space-1) - var(--space-px)) 0 0;
   padding: 0;
   border: 0;
   background: none;
-  color: var(--ink-2);
+  color: var(--ink-3);
   font-size: var(--text-base);
+  font-style: italic;
 }
 .item__note::placeholder {
   color: var(--ink-3);
 }
+/* while editing, bump to full ink for readability (stays italic) */
 .item__note:focus {
   outline: none;
   color: var(--ink);
@@ -695,6 +703,11 @@ function dismissFix() {
     padding-block: 2px;
     line-height: 1.3;
   }
+  /* the caption sits under the compact meta line here (not a tall 36px field), so
+     the desktop negative pull would overlap — a small positive gap instead */
+  .item__note {
+    margin-top: var(--space-px);
+  }
   /* one line only — qty · weight · class on the left, controls on the right — so a
      row is never more than two lines (name + this) and icons never land on a third */
   .item__meta {
@@ -761,31 +774,38 @@ function dismissFix() {
     }
   }
 
-  /* checklist mirrors the editing two-line layout EXACTLY so toggling modes never
-     reflows the list: the name on its own line, ×qty · weight on the line below,
-     the checkbox pinned right where the editing row's controls sit. Both lines are
-     36px tall (matching the editing inputs) so a row is the same 76px in either
-     mode. */
+  /* checklist: the checkbox sits to the LEFT of the name (conventional checklist),
+     in its own column spanning both text lines; the name is on its own line with
+     ×qty · weight below. The two text lines keep the editing row's metrics (36px
+     each) so toggling between editing and packing modes never reflows the row. */
   .item--check {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: auto auto 1fr;
     align-items: center;
-    column-gap: var(--space-4);
+    column-gap: var(--space-3);
     row-gap: var(--space-1);
     min-height: 0; /* drop the desktop tall single-row min-height */
+  }
+  /* checkbox in the left column, aligned to the title line (not centred across the
+     whole two-line cell) — it sits beside the name, centred to that first row */
+  .item__box {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
   }
   /* same box metrics as the editing fields (padding + line-height) so a checklist
      row is the exact same height as its editing counterpart — no shift on toggle */
   .item__cname {
-    order: 1;
-    flex-basis: 100%;
+    grid-column: 2 / -1;
+    grid-row: 1;
     padding-block: 2px;
     line-height: 1.3;
     display: flex;
     align-items: center;
   }
   .item__cqty {
-    order: 2;
+    grid-column: 2;
+    grid-row: 2;
   }
   .item__cqty,
   .item__cweight {
@@ -795,13 +815,10 @@ function dismissFix() {
     align-items: center;
   }
   .item__cweight {
-    order: 3;
+    grid-column: 3;
+    grid-row: 2;
+    justify-self: start;
     text-align: left;
-  }
-  .item__box {
-    order: 4;
-    margin-left: auto;
-    align-self: center;
   }
 
   /* read view: let long names wrap instead of clipping, with the qty + weight
