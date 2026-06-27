@@ -4,4 +4,4 @@
 
 // Public contact / takedown address. Doubles as the Terms abuse address.
 // Swap here if Mahonia gets a dedicated inbox.
-export const CONTACT_EMAIL = "hello@ryankiley.com";
+export const CONTACT_EMAIL = "ryanekiley@gmail.com";

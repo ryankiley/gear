@@ -36,9 +36,8 @@ useHead({
           berries. Hardy, understated, and everywhere on the trails around Portland.
         </p>
         <p>
-          I wanted a name that was short, a little bit odd, and actually rooted in the place — for a
-          domain I’d own outright. Mahonia is a real word with a real place behind it, and it
-          doesn’t need explaining. A native plant for a tool about getting outside felt right.
+          I wanted a name that was short, a little bit odd, and actually rooted in the place this
+          tool is built for. A native plant, for a tool about getting outside, felt right.
         </p>
 
         <h2>The short version of how it works</h2>
