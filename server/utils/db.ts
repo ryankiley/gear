@@ -15,8 +15,9 @@ async function build() {
   if (url) {
     const { drizzle } = await import("drizzle-orm/neon-http");
     const { neon } = await import("@neondatabase/serverless");
-    // Prod: schema is applied via migrations at deploy time, NOT on the request
-    // path (running DDL per cold-start adds latency + a first-deploy race).
+    // Prod (Neon): the schema is ensured idempotently on first use via useDb()
+    // below — memoized so it runs once per warm instance, mirroring the
+    // snapshot + catalog tables. No separate migration step to forget.
     return drizzle(neon(url), { schema });
   }
   const { PGlite } = await import("@electric-sql/pglite");
@@ -94,6 +95,22 @@ export const SNAPSHOTS_DDL: string[] = [
   `CREATE INDEX IF NOT EXISTS idx_list_snapshots_list ON list_snapshots(list_id, created_at DESC)`,
 ];
 
+let _listsEnsured: Promise<void> | undefined;
+/** Idempotently create the `lists` table + indexes (memoized) — for Neon, where
+ *  there's no build-time DDL. Mirrors ensureSnapshotSchema; gated to the prod path
+ *  in useDb (dev's PGlite already runs the full DDL in build()). */
+function ensureListsSchema(db: Db): Promise<void> {
+  if (!_listsEnsured) {
+    _listsEnsured = (async () => {
+      for (const stmt of LISTS_DDL) await db.execute(sql.raw(stmt));
+    })().catch((e) => {
+      _listsEnsured = undefined; // don't cache a transient cold-start failure
+      throw e;
+    });
+  }
+  return _listsEnsured;
+}
+
 let _snapEnsured: Promise<void> | undefined;
 /** Idempotently create list_snapshots (memoized) — for Neon (no build-time DDL). */
 export function ensureSnapshotSchema(db: Db): Promise<void> {
@@ -129,5 +146,10 @@ async function ensureSchema(db: Db) {
 
 export async function useDb(): Promise<Db> {
   if (!_dbPromise) _dbPromise = build();
-  return _dbPromise;
+  const db = await _dbPromise;
+  // Neon has no build-time DDL (dev's PGlite ensured the schema in build()), so
+  // ensure the core `lists` table exists on first use. Memoized → one batch per
+  // warm instance. Snapshots + catalog self-ensure on their own paths.
+  if (process.env.DATABASE_URL) await ensureListsSchema(db);
+  return db;
 }
