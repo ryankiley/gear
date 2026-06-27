@@ -61,72 +61,45 @@ async function report() {
 
 <template>
   <div>
-    <header class="topbar">
-      <div class="wrap topbar__inner">
-        <NuxtLink to="/" class="t-label brand">Mahonia</NuxtLink>
-        <span class="t-sm t-muted topbar__tag"><Globe :size="13" :stroke-width="2" /> Public list</span>
-        <NuxtLink to="/" class="btn btn--sm">Make your own</NuxtLink>
-      </div>
-    </header>
+    <SiteTopbar compact>
+      <span class="t-sm t-muted topbar__tag"><Globe :size="13" :stroke-width="2" /> Public list</span>
+      <NuxtLink to="/" class="btn btn--sm">Make your own</NuxtLink>
+    </SiteTopbar>
 
-    <main v-if="roList && totals" class="wrap view">
-      <div class="view__head">
-        <h1 class="t-title view__title">{{ roList.title }}</h1>
-        <p v-if="facets.length" class="t-sm t-muted view__facets">{{ facets.join(" · ") }}</p>
-        <p v-if="roList.description" class="t-muted view__desc">{{ roList.description }}</p>
-      </div>
+    <ReadonlyListView
+      :list="roList"
+      :totals="totals"
+      :shown-folders="shownFolders"
+      :ungrouped="ungrouped"
+      @set-unit="(u) => (unit = u)"
+    >
+      <template #head>
+        <div class="view__head">
+          <h1 class="t-title view__title">{{ roList!.title }}</h1>
+          <p v-if="facets.length" class="t-sm t-muted view__facets">{{ facets.join(" · ") }}</p>
+          <p v-if="roList!.description" class="t-muted view__desc">{{ roList!.description }}</p>
+        </div>
+      </template>
 
-      <TotalsBar :list="roList" :totals="totals" @set-unit="(u) => (unit = u)" />
+      <template #footer>
+        <footer class="view__footer">
+          <button v-if="!reported" class="btn btn--sm btn--ghost view__report" :disabled="reporting" @click="report">
+            <Flag :size="13" /> Report list
+          </button>
+          <span v-else class="t-sm t-muted">Reported — thanks, we’ll take a look.</span>
+        </footer>
+      </template>
 
-      <div class="view__folders">
-        <FolderSection v-for="f in shownFolders" :key="f.id" :list="roList" :folder="f" readonly />
-        <section v-if="ungrouped.length">
-          <p class="t-label view__ungrouped">Ungrouped</p>
-          <ItemRow v-for="it in ungrouped" :key="it.id" :list="roList" :item="it" readonly />
-        </section>
-      </div>
-
-      <footer class="view__footer">
-        <button v-if="!reported" class="btn btn--sm btn--ghost view__report" :disabled="reporting" @click="report">
-          <Flag :size="13" /> Report list
-        </button>
-        <span v-else class="t-sm t-muted">Reported — thanks, we’ll take a look.</span>
-      </footer>
-    </main>
-
-    <main v-else class="wrap view view--missing">
-      <p class="t-muted">This list isn’t public (or doesn’t exist).</p>
-      <NuxtLink to="/" class="btn btn--primary">Make a list</NuxtLink>
-    </main>
+      <template #missing>This list isn’t public (or doesn’t exist).</template>
+    </ReadonlyListView>
   </div>
 </template>
 
 <style scoped>
-.topbar {
-  border-bottom: 1px solid var(--line);
-}
-.topbar__inner {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding-block: var(--space-3);
-}
-.brand {
-  color: var(--ink);
-}
 .topbar__tag {
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-}
-.topbar__inner .btn {
-  margin-left: auto;
-}
-.view {
-  padding-block: var(--space-5) var(--space-9);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
 }
 .view__head {
   display: flex;
@@ -139,14 +112,6 @@ async function report() {
 .view__desc {
   max-width: 60ch;
 }
-.view__folders {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-7);
-}
-.view__ungrouped {
-  margin-bottom: var(--space-1);
-}
 .view__footer {
   margin-top: var(--space-4);
   padding-top: var(--space-4);
@@ -157,9 +122,5 @@ async function report() {
 }
 .view__report:hover {
   color: var(--ink);
-}
-.view--missing {
-  padding-block: var(--space-9);
-  align-items: flex-start;
 }
 </style>
