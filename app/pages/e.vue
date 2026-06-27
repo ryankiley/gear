@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Backpack, Share2, SquareCheck, Undo2 } from "@lucide/vue";
+import { Backpack, Ellipsis, Share2, SquareCheck, Undo2 } from "@lucide/vue";
 import { listToMarkdown } from "~~/shared/exporters/markdown";
 import { listToCsv } from "~~/shared/exporters/csv";
 import { uid } from "~~/shared/id";
@@ -17,6 +17,14 @@ const snapshot = c.snapshot;
 const totals = c.totals;
 const status = c.status;
 const pendingUndo = c.pendingUndo;
+
+// Reflect the list name in the tab title, matching the read views (/l, /s).
+useHead({
+  title: () => {
+    if (!snapshot.value) return "Mahonia";
+    return `${snapshot.value.title || "Untitled list"} — Mahonia`;
+  },
+});
 // items whose folder was removed (e.g. by a concurrent editor) land here, not as invisible ghosts
 const ungrouped = computed(() =>
   snapshot.value ? snapshot.value.items.filter((i) => !i.folderId) : [],
@@ -269,6 +277,18 @@ function onCorrected(res: { status: string; itemName?: string }) {
             <Share2 :size="16" />
           </button>
           <div class="menu">
+            <!-- the kebab is the visible trigger; a transparent native <select>
+                 sits on top of it (same pattern as the row's classification
+                 control), so a tap opens OS menu chrome — the system sheet/picker
+                 on mobile, the native dropdown on desktop. -->
+            <button
+              type="button"
+              class="btn btn--icon btn--ghost menu__btn"
+              tabindex="-1"
+              aria-hidden="true"
+            >
+              <Ellipsis :size="16" />
+            </button>
             <select
               v-model="menuAction"
               class="menu__select"
@@ -472,27 +492,25 @@ function onCorrected(res: { status: string; itemName?: string }) {
 .editor__share {
   color: var(--ink-2);
 }
+/* the kebab icon is the visible trigger; a transparent native <select> sits on
+   top of it (same pattern as the row's classification control) so a tap opens OS
+   menu chrome — the system sheet/picker on mobile, the native dropdown on desktop.
+   the disclosure arrow + the open list are the platform's own. */
 .menu {
+  position: relative;
   display: inline-flex;
 }
-/* native OS menu chrome: a real <select> so mobile gets the system picker/sheet
-   and desktop the native dropdown. Styled only enough to sit in the toolbar — the
-   disclosure arrow and the open list are the platform's own. */
-.menu__select {
-  font-family: var(--font);
-  font-size: var(--text-sm);
-  color: var(--ink);
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-1);
-  padding: var(--space-1) var(--space-2);
-  cursor: pointer;
+.menu__btn {
+  color: var(--ink-2);
+  /* purely decorative — the overlaid <select> is the real control */
+  pointer-events: none;
 }
-@media (pointer: coarse) {
-  /* match the ~44px touch targets of the toolbar's icon buttons */
-  .menu__select {
-    min-height: 40px;
-  }
+.menu__select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
 }
 .editor__body {
   padding-block: var(--space-4) var(--space-9);
