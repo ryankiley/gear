@@ -1,0 +1,169 @@
+{
+  "rows": [
+    {
+      "brand": "Patagonia",
+      "name": "Nano Puff Jacket",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 369,
+      "weight_unit": "g",
+      "weight_secondary": "13 oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20250903022513id_/https://www.patagonia.com/product/mens-nano-puff-insulated-jacket/84213.html",
+      "quote": "Weight 369 g (13 oz)"
+    },
+    {
+      "brand": "Patagonia",
+      "name": "Micro Puff Hoody",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 298,
+      "weight_unit": "g",
+      "weight_secondary": "10.5 oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20241207105818id_/https://www.patagonia.com/product/mens-micro-puff-insulated-hoody/84031.html",
+      "quote": "Weight 298 g (10.5 oz)"
+    },
+    {
+      "brand": "Patagonia",
+      "name": "Down Sweater Hoody",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 420,
+      "weight_unit": "g",
+      "weight_secondary": "14.8 oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20250811183007id_/https://www.patagonia.com/product/mens-down-sweater-insulated-hoody/84702.html",
+      "quote": "Weight 420 g (14.8 oz)"
+    },
+    {
+      "brand": "Patagonia",
+      "name": "Houdini Jacket",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 105,
+      "weight_unit": "g",
+      "weight_secondary": "3.7 oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20200718053536id_/https://www.patagonia.com/product/mens-houdini-windbreaker-jacket/24142.html",
+      "quote": "Weight 105 g (3.7 oz)"
+    },
+    {
+      "brand": "Patagonia",
+      "name": "R1 Air Full-Zip Hoody",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 369,
+      "weight_unit": "g",
+      "weight_secondary": "13 oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20250912121826id_/https://www.patagonia.com/product/mens-r1-air-fleece-midlayer-full-zip-hoody/40256.html",
+      "quote": "Weight 369 g (13 oz)"
+    },
+    {
+      "brand": "Mountain Hardwear",
+      "name": "Ghost Whisperer Hoody",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 8.8,
+      "weight_unit": "oz",
+      "weight_secondary": "249 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20240719182014id_/https://www.mountainhardwear.com/p/mens-ghost-whisperer%2F2-hoody-1874761.html",
+      "quote": "[Renamed from Ghost Whisperer/2 — MHW dropped the /2 suffix; same garment] Approx. Weight*: 8.8 oz / 249 g"
+    },
+    {
+      "brand": "Mountain Hardwear",
+      "name": "Stretchdown Hoody",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 9.3,
+      "weight_unit": "oz",
+      "weight_secondary": "264 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20260510152321id_/https://www.mountainhardwear.com/p/mens-stretchdown-hoody-2104491.html",
+      "quote": "Approx. Weight*: 9.3 oz / 264 g"
+    },
+    {
+      "brand": "Arc'teryx",
+      "name": "Atom Hoody",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 355,
+      "weight_unit": "g",
+      "weight_secondary": "12.5 oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20260317104033id_/https://arcteryx.com/us/en/shop/mens/atom-hoody-9556",
+      "quote": "\"Weight\",\"value\":\"355g / 12.5 oz\""
+    },
+    {
+      "brand": "Arc'teryx",
+      "name": "Cerium SL Hoody",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 7.6,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://arcteryx.com/us/en/shop/mens/cerium-sl-hoody-1036",
+      "quote": "Cerium SL Hoody Men’s M — 7.6 oz / 215 g (arcteryx.com current spec)"
+    },
+    {
+      "brand": "Rab",
+      "name": "Microlight Alpine Jacket",
+      "variant": "Men's L",
+      "category_hint": "clothing",
+      "weight_value": 16.5,
+      "weight_unit": "oz",
+      "weight_secondary": "466.5g",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20260218183657id_/https://rab.equipment/us/microlight-alpine-jacket",
+      "quote": "Weight: 16.5oz/466.5g"
+    },
+    {
+      "brand": "Rab",
+      "name": "Mythic Ultra",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 18.9,
+      "weight_unit": "oz",
+      "weight_secondary": "537g",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20251118014943/https://rab.equipment/us/mythic-ultra-jacket",
+      "quote": "18.9oz/537g (Size M)"
+    },
+    {
+      "brand": "Decathlon",
+      "name": "Forclaz MT100 Hooded Down Jacket",
+      "variant": "Men's L",
+      "category_hint": "clothing",
+      "weight_value": 11.3,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.decathlon.com/products/simond-mt100-hooded-down-puffer-jacket-167571.json",
+      "quote": "the MT100 jacket is packable and weighs approximately 11.3 oz in size L"
+    },
+    {
+      "brand": "The North Face",
+      "name": "ThermoBall Eco Hoodie",
+      "variant": "Men's M",
+      "category_hint": "clothing",
+      "weight_value": 15.9,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20240913041531/https://www.backcountry.com/the-north-face-thermoball-eco-hoodie-mens",
+      "quote": "Claimed Weight: 15.9oz"
+    },
+    {
+      "brand": "Patagonia",
+      "name": "Nano Puff Jacket",
+      "variant": "Women's M",
+      "category_hint": "clothing",
+      "weight_value": 309,
+      "weight_unit": "g",
+      "weight_secondary": "10.9 oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://web.archive.org/web/20250912112307id_/https://www.patagonia.com/product/womens-nano-puff-insulated-jacket/84218.html",
+      "quote": "Weight 309 g (10.9 oz)"
+    }
+  ]
+}

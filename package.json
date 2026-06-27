@@ -1,0 +1,42 @@
+{
+  "name": "gear",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "description": "A no-login ultralight gear-list / pack-weight tracker — a better LighterPack.",
+  "scripts": {
+    "dev": "nuxt dev --host 0.0.0.0",
+    "dev:preview": "nuxt dev --host ::1",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "nuxt typecheck",
+    "bundle-budget": "node scripts/bundle-budget.mjs",
+    "catalog:build": "node node_modules/jiti/lib/jiti-cli.mjs scripts/build-catalog.ts",
+    "catalog:audit": "node node_modules/jiti/lib/jiti-cli.mjs scripts/audit-catalog.ts",
+    "seed": "node node_modules/jiti/lib/jiti-cli.mjs scripts/seed-catalog.ts"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "^0.5.3",
+    "@lucide/vue": "^1.17.0",
+    "@neondatabase/serverless": "^1.1.0",
+    "@upstash/redis": "^1.37.0",
+    "@vueuse/nuxt": "^14.2.1",
+    "drizzle-orm": "^0.45.2",
+    "nuxt": "4.4.8",
+    "vue": "^3.5.18",
+    "vue-router": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.3",
+    "drizzle-kit": "^0.31.10",
+    "jiti": "^2.7.0",
+    "sass": "^1.101.0",
+    "typescript": "^5.9.0",
+    "vitest": "^4.1.9",
+    "vue-tsc": "^3.3.5"
+  }
+}

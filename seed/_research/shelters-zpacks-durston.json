@@ -1,0 +1,180 @@
+{
+  "rows": [
+    {
+      "brand": "Zpacks",
+      "name": "Duplex",
+      "variant": "",
+      "category_hint": "shelter",
+      "weight_value": 17.8,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://zpacks.com/products/duplex-tent",
+      "quote": "Weight 17.8 oz / 504 g (total weight of the tent including guy lines, sewn-in linelocs, and taped seams; .55 oz/sqyd DCF canopy)"
+    },
+    {
+      "brand": "Zpacks",
+      "name": "Duplex Zip",
+      "variant": "",
+      "category_hint": "shelter",
+      "weight_value": 20.4,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://zpacks.com/pages/zpacks-duplex-zip-tent",
+      "quote": "ULTRALIGHT WEIGHT: 20.4 OZ (577G)"
+    },
+    {
+      "brand": "Zpacks",
+      "name": "Plex Solo",
+      "variant": "",
+      "category_hint": "shelter",
+      "weight_value": 14.5,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://zpacks.com/products/plexsolo-tent",
+      "quote": "14.5 oz / 411 g (weight of the tent including guy lines, sewn in linelocs, and taped seams)"
+    },
+    {
+      "brand": "Zpacks",
+      "name": "Triplex",
+      "variant": "",
+      "category_hint": "shelter",
+      "weight_value": 21.6,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://zpacks.com/products/bargain-triplex-tent-white",
+      "quote": "Weight 21.6 oz / 612 g"
+    },
+    {
+      "brand": "Zpacks",
+      "name": "Offset Duo",
+      "variant": "Lite Floor",
+      "category_hint": "shelter",
+      "weight_value": 19.4,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://zpacks.com/products/offset-duo",
+      "quote": "Weight 19.4 oz / 550 g (Blue/Olive Drab w/ Lite Floor; includes guy lines, sewn in linelocs, and taped seams). Note: page now titled 'Pivot Duo Tent', successor to Offset Duo."
+    },
+    {
+      "brand": "Zpacks",
+      "name": "Offset Solo",
+      "variant": "",
+      "category_hint": "shelter",
+      "weight_value": 17.5,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://zpacks.com/products/offset-solo-tent",
+      "quote": "17.5 oz / 496 g (complete tent including guy lines, sewn-in linelocs, and taped seams; .55 oz/sqyd DCF canopy)"
+    },
+    {
+      "brand": "Zpacks",
+      "name": "Pivot Solo",
+      "variant": "Lite Floor",
+      "category_hint": "shelter",
+      "weight_value": 13.4,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://zpacks.com/products/pivot-solo-tent",
+      "quote": "Weight 13.4 oz / 379 g (Blue/Olive Drab w/ Lite Floor)"
+    },
+    {
+      "brand": "Zpacks",
+      "name": "Pivot Solo",
+      "variant": "Standard Floor",
+      "category_hint": "shelter",
+      "weight_value": 450,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://zpacks.com/products/pivot-solo-tent",
+      "quote": "Spruce Green w/ Standard Floor: 450 g (15.9 oz)"
+    },
+    {
+      "brand": "Zpacks",
+      "name": "Altaplex",
+      "variant": "Lite Floor",
+      "category_hint": "shelter",
+      "weight_value": 13.4,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://zpacks.com/products/altaplex-tent",
+      "quote": "Weight 13.4 oz / 380 g (Blue/Olive Drab w/ Lite Floor)"
+    },
+    {
+      "brand": "Zpacks",
+      "name": "Altaplex",
+      "variant": "Standard Floor",
+      "category_hint": "shelter",
+      "weight_value": 456,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://zpacks.com/products/altaplex-tent",
+      "quote": "Spruce Green w/ Standard Floor: 456 g"
+    },
+    {
+      "brand": "Durston",
+      "name": "X-Mid 1",
+      "variant": "Silpoly",
+      "category_hint": "shelter",
+      "weight_value": 26.2,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://durstongear.com/products/x-mid-1-tent-ultralight-backpacking",
+      "quote": "Complete Tent: 26.2 oz / 745 g (Fly: 16.2 oz / 460 g; Inner Tent: 10.0 oz / 285 g)"
+    },
+    {
+      "brand": "Durston",
+      "name": "X-Mid 2",
+      "variant": "Silpoly",
+      "category_hint": "shelter",
+      "weight_value": 31.3,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://durstongear.com/products/x-mid-2-tent-ultralight-backpacking",
+      "quote": "Complete Tent: 31.3 oz / 890 g (Fly: 18.8 oz / 535 g; Inner Tent: 12.5 oz / 355 g)"
+    },
+    {
+      "brand": "Durston",
+      "name": "X-Mid Pro 1",
+      "variant": "DCF",
+      "category_hint": "shelter",
+      "weight_value": 15.5,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://durstongear.com/products/x-mid-pro-1-tent-ultralight-thruhiking",
+      "quote": "WEIGHT 15.5 oz / 440 g (tent; Dyneema floor)"
+    },
+    {
+      "brand": "Durston",
+      "name": "X-Mid Pro 2",
+      "variant": "DCF",
+      "category_hint": "shelter",
+      "weight_value": 17.9,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://durstongear.com/products/x-mid-pro-2-tent-ultralight-thruhiking",
+      "quote": "Tent: 17.9 oz / 509 g (Dyneema® floor)"
+    },
+    {
+      "brand": "Durston",
+      "name": "X-Dome 1+",
+      "variant": "Carbon poles",
+      "category_hint": "shelter",
+      "weight_value": 34.7,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://durstongear.com/products/x-dome-1-plus-ultralight-backpacking-tent",
+      "quote": "34.7 oz / 985 g (Regular interior + Carbon poles); Fly: 14.3 oz / 405 g; Inner Tent (Regular): 11.1 oz / 315 g; Pole Set (Carbon): 9.3 oz / 265 g"
+    },
+    {
+      "brand": "Durston",
+      "name": "X-Dome 2",
+      "variant": "Carbon poles",
+      "category_hint": "shelter",
+      "weight_value": 44,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://durstongear.com/products/x-dome-2-ultralight-tent",
+      "quote": "44 oz / 1.26 kg (Regular interior + Carbon poles); Fly: 18.0 oz / 510 g; Inner Tent: 14.6 oz / 415 g (Regular); Pole Set: 11.6 oz / 330 g (Carbon). Note: product is named 'X-Dome 2' on Durston's site (no '+' suffix; only the 1P is 'X-Dome 1+')."
+    }
+  ]
+}

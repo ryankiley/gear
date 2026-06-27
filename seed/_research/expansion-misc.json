@@ -1,0 +1,196 @@
+{
+  "rows": [
+    {
+      "brand": "Garmin",
+      "name": "inReach Mini 2",
+      "variant": "Satellite Communicator",
+      "category_hint": "electronics",
+      "weight_value": 3.5,
+      "weight_unit": "oz",
+      "weight_secondary": "100 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://osat.com/products/garmin-inreach-mini-2",
+      "quote": "3.5oz (100g)"
+    },
+    {
+      "brand": "Nitecore",
+      "name": "NB5000",
+      "variant": "5000mAh",
+      "category_hint": "electronics",
+      "weight_value": 115,
+      "weight_unit": "g",
+      "weight_secondary": "4.06 oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://imrbatteries.com/products/nitecore-nb5000-ultra-lightweight-power-bank-5-000mah.json",
+      "quote": "Weight:  115g ±3g (4.06oz ±0.11oz)"
+    },
+    {
+      "brand": "Goal Zero",
+      "name": "Flip 24 Power Bank",
+      "variant": "6700mAh",
+      "category_hint": "electronics",
+      "weight_value": 4.6,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://shop.gohunt.com/products/goal-zero-flip-24-power-bank",
+      "quote": "Weight: 4.6 oz"
+    },
+    {
+      "brand": "Anker",
+      "name": "511 Power Bank (PowerCore Fusion 5K)",
+      "variant": "A1633",
+      "category_hint": "electronics",
+      "weight_value": 170,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://service.anker.com/product-description/a085g000004zVOvAAM/anker-511-power-bank-powercore-fusion-5k",
+      "quote": "Weight: 170g"
+    },
+    {
+      "brand": "Adventure Medical Kits",
+      "name": "Ultralight/Watertight .5 Medical Kit",
+      "variant": ".5",
+      "category_hint": "firstaid",
+      "weight_value": 3.6,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://adventuremedicalkits.com/products/ultralight-watertight-medical-kit-5",
+      "quote": "which weighs only 3.6 oz"
+    },
+    {
+      "brand": "Adventure Medical Kits",
+      "name": "Ultralight/Watertight .7 Medical Kit",
+      "variant": ".7",
+      "category_hint": "firstaid",
+      "weight_value": 5.8,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://adventuremedicalkits.com/products/ultralight-watertight-medical-kit-7",
+      "quote": "This waterproof first aid kit weighs only 5.8 oz."
+    },
+    {
+      "brand": "Petzl",
+      "name": "e+LITE",
+      "variant": "Emergency Headlamp",
+      "category_hint": "electronics",
+      "weight_value": 26,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.petzl.com/INT/en/Operators/Headlamps/ePLUSLITE",
+      "quote": "Weight: 26 g"
+    },
+    {
+      "brand": "Esbit",
+      "name": "Solid Fuel Tablet",
+      "variant": "per 14 g tablet",
+      "category_hint": "consumable",
+      "weight_value": 14,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://esbit.de/en/products/solid-fuel-tablets",
+      "quote": "Esbit is available in different tablet sizes (4 g, 5 g, 14 g, 27 g)."
+    },
+    {
+      "brand": "Esbit",
+      "name": "Solid Fuel Tablets",
+      "variant": "12 x 14 g pack (net)",
+      "category_hint": "consumable",
+      "weight_value": 0.172,
+      "weight_unit": "kg",
+      "weight_secondary": "172 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://esbit.de/en/products/solid-fuel-tablets",
+      "quote": "12 x 14 g (total weight: 0.172 kg)"
+    },
+    {
+      "brand": "Nature Valley",
+      "name": "Crunchy Granola Bars",
+      "variant": "one 2-bar pouch (net)",
+      "category_hint": "consumable",
+      "weight_value": 42,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.naturevalley.com/products/oats-n-honey-crunchy-granola-bars",
+      "quote": "Each two-bar serving (42g)"
+    },
+    {
+      "brand": "Justin's",
+      "name": "Classic Almond Butter Squeeze Pack",
+      "variant": "single serve",
+      "category_hint": "consumable",
+      "weight_value": 1.15,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.target.com/p/justin-s-squeeze-pack-classic-almond-butter-1-15oz/-/A-15989040",
+      "quote": "1.15 Ounces"
+    },
+    {
+      "brand": "RXBAR",
+      "name": "Protein Bar",
+      "variant": "single bar",
+      "category_hint": "consumable",
+      "weight_value": 1.83,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.amazon.com/RXBAR-Whole-Protein-Chocolate-1-83oz/dp/B07CWXX69K",
+      "quote": "RXBAR, Chocolate Sea Salt, Protein Bar, 1.83 Oz Bar"
+    },
+    {
+      "brand": "Skratch Labs",
+      "name": "Hydration Sport Drink Mix",
+      "variant": "single-serving stick",
+      "category_hint": "consumable",
+      "weight_value": 22,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.skratchlabs.com/products/hydration-sport-drink-mix",
+      "quote": "SDM-LL-22g (Lemon + Lime / Single Serving)"
+    },
+    {
+      "brand": "Liquid I.V.",
+      "name": "Hydration Multiplier",
+      "variant": "single stick",
+      "category_hint": "consumable",
+      "weight_value": 0.56,
+      "weight_unit": "oz",
+      "weight_secondary": "16 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.fairwaymarket.com/product/liquid-iv-hydration-multiplier-electrolyte-drink-mix-sticks-056-oz-10-count-id-00810125970535",
+      "quote": "0.56 Ounces x 10 ... serving size 16 gram (one stick)"
+    },
+    {
+      "brand": "Mountain House",
+      "name": "Biscuits and Gravy",
+      "variant": "pouch (2 servings, net)",
+      "category_hint": "consumable",
+      "weight_value": 4.4,
+      "weight_unit": "oz",
+      "weight_secondary": "124 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://lintonoutdoors.com/mountain-house-biscuits-and-gravy/",
+      "quote": "Net Wt 4.4 oz (124grams)"
+    },
+    {
+      "brand": "Peak Refuel",
+      "name": "Beef Stroganoff",
+      "variant": "pouch (2 servings, net)",
+      "category_hint": "consumable",
+      "weight_value": 5,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://peakrefuel.com/products/beef-stroganoff",
+      "quote": "Net Weight – 5.00 oz"
+    },
+    {
+      "brand": "Backpacker's Pantry",
+      "name": "Pad Thai",
+      "variant": "pouch (2 servings, net)",
+      "category_hint": "consumable",
+      "weight_value": 6.2,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://backpackerspantry.com/products/pad-thai",
+      "quote": "6.2 oz"
+    }
+  ]
+}

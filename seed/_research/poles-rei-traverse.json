@@ -1,0 +1,15 @@
+{
+  "rows": [
+    {
+      "brand": "REI Co-op",
+      "name": "Traverse Trekking Poles",
+      "variant": "Aluminum, per pair",
+      "category_hint": "other",
+      "weight_value": 1.16,
+      "weight_unit": "lb",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.rei.com/product/251371/rei-co-op-traverse-trekking-poles-pair",
+      "quote": "Weight: 1.16 lbs (per pair)"
+    }
+  ]
+}

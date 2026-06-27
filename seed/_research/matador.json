@@ -1,0 +1,213 @@
+{
+  "rows": [
+    {
+      "brand": "Matador",
+      "name": "Freefly16 Packable Backpack",
+      "variant": "",
+      "category_hint": "pack",
+      "weight_value": 190,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.matadorequipment.com/products/freefly16-2",
+      "quote": "Weight: 6.7oz (190g)"
+    },
+    {
+      "brand": "Matador",
+      "name": "Freerain22 Waterproof Packable Backpack",
+      "variant": "",
+      "category_hint": "pack",
+      "weight_value": 300,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.matadorequipment.com/products/freerain22",
+      "quote": "Weight: 10.6oz (300g)"
+    },
+    {
+      "brand": "Matador",
+      "name": "ReFraction Packable Backpack",
+      "variant": "",
+      "category_hint": "pack",
+      "weight_value": 225,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.matadorequipment.com/products/refraction-packable-backpack",
+      "quote": "Weight: 8oz (225g)"
+    },
+    {
+      "brand": "Matador",
+      "name": "ReFraction Packable Duffle",
+      "variant": "",
+      "category_hint": "pack",
+      "weight_value": 225,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.matadorequipment.com/products/refraction-packable-duffle",
+      "quote": "Weight: 8oz (225g)"
+    },
+    {
+      "brand": "Matador",
+      "name": "ReFraction Packable Sling",
+      "variant": "",
+      "category_hint": "pack",
+      "weight_value": 115,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.matadorequipment.com/products/refraction-packable-sling",
+      "quote": "Weight: 4oz (115g)"
+    },
+    {
+      "brand": "Matador",
+      "name": "Freerain Waterproof Packable Hip Pack",
+      "variant": "",
+      "category_hint": "pack",
+      "weight_value": 115,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.matadorequipment.com/products/freerain-hippack",
+      "quote": "Weight: 4.1oz (115g)"
+    },
+    {
+      "brand": "Matador",
+      "name": "Beast28 Ultralight Technical Backpack",
+      "variant": "",
+      "category_hint": "pack",
+      "weight_value": 680,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.matadorequipment.com/products/beast28-ultralight-technical-backpack",
+      "quote": "Weight: 1lb 8oz (680g)"
+    },
+    {
+      "brand": "Matador",
+      "name": "SEG45 Travel Pack",
+      "variant": "",
+      "category_hint": "pack",
+      "weight_value": 998,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.matadorequipment.com/products/seg45-travel-pack",
+      "quote": "Weight: 2lb 3oz (998g)"
+    },
+    {
+      "brand": "Matador",
+      "name": "SEG28 Backpack",
+      "variant": "",
+      "category_hint": "pack",
+      "weight_value": 1044,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.matadorequipment.com/products/seg28-backpack",
+      "quote": "Weight: 2lb 6oz (1044g)"
+    },
+    {
+      "brand": "Matador",
+      "name": "GlobeRider35 Travel Backpack",
+      "variant": "with hip belt",
+      "category_hint": "pack",
+      "weight_value": 1560,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.matadorequipment.com/products/globerider35-travel-backpack",
+      "quote": "3lb 7oz (1560g) with hip belt, 3lb 1oz (1390g) without hip belt"
+    },
+    {
+      "brand": "Matador",
+      "name": "GlobeRider45 Travel Backpack",
+      "variant": "",
+      "category_hint": "pack",
+      "weight_value": 2041,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.matadorequipment.com/products/globerider45-travel-backpack",
+      "quote": "Weight: 4lb 8oz (2041g)"
+    },
+    {
+      "brand": "Matador",
+      "name": "FlatPak Toiletry Bottle",
+      "variant": "3oz / 90mL",
+      "category_hint": "other",
+      "weight_value": 11.5,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.matadorequipment.com/products/flatpak-toiletry-bottle",
+      "quote": "Weight: 0.41oz (11.5g)"
+    },
+    {
+      "brand": "Matador",
+      "name": "FlatPak Travel Soap Bar Case",
+      "variant": "",
+      "category_hint": "other",
+      "weight_value": 13,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.matadorequipment.com/products/flatpak-soap-bar-case",
+      "quote": "Weight: 0.5oz (13g)"
+    },
+    {
+      "brand": "Matador",
+      "name": "FlatPak Zipper Toiletry Case",
+      "variant": "",
+      "category_hint": "other",
+      "weight_value": 32,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.matadorequipment.com/products/flatpak-zipper-toiletry-case",
+      "quote": "Weight: 1.1oz (32g)"
+    },
+    {
+      "brand": "Matador",
+      "name": "Travel Earplugs Kit",
+      "variant": "",
+      "category_hint": "other",
+      "weight_value": 7,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.matadorequipment.com/products/travel-earplugs-kit",
+      "quote": "0.3oz (7g) | Case + 2 ear plugs"
+    },
+    {
+      "brand": "Matador",
+      "name": "Refillable Toothpaste Tubes",
+      "variant": "1-week",
+      "category_hint": "consumable",
+      "weight_value": 7,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.matadorequipment.com/products/refillable-toothpaste-tubes",
+      "quote": "1-week tube: 0.3 oz (7 g)"
+    },
+    {
+      "brand": "Matador",
+      "name": "Refillable Toothpaste Tubes",
+      "variant": "2-week",
+      "category_hint": "consumable",
+      "weight_value": 8,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.matadorequipment.com/products/refillable-toothpaste-tubes",
+      "quote": "2-week tube: 0.3 oz (8 g)"
+    },
+    {
+      "brand": "Matador",
+      "name": "NanoDry Trek Towel",
+      "variant": "Small",
+      "category_hint": "other",
+      "weight_value": 34,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.matadorequipment.com/products/nanodry-trek-towel-small",
+      "quote": "Weight: 2oz (34g)"
+    },
+    {
+      "brand": "Matador",
+      "name": "Global Travel Stash",
+      "variant": "",
+      "category_hint": "other",
+      "weight_value": 120,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.matadorequipment.com/products/global-travel-stash",
+      "quote": "Weight: 4.3oz (120g)"
+    }
+  ]
+}

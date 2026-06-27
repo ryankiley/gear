@@ -1,0 +1,146 @@
+{
+  "rows": [
+    {
+      "brand": "Six Moon Designs",
+      "name": "Lunar Solo",
+      "variant": "",
+      "category_hint": "shelter",
+      "weight_value": 26,
+      "weight_unit": "oz",
+      "weight_secondary": "740 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.sixmoondesigns.com/products/lunar-solo-tent",
+      "quote": "26 oz - 740 g (Does not include stakes or poles.)"
+    },
+    {
+      "brand": "Six Moon Designs",
+      "name": "Skyscape Trekker",
+      "variant": "",
+      "category_hint": "shelter",
+      "weight_value": 28,
+      "weight_unit": "oz",
+      "weight_secondary": "790 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.sixmoondesigns.com/products/skyscape-trekker-hiking-tent",
+      "quote": "28 oz - 790 g Solo Backpacking Tent"
+    },
+    {
+      "brand": "Big Agnes",
+      "name": "Tiger Wall UL1",
+      "variant": "",
+      "category_hint": "shelter",
+      "weight_value": 1.87,
+      "weight_unit": "lb",
+      "weight_secondary": "848 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.bigagnes.com/products/tiger-wall-ul-one.json",
+      "quote": "Tiger Wall UL1 weight 1.87 lb (848 g); cross-checked trail weight \"1 lb 14 oz\" (Treeline Review, https://www.treelinereview.com/gearreviews/big-agnes-tiger-wall-review)"
+    },
+    {
+      "brand": "Zpacks",
+      "name": "Plex Solo Classic",
+      "category_hint": "shelter",
+      "weight_value": 14.5,
+      "weight_unit": "oz",
+      "weight_secondary": "411 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://zpacks.com/products/plexsolo-tent",
+      "quote": "Weight 14.5 oz / 411 g"
+    },
+    {
+      "brand": "Six Moon Designs",
+      "name": "Gatewood Cape",
+      "variant": "",
+      "category_hint": "shelter",
+      "weight_value": 11,
+      "weight_unit": "oz",
+      "weight_secondary": "310 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.sixmoondesigns.com/products/gatewood-cape",
+      "quote": "11 oz | 310 g (Does not include Stakes or pole)"
+    },
+    {
+      "brand": "Platypus",
+      "name": "GravityWorks Water Filter System",
+      "variant": "4L",
+      "category_hint": "water",
+      "weight_value": 11.5,
+      "weight_unit": "oz",
+      "weight_secondary": "326 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://cascadedesigns.com/products/gravityworks-water-filter-system",
+      "quote": "11.5 oz. (326 g)"
+    },
+    {
+      "brand": "Platypus",
+      "name": "QuickDraw Microfilter",
+      "variant": "Filter only",
+      "category_hint": "water",
+      "weight_value": 2.4,
+      "weight_unit": "oz",
+      "weight_secondary": "69 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://cascadedesigns.com/products/quickdraw-filter",
+      "quote": "Minimum Weight: 2.4 oz (69 g)"
+    },
+    {
+      "brand": "Six Moon Designs",
+      "name": "Silver Shadow Carbon Umbrella",
+      "variant": "",
+      "category_hint": "other",
+      "weight_value": 6.8,
+      "weight_unit": "oz",
+      "weight_secondary": "193 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.sixmoondesigns.com/products/silver-shadow-carbon-umbrella",
+      "quote": "6.8 oz | 193 g"
+    },
+    {
+      "brand": "Gossamer Gear",
+      "name": "Lightrek Hiking Umbrella",
+      "variant": "",
+      "category_hint": "other",
+      "weight_value": 5.8,
+      "weight_unit": "oz",
+      "weight_secondary": "164.4 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.gossamergear.com/products/liteflex-hiking-chrome-umbrella",
+      "quote": "Weight: 5.8 oz / 164.4 g"
+    },
+    {
+      "brand": "Montbell",
+      "name": "Trekking Umbrella 50",
+      "variant": "50",
+      "category_hint": "other",
+      "weight_value": 155,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.montbell.com/us/en/products/detail/1128698",
+      "quote": "Montbell Trekking Umbrella 50 — 155 g (montbell.com)"
+    },
+    {
+      "brand": "Montbell",
+      "name": "Trekking Umbrella 55",
+      "variant": "55",
+      "category_hint": "other",
+      "weight_value": 5.4,
+      "weight_unit": "oz",
+      "weight_secondary": "153 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.montbell.com/us/en/products/detail/1128701",
+      "quote": "\"weight_g\":\"153 g\",\"weight_oz\":\"5.4 oz\""
+    },
+    {
+      "brand": "Montbell",
+      "name": "Trekking Umbrella 60",
+      "variant": "60",
+      "category_hint": "other",
+      "weight_value": 5.9,
+      "weight_unit": "oz",
+      "weight_secondary": "166 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.montbell.com/us/en/products/detail/1128702",
+      "quote": "\"weight_g\":\"166 g\",\"weight_oz\":\"5.9 oz\""
+    }
+  ]
+}

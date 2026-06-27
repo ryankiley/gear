@@ -1,0 +1,153 @@
+{
+  "rows": [
+    {
+      "brand": "CAMP",
+      "name": "Corsa Ice Axe",
+      "variant": "50cm",
+      "category_hint": "other",
+      "weight_value": 209,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://skimo.co/camp-corsa-ice-axe",
+      "quote": "209g [50] 248g [60]"
+    },
+    {
+      "brand": "CAMP",
+      "name": "Corsa Nanotech Ice Axe",
+      "variant": "60cm",
+      "category_hint": "other",
+      "weight_value": 277,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://skimo.co/camp-corsa-nanotech-ice-axe",
+      "quote": "250g [50] 277g [60]"
+    },
+    {
+      "brand": "Black Diamond",
+      "name": "Raven Pro Ice Axe",
+      "variant": "55cm",
+      "category_hint": "other",
+      "weight_value": 390,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://blackdiamondequipment.com/products/raven-pro-ice-axe",
+      "quote": "Weight: 370 g, 390 g, 410 g, 420 g, 440 g, 460 g"
+    },
+    {
+      "brand": "Petzl",
+      "name": "Glacier Ice Axe",
+      "variant": "60cm",
+      "category_hint": "other",
+      "weight_value": 345,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.petzl.com/US/en/Sport/Ice-axes/GLACIER",
+      "quote": "345 g (60 cm, model U025AA01)"
+    },
+    {
+      "brand": "Kahtoola",
+      "name": "MICROspikes",
+      "variant": "per pair",
+      "category_hint": "other",
+      "weight_value": 11.9,
+      "weight_unit": "oz",
+      "weight_secondary": "Medium",
+      "weight_source": "measured",
+      "source_url": "https://www.cleverhiker.com/footwear/kahtoola-microspikes-traction-device-review/",
+      "quote": "A pair of mediums weighs about 11.9 ounces, which is the spot-on average of the devices we tested."
+    },
+    {
+      "brand": "Kahtoola",
+      "name": "EXOspikes",
+      "variant": "per pair, Medium",
+      "category_hint": "other",
+      "weight_value": 7.3,
+      "weight_unit": "oz",
+      "weight_secondary": "Medium",
+      "weight_source": "measured",
+      "source_url": "https://www.cleverhiker.com/footwear/kahtoola-exospikes-traction-device-review/",
+      "quote": "7.3 oz."
+    },
+    {
+      "brand": "Black Diamond",
+      "name": "Distance Spike Traction Device",
+      "variant": "per pair",
+      "category_hint": "other",
+      "weight_value": 200,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://blackdiamondequipment.com/products/distance-spike-traction-device",
+      "quote": "Weight: 200 g"
+    },
+    {
+      "brand": "Hillsound",
+      "name": "Trail Crampon",
+      "variant": "per pair",
+      "category_hint": "other",
+      "weight_value": 16.3,
+      "weight_unit": "oz",
+      "weight_secondary": "462 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://hillsound.com/products/trail-crampon",
+      "quote": "16.3 oz | 462 g (pair) (Excluding carrying case)"
+    },
+    {
+      "brand": "Garmin",
+      "name": "inReach Mini 3",
+      "variant": "base",
+      "category_hint": "electronics",
+      "weight_value": 122,
+      "weight_unit": "g",
+      "weight_source": "measured",
+      "source_url": "https://www.dcrainmaker.com/2025/12/garmin-inreach-mini-3-3-plus-in-depth-review-upgrade.html",
+      "quote": "inReach Mini 3 Base: 122g (without anything, cause it didn't include any clips/tethers)"
+    },
+    {
+      "brand": "Garmin",
+      "name": "inReach Messenger",
+      "variant": "",
+      "category_hint": "electronics",
+      "weight_value": 4,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.garmin.com/en-US/p/793265/",
+      "quote": "Garmin inReach Messenger — 4.0 oz / 113.9 g (Garmin official spec)"
+    },
+    {
+      "brand": "Garmin",
+      "name": "inReach Mini",
+      "variant": "original",
+      "category_hint": "electronics",
+      "weight_value": 3.5,
+      "weight_unit": "oz",
+      "weight_secondary": "100 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://andrewskurka.com/preview-garmin-inreach-mini/",
+      "quote": "3.5 oz (100 grams)"
+    },
+    {
+      "brand": "ZOLEO",
+      "name": "Satellite Communicator",
+      "variant": "",
+      "category_hint": "electronics",
+      "weight_value": 150,
+      "weight_unit": "g",
+      "weight_secondary": "5.3 oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.zoleo.com/en-us/product/zoleo-global-satellite-communicator",
+      "quote": "Weight: 150g (5.3 oz)"
+    },
+    {
+      "brand": "ACR",
+      "name": "ResQLink 400 PLB",
+      "variant": "",
+      "category_hint": "electronics",
+      "weight_value": 0.317,
+      "weight_unit": "lb",
+      "weight_secondary": "144 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.acrartex.com/products/resqlink-400/",
+      "quote": "0.317 lbs (144 g)"
+    }
+  ]
+}

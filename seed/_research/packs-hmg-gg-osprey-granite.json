@@ -1,0 +1,92 @@
+{
+  "rows": [
+    {
+      "brand": "Gossamer Gear",
+      "name": "Mariposa 60",
+      "variant": "Medium, with M Straight belt",
+      "category_hint": "pack",
+      "weight_value": 34.2,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.gossamergear.com/products/mariposa-60-lightweight-backpack",
+      "quote": "Total with M Straight belt 34.2 oz / 968 g"
+    },
+    {
+      "brand": "Gossamer Gear",
+      "name": "Gorilla 50",
+      "variant": "Medium",
+      "category_hint": "pack",
+      "weight_value": 31.9,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.gossamergear.com/products/gorilla-50",
+      "quote": "Total with M Straight belt 31.9 oz / 905 g"
+    },
+    {
+      "brand": "Gossamer Gear",
+      "name": "Kumo 36",
+      "variant": "Medium",
+      "category_hint": "pack",
+      "weight_value": 20,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.gossamergear.com/products/kumo-36-superlight-backpack",
+      "quote": "Total 20 oz / 567 g"
+    },
+    {
+      "brand": "Gossamer Gear",
+      "name": "Murmur 36",
+      "variant": "",
+      "category_hint": "pack",
+      "weight_value": 7.9,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.gossamergear.com/products/murmur-36-hyperlight-backpack",
+      "quote": "Total 7.9 oz / 225 g"
+    },
+    {
+      "brand": "Granite Gear",
+      "name": "Crown3 60",
+      "variant": "Regular torso",
+      "category_hint": "pack",
+      "weight_value": 2.4,
+      "weight_unit": "lb",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.granitegear.com/crown3-60-pack.html",
+      "quote": "2.4 lbs without lid (lid 0.18 lbs)"
+    },
+    {
+      "brand": "Granite Gear",
+      "name": "Blaze 60",
+      "variant": "Regular torso",
+      "category_hint": "pack",
+      "weight_value": 3,
+      "weight_unit": "lb",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.granitegear.com/blaze-60-unisex.html",
+      "quote": "3 lbs without lid (lid 0.18 lbs)"
+    },
+    {
+      "brand": "Pa'lante",
+      "name": "V2",
+      "variant": "Gridstop (16\" / 19\")",
+      "category_hint": "pack",
+      "weight_value": 17.7,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://palantepacks.com/products/v2",
+      "quote": "Gridstop: 17.7/18.6 oz"
+    },
+    {
+      "brand": "Six Moon Designs",
+      "name": "Swift X",
+      "variant": "Standard",
+      "category_hint": "pack",
+      "weight_value": 38.8,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.sixmoondesigns.com/products/swift-x-ultralight-backpack",
+      "quote": "38.8 oz / 1100 g"
+    }
+  ]
+}

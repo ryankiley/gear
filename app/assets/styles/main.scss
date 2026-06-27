@@ -1,0 +1,80 @@
+@use "foundations/reset";
+@use "foundations/tokens";
+@use "foundations/typography";
+@use "atoms/controls";
+@use "atoms/dialog";
+
+// Global layout helpers
+.wrap {
+  width: 100%;
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+}
+
+// Long-form reading column — legal pages, any prose. One measure, calm rhythm,
+// the app's single type family. Inline links opt into a hairline underline
+// (the reset strips link affordance by default).
+.prose {
+  max-width: 42rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.prose h2 {
+  font-size: var(--text-title);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-top: var(--space-4);
+}
+.prose h2:first-child {
+  margin-top: 0;
+}
+.prose p,
+.prose li {
+  color: var(--ink-2);
+  max-width: 64ch;
+}
+.prose ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.prose li {
+  padding-left: var(--space-4);
+  position: relative;
+}
+.prose li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--ink-3);
+}
+.prose a {
+  color: var(--ink);
+  border-bottom: 1px solid var(--line-2);
+  transition: border-color var(--dur) var(--ease);
+}
+.prose a:hover {
+  border-bottom-color: var(--ink);
+}
+
+// Motion — one signature ease (SPACE10), opacity + transform only. The load
+// reveal (folders cascade) uses this keyframe; list items use a TransitionGroup.
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

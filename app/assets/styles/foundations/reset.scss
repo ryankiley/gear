@@ -1,0 +1,153 @@
+/**
+ * RESET — modern baseline (2026), ported from the portfolio repo's reset and
+ * mapped onto gear's tokens (--paper / --ink / --line / --accent, single --font).
+ * Sources: Andy Bell (piccalil.li, 2023), Josh Comeau (2026).
+ *
+ * Gear divergences kept on purpose:
+ * - Universal margin/padding zero — gear's many unstyled <ul> grids (My Lists,
+ *   Discover, the catbar legend) rely on no default list padding.
+ * - Links inherit ink with NO underline — gear styles links per component
+ *   (buttons, nav); the few inline links opt into their own affordance.
+ * - Form controls are borderless + transparent — the .field / .btn atoms in
+ *   controls.scss rebuild any chrome; portfolio keeps UA borders, gear doesn't.
+ * - Body font/colour/background live in typography.scss + tokens.scss, not here.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+// Universal margin/padding zero — simpler than a targeted reset and load-bearing
+// here: gear's unstyled <ul> grids would otherwise inherit the UA list padding.
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  // Prevent iOS inflating text on landscape; kill the gray tap-highlight flash
+  // (inheritance from html covers every descendant).
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+  -webkit-tap-highlight-color: transparent;
+  // When focusing an input scrolls it into view (iOS Safari does this on every
+  // field focus), leave room for the sticky topbar so the field doesn't land
+  // hidden underneath it — which read as the page "jumping" on focus.
+  scroll-padding-top: 5rem;
+}
+
+body {
+  // 100svh = small-viewport height — stable across the mobile URL-bar toggle
+  // (dvh thrashes during the toggle; portfolio's reasoning).
+  min-height: 100svh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+// hanging-punctuation — punctuation hangs outside the measure for a tighter
+// rag. Safari-only, harmless elsewhere (progressive enhancement).
+:root {
+  hanging-punctuation: first last;
+}
+
+// interpolate-size — enables transitions to/from auto / min-content / etc.
+// (animated disclosure without JS height measurement). Gated behind
+// reduced-motion so the preference is respected.
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    interpolate-size: allow-keywords;
+  }
+}
+
+// Don't let long unbroken strings (URLs, tokens) force horizontal overflow.
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+// Tight line-height for headings + interactive labels; body keeps its 1.5
+// (set in typography.scss).
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button,
+input,
+label {
+  line-height: 1.2;
+}
+
+// Media — block, responsive, aspect-ratio preserving.
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+img,
+video {
+  height: auto;
+}
+
+// Form controls don't inherit font/colour by default — and gear wants them
+// borderless + transparent at rest (the .field / .btn atoms rebuild chrome).
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+}
+button {
+  cursor: pointer;
+}
+textarea:not([rows]) {
+  min-height: 10em;
+}
+
+// Links inherit ink, no underline — styled per component.
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+// Lists — no bullets (gear styles its own). Pair with role="list" where the
+// list is semantic so VoiceOver still announces it.
+ol,
+ul {
+  list-style: none;
+}
+
+// Visible focus for keyboard users only; mouse/touch focus has no ring.
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+// In-page anchor targets clear the sticky topbar.
+:target {
+  scroll-margin-block: 5ex;
+}
+
+// Text selection — gear's stone surface instead of the OS-blue accent.
+::selection {
+  background-color: var(--paper-3);
+  color: var(--ink);
+}

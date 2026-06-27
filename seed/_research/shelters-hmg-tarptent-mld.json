@@ -1,0 +1,202 @@
+{
+  "rows": [
+    {
+      "brand": "Hyperlite Mountain Gear",
+      "name": "UltaMid 2",
+      "variant": "DCF, canopy only",
+      "category_hint": "shelter",
+      "weight_value": 19.1,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://hyperlitemountaingear.com/products/ultamid-2-ultralight-pyramid-tent",
+      "quote": "Weight: 19.1oz | 541g"
+    },
+    {
+      "brand": "Hyperlite Mountain Gear",
+      "name": "UltaMid 4",
+      "variant": "DCF, canopy only",
+      "category_hint": "shelter",
+      "weight_value": 22.4,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://hyperlitemountaingear.com/products/ultamid-4-ultralight-pyramid-tent",
+      "quote": "Weight: 22.4oz | 635g"
+    },
+    {
+      "brand": "Hyperlite Mountain Gear",
+      "name": "Mid 1",
+      "variant": "",
+      "category_hint": "shelter",
+      "weight_value": 16,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://hyperlitemountaingear.com/products/mid-1-tent",
+      "quote": "Weight: 16oz | 454g"
+    },
+    {
+      "brand": "Tarptent",
+      "name": "Notch",
+      "variant": "silpoly fly / silnylon floor",
+      "category_hint": "shelter",
+      "weight_value": 26,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.tarptent.com/product/notch/",
+      "quote": "Minimum Weight 26 oz / 737 g (with solid interior; not including stakes or bags)"
+    },
+    {
+      "brand": "Tarptent",
+      "name": "Notch Li",
+      "variant": "DCF",
+      "category_hint": "shelter",
+      "weight_value": 20,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.tarptent.com/product/notch-li/",
+      "quote": "Minimum Weight: 20 oz / 567 g (with DCF floor mesh interior; not including stakes, bags, or apex guy lines)"
+    },
+    {
+      "brand": "Tarptent",
+      "name": "ProTrail Li",
+      "variant": "DCF",
+      "category_hint": "shelter",
+      "weight_value": 15.95,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.tarptent.com/product/protrail-li/",
+      "quote": "Minimum Weight: 15.95 oz / 453 g (without bags and stakes)"
+    },
+    {
+      "brand": "Tarptent",
+      "name": "Double Rainbow",
+      "variant": "silpoly/silnylon",
+      "category_hint": "shelter",
+      "weight_value": 35.9,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.tarptent.com/product/double-rainbow/",
+      "quote": "Minimum Weight: 35.9 oz / 1018 g (with carbon arch pole; not including bags, stakes, or freestanding kit)"
+    },
+    {
+      "brand": "Tarptent",
+      "name": "Double Rainbow Li",
+      "variant": "DCF",
+      "category_hint": "shelter",
+      "weight_value": 26.2,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.tarptent.com/product/double-rainbow-li/",
+      "quote": "Minimum Weight: 26.2 oz / 743 g (DCF 0.96 floor, carbon pole set, not including stakes or bags)"
+    },
+    {
+      "brand": "Tarptent",
+      "name": "Aeon Li",
+      "variant": "DCF",
+      "category_hint": "shelter",
+      "weight_value": 16.85,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.tarptent.com/product/aeon-li/",
+      "quote": "Minimum Weight: 16.85 oz / 478 g (without stakes and bags)"
+    },
+    {
+      "brand": "Tarptent",
+      "name": "StratoSpire 2",
+      "variant": "silpoly/silnylon",
+      "category_hint": "shelter",
+      "weight_value": 38.8,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.tarptent.com/product/stratospire-2/",
+      "quote": "Minimum Weight: 38.8 oz / 1100 g (solid interior; not including bags and stakes)"
+    },
+    {
+      "brand": "Tarptent",
+      "name": "StratoSpire Li",
+      "variant": "DCF",
+      "category_hint": "shelter",
+      "weight_value": 29.7,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.tarptent.com/product/stratospire-li/",
+      "quote": "Minimum Weight: 29.7 oz / 842 g (wide interior, no bags or stakes or apex guylines)"
+    },
+    {
+      "brand": "Mountain Laurel Designs",
+      "name": "DuoMid",
+      "variant": "SilPoly",
+      "category_hint": "shelter",
+      "weight_value": 18,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://mountainlaureldesigns.com/product/duomid/",
+      "quote": "WEIGHT: 18 oz | 510 gm"
+    },
+    {
+      "brand": "Mountain Laurel Designs",
+      "name": "DuoMid",
+      "variant": "DCF (.75)",
+      "category_hint": "shelter",
+      "weight_value": 15.5,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://mountainlaureldesigns.com/product/duomid/",
+      "quote": "WEIGHT: 15.5oz | 439gm"
+    },
+    {
+      "brand": "Mountain Laurel Designs",
+      "name": "SoloMid XL",
+      "variant": "SilPoly",
+      "category_hint": "shelter",
+      "weight_value": 16,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://mountainlaureldesigns.com/product/solomid-xl/",
+      "quote": "WEIGHT: 16 oz – 453 gm"
+    },
+    {
+      "brand": "Mountain Laurel Designs",
+      "name": "SoloMid XL",
+      "variant": "DCF (.75)",
+      "category_hint": "shelter",
+      "weight_value": 14,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://mountainlaureldesigns.com/product/solomid-xl/",
+      "quote": "WEIGHT: 14 oz – 396 gm"
+    },
+    {
+      "brand": "Mountain Laurel Designs",
+      "name": "Cricket Pyramid Tarp",
+      "variant": ".5 DCF",
+      "category_hint": "shelter",
+      "weight_value": 7.5,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://mountainlaureldesigns.com/product/cricket-pyramid-tarp/",
+      "quote": "7.5 oz (.5 DCF) → 213gm"
+    },
+    {
+      "brand": "Mountain Laurel Designs",
+      "name": "Cricket Pyramid Tarp",
+      "variant": ".8 DCF",
+      "category_hint": "shelter",
+      "weight_value": 9,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://mountainlaureldesigns.com/product/cricket-pyramid-tarp/",
+      "quote": "9 oz (.8 DCF) → 255 gm"
+    },
+    {
+      "brand": "Mountain Laurel Designs",
+      "name": "Cricket Pyramid Tarp",
+      "variant": "20d Pro SilPoly",
+      "category_hint": "shelter",
+      "weight_value": 12.5,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://mountainlaureldesigns.com/product/cricket-pyramid-tarp/",
+      "quote": "12.5 oz (20d Pro SilPoly) → 354gm"
+    }
+  ]
+}
