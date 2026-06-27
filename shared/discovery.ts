@@ -13,19 +13,19 @@ import type { ListData } from "./types";
 // feed (sanitization by allow-list, not escaping). Labels are sentence case
 // (no all-caps, per the style pass).
 // ---------------------------------------------------------------------------
-export interface Facet {
+interface Facet {
   slug: string;
   label: string;
 }
 
-export const TRIP_TYPES: Facet[] = [
+const TRIP_TYPES: Facet[] = [
   { slug: "car-camping", label: "Weekend car camping" },
   { slug: "backpacking", label: "3-day backpacking" },
   { slug: "carry-on", label: "Carry-on travel" },
   { slug: "thru-hike", label: "Thru-hike" },
 ];
 
-export const SEASONS: Facet[] = [
+const SEASONS: Facet[] = [
   { slug: "three-season", label: "Three-season" },
   { slug: "summer", label: "Summer" },
   { slug: "fall", label: "Fall" },

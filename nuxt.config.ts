@@ -85,10 +85,11 @@ export default defineNuxtConfig({
     },
   },
 
-  // Per-route rendering. The home discovery feed is ISR (server-rendered + cached,
-  // revalidated every 10 min) for SEO/FCP; its localStorage "My Lists" section is
-  // wrapped in <ClientOnly> so it can't cause a hydration mismatch. The editor
-  // stays a pure client island (edit token in the URL fragment, no SSR value).
+  // Per-route rendering. "/" is a tiny redirect shell: it mints a fresh list and
+  // forwards into the editor (app/pages/index.vue), so it renders identically for
+  // every visitor — ISR caches that prerendered shell, revalidated every 10 min. The
+  // editor stays a pure client island (edit token in the URL fragment, no SSR value).
+  // Everything else (legal pages, the public /l read view) is SSR by default.
   routeRules: {
     "/": { isr: 600 },
     "/e": { ssr: false },
