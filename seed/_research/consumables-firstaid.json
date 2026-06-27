@@ -186,6 +186,61 @@
       "weight_source": "manufacturer",
       "source_url": "https://www.thetentlab.com/Deuce/number2.html",
       "quote": "The Deuce #2 - .60 oz"
+    },
+    {
+      "brand": "ChapStick",
+      "name": "Classic Original Lip Balm",
+      "variant": "0.15 oz",
+      "category_hint": "consumable",
+      "weight_value": 0.15,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.amazon.com/ChapStick-Classic-Original-Balm-0-15/dp/B01IA9EERW",
+      "quote": "ChapStick Classic Original — net wt 0.15 oz (4 g); net fill weight, not full tube"
+    },
+    {
+      "brand": "Aquaphor",
+      "name": "Lip Repair",
+      "variant": "0.35 fl oz",
+      "category_hint": "consumable",
+      "weight_value": 10,
+      "weight_unit": "g",
+      "weight_source": "community",
+      "source_url": "https://www.aquaphorus.com/products/aquaphor/aquaphor-lip-repair",
+      "quote": "Aquaphor Lip Repair — 0.35 fl oz (10 mL); ≈10 g net contents, not full tube"
+    },
+    {
+      "brand": "Purell",
+      "name": "Advanced Hand Sanitizer Gel",
+      "variant": "1 fl oz travel bottle",
+      "category_hint": "consumable",
+      "weight_value": 40,
+      "weight_unit": "g",
+      "weight_source": "community",
+      "source_url": "https://www.amazon.com/Purell-Advanced-Hand-Sanitizer-Refreshing/dp/B00LPC7IH0",
+      "quote": "1 fl oz (30 mL) travel flip-cap bottle; ~40 g full bottle (carried, est.)"
+    },
+    {
+      "brand": "Sun Bum",
+      "name": "Sunscreen Lip Balm SPF 30",
+      "variant": "0.15 oz",
+      "category_hint": "consumable",
+      "weight_value": 0.15,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.sunbum.com/products/signature-spf-30-sunscreen-lip-balm",
+      "quote": "Sun Bum Sunscreen Lip Balm SPF 30 — 0.15 oz / 4.25 g (net fill, not full tube)"
+    },
+    {
+      "brand": "Tocobo",
+      "name": "Cica Cooling Sun Stick SPF50+",
+      "variant": "18 g",
+      "category_hint": "consumable",
+      "weight_value": 18,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://tocobo.us/products/cica-cooling-sun-stick",
+      "quote": "Cica Cooling Sun Stick SPF50+ PA++++ — 18 g (net contents)"
     }
   ]
 }

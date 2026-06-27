@@ -258,6 +258,7 @@ Jetboil,Stash Cooking System,0.8L,cook,201282,manufacturer,https://jetboil.johns
 MSR,PocketRocket 2 Stove,,cook,73709,manufacturer,https://cascadedesigns.com/products/pocketrocket-2-stove
 MSR,PocketRocket Deluxe Stove,,cook,82214,manufacturer,https://cascadedesigns.com/products/pocketrocket-deluxe-stove
 MSR,Titan Long Spoon,,cook,19845,manufacturer,https://cascadedesigns.com/products/titan-long-spoon
+Sea to Summit,Alpha Light Spoon,,cook,9000,manufacturer,https://goinggear.com/products/sea-to-summit-alpha-light-aluminum-spoon
 Sea to Summit,Camp Cutlery Spoon,,cook,12000,manufacturer,https://seatosummit.com/products/camp-spoon
 Sea to Summit,X-Mug,,cook,70874,manufacturer,https://seatosummit.com/products/x-mug-16oz-with-cool-grip-used
 Snow Peak,LiteMax Titanium Stove,,cook,53864,manufacturer,https://www.snowpeak.com/products/litemax-titanium-stove
@@ -468,6 +469,8 @@ Anker,313 Power Bank (PowerCore 10K),A1229,electronics,212621,manufacturer,https
 Anker,511 Power Bank (PowerCore Fusion 5K),A1633,electronics,170000,manufacturer,https://service.anker.com/product-description/a085g000004zVOvAAM/anker-511-power-bank-powercore-fusion-5k
 Anker,Nano Charger (20W),A2637,electronics,31184,manufacturer,https://www.anker.com/products/a2637-nano-20w-charger
 Anker,PowerCore 10000,A1263,electronics,178602,manufacturer,https://service.anker.com/product-description/a085g000004x2B3AAI/powercore-10000
+Apple,60W USB-C Charge Cable,1 m,electronics,40000,community,https://www.apple.com/shop/product/mw493am/a/60w-usb-c-charge-cable-1-m
+Apple,Apple Watch Magnetic Fast Charger to USB-C Cable,1 m,electronics,33000,community,https://www.apple.com/shop/product/mt0h3am/a/apple-watch-magnetic-fast-charger-to-usb-c-cable-1-m
 Apple,iPhone 14 Pro,,electronics,206000,manufacturer,https://www.apple.com/iphone-14-pro/specs/
 Apple,iPhone 15,,electronics,171000,manufacturer,https://www.apple.com/iphone-15/specs/
 Apple,iPhone 15 Pro,,electronics,187000,manufacturer,https://www.apple.com/iphone-15-pro/specs/
@@ -477,6 +480,7 @@ Apple,iPhone 16e,,electronics,167000,manufacturer,https://www.apple.com/iphone-1
 Apple,iPhone 17,,electronics,177000,manufacturer,https://www.apple.com/iphone-17/specs/
 Apple,iPhone 17 Pro,,electronics,206000,manufacturer,https://www.apple.com/iphone-17-pro/specs/
 Apple,iPhone 17 Pro Max,,electronics,233000,manufacturer,https://www.apple.com/iphone-17-pro/specs/
+Apple,USB-C to Lightning Cable,1 m,electronics,28000,community,https://www.apple.com/shop/product/muq93am/a/usb-c-to-lightning-cable-1-m
 Black Diamond,Spot 400 Headlamp,,electronics,86000,manufacturer,https://blackdiamondequipment.com/products/spot-400-headlamp
 Black Diamond,Storm 500-R Headlamp,Rechargeable,electronics,120000,manufacturer,https://blackdiamondequipment.com/products/storm-500-r-rechargeable-headlamp
 DJI,Osmo Pocket 4,with battery,electronics,190500,manufacturer,https://www.cliftoncameras.co.uk/uploads/specifications/cliftoncameras-dji-osmo-pocket-4-specs.pdf
@@ -488,6 +492,7 @@ Garmin,inReach Mini,original,electronics,99223,manufacturer,https://andrewskurka
 Garmin,inReach Mini 2,Satellite Communicator,electronics,99223,manufacturer,https://osat.com/products/garmin-inreach-mini-2
 Garmin,inReach Mini 3,base,electronics,122000,measured,https://www.dcrainmaker.com/2025/12/garmin-inreach-mini-3-3-plus-in-depth-review-upgrade.html
 Goal Zero,Flip 24 Power Bank,6700mAh,electronics,130408,manufacturer,https://shop.gohunt.com/products/goal-zero-flip-24-power-bank
+INIU,100W Power Bank (P63),"P63-E1, 25000mAh",electronics,493000,measured,https://akkutest.org/en/iniu-power-bank-with-100w-and-25000mah-review/
 Nitecore,NB10000,GEN2,electronics,150000,manufacturer,https://www.nitecore.com/product/nb10000
 Nitecore,NB10000 Gen4,10000mAh,electronics,141748,manufacturer,https://nitecorestore.com/products/nb10000gen4-usbc-lightweight-power-bank
 Nitecore,NB5000,5000mAh,electronics,115000,manufacturer,https://imrbatteries.com/products/nitecore-nb5000-ultra-lightweight-power-bank-5-000mah.json
@@ -502,8 +507,10 @@ ZOLEO,Satellite Communicator,,electronics,150000,manufacturer,https://www.zoleo.
 Adventure Medical Kits,Ultralight/Watertight .5 Medical Kit,.5,firstaid,102058,manufacturer,https://adventuremedicalkits.com/products/ultralight-watertight-medical-kit-5
 Adventure Medical Kits,Ultralight/Watertight .7 Medical Kit,.7,firstaid,164427,manufacturer,https://adventuremedicalkits.com/products/ultralight-watertight-medical-kit-7
 Leukotape,Leukotape P Sports Tape,1.5 in x 15 yd full roll,firstaid,110563,measured,https://www.litesmith.com/leukotape-p-blister-prevention-tape/
+Aquaphor,Lip Repair,0.35 fl oz,consumable,10000,community,https://www.aquaphorus.com/products/aquaphor/aquaphor-lip-repair
 Aquatabs,Water Purification Tablets,per tablet,consumable,397,manufacturer,https://www.aquatabs.us/product/aquatabs-397mg-tablets-x100/
 Backpacker's Pantry,Pad Thai,"pouch (2 servings, net)",consumable,175767,manufacturer,https://backpackerspantry.com/products/pad-thai
+ChapStick,Classic Original Lip Balm,0.15 oz,consumable,4252,manufacturer,https://www.amazon.com/ChapStick-Classic-Original-Balm-0-15/dp/B01IA9EERW
 Clif Bar,Clif Bar,single bar,consumable,68000,manufacturer,https://eu.clifbar.com/en/products/clif-bar-chocolate-chip/
 Esbit,Solid Fuel Tablet,per 14 g tablet,consumable,14000,manufacturer,https://esbit.de/en/products/solid-fuel-tablets
 Esbit,Solid Fuel Tablets,12 x 14 g pack (net),consumable,172000,manufacturer,https://esbit.de/en/products/solid-fuel-tablets
@@ -526,10 +533,13 @@ Peak Refuel,Beef Stroganoff,"pouch (2 servings, net)",consumable,141748,manufact
 Pop-Tarts,Frosted Strawberry Toaster Pastries,one pouch (2 pastries),consumable,96000,manufacturer,https://foods.fatsecret.com/calories-nutrition/kelloggs/pop-tarts-frosted---strawberry/1-pastry
 PROBAR,BOLT Organic Energy Chews,single pouch,consumable,59534,manufacturer,https://theprobar.com/products/berry-blast-bolt-energy-chew
 PROBAR,MEAL Bar,single bar,consumable,85049,manufacturer,https://theprobar.com/collections/meal-bar
+Purell,Advanced Hand Sanitizer Gel,1 fl oz travel bottle,consumable,40000,community,https://www.amazon.com/Purell-Advanced-Hand-Sanitizer-Refreshing/dp/B00LPC7IH0
 RXBAR,Protein Bar,single bar,consumable,51880,manufacturer,https://www.amazon.com/RXBAR-Whole-Protein-Chocolate-1-83oz/dp/B07CWXX69K
 Skratch Labs,Hydration Sport Drink Mix,single-serving stick,consumable,22000,manufacturer,https://www.skratchlabs.com/products/hydration-sport-drink-mix
 Snickers,Snickers Singles Size Chocolate Candy Bar,single bar,consumable,52730,manufacturer,https://www.snickers.com/products/chocolate/snickers-singles-size-chocolate-candy-bars-186-oz-bars
 Starbucks,VIA Instant Coffee,single packet,consumable,3118,manufacturer,https://www.target.com/p/starbucks-via-instant-coffee-medium-roast-packets-pike-place-roast-packets-8ct-0-11oz/-/A-15251130
+Sun Bum,Sunscreen Lip Balm SPF 30,0.15 oz,consumable,4252,manufacturer,https://www.sunbum.com/products/signature-spf-30-sunscreen-lip-balm
+Tocobo,Cica Cooling Sun Stick SPF50+,18 g,consumable,18000,manufacturer,https://tocobo.us/products/cica-cooling-sun-stick
 Adotec,Ultralight Food Locker,14L,other,199000,manufacturer,https://adotecgear.com/products/ultralight-food-locker-grizzly-bear-resistant-bag
 BearVault,BV450 Jaunt Bear Canister,standard,other,935535,manufacturer,https://bearvault.com/products/bv450
 BearVault,BV500 Journey Bear Canister,standard,other,1162331,manufacturer,https://bearvault.com/products/bv500

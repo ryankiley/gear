@@ -186,6 +186,17 @@
       "weight_source": "manufacturer",
       "source_url": "https://vargooutdoors.com/products/bot-700",
       "quote": "Weight: 4.8 ounces (138 grams)"
+    },
+    {
+      "brand": "Sea to Summit",
+      "name": "Alpha Light Spoon",
+      "variant": "",
+      "category_hint": "cook",
+      "weight_value": 9,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://goinggear.com/products/sea-to-summit-alpha-light-aluminum-spoon",
+      "quote": "Alpha Light Spoon: 0.3 oz / 9 g"
     }
   ]
 }

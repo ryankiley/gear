@@ -98,6 +98,50 @@
       "weight_source": "manufacturer",
       "source_url": "https://www.anker.com/products/a2637-nano-20w-charger",
       "quote": "Weight: 1.1 ounces"
+    },
+    {
+      "brand": "Apple",
+      "name": "USB-C to Lightning Cable",
+      "variant": "1 m",
+      "category_hint": "electronics",
+      "weight_value": 28,
+      "weight_unit": "g",
+      "weight_source": "community",
+      "source_url": "https://www.apple.com/shop/product/muq93am/a/usb-c-to-lightning-cable-1-m",
+      "quote": "Apple MUQ93AM/A, 1 m. Apple does not publish a weight; ~28 g is a community estimate (verify)"
+    },
+    {
+      "brand": "Apple",
+      "name": "60W USB-C Charge Cable",
+      "variant": "1 m",
+      "category_hint": "electronics",
+      "weight_value": 40,
+      "weight_unit": "g",
+      "weight_source": "community",
+      "source_url": "https://www.apple.com/shop/product/mw493am/a/60w-usb-c-charge-cable-1-m",
+      "quote": "Apple MW493AM/A USB-C to USB-C (woven), 1 m. Apple does not publish a weight; ~40 g is a community estimate (verify)"
+    },
+    {
+      "brand": "Apple",
+      "name": "Apple Watch Magnetic Fast Charger to USB-C Cable",
+      "variant": "1 m",
+      "category_hint": "electronics",
+      "weight_value": 33,
+      "weight_unit": "g",
+      "weight_source": "community",
+      "source_url": "https://www.apple.com/shop/product/mt0h3am/a/apple-watch-magnetic-fast-charger-to-usb-c-cable-1-m",
+      "quote": "Apple MT0H3AM/A, 1 m. Apple does not publish a weight; ~33 g is a community estimate (verify)"
+    },
+    {
+      "brand": "INIU",
+      "name": "100W Power Bank (P63)",
+      "variant": "P63-E1, 25000mAh",
+      "category_hint": "electronics",
+      "weight_value": 493,
+      "weight_unit": "g",
+      "weight_source": "measured",
+      "source_url": "https://akkutest.org/en/iniu-power-bank-with-100w-and-25000mah-review/",
+      "quote": "INIU P63 100W 25000mAh — measured 493 g"
     }
   ]
 }
