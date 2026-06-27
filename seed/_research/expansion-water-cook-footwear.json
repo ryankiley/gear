@@ -1,0 +1,191 @@
+{
+  "rows": [
+    {
+      "brand": "LifeStraw",
+      "name": "Peak Series Solo Filter",
+      "variant": "",
+      "category_hint": "water",
+      "weight_value": 1.7,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://lifestraw.com/products/lifestraw-peak-solo",
+      "quote": "Weight: 1.7oz / 48.2g"
+    },
+    {
+      "brand": "LifeStraw",
+      "name": "Peak Series Squeeze Bottle with Filter",
+      "variant": "650 ml",
+      "category_hint": "water",
+      "weight_value": 102,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://lifestraw.com/products/lifestraw-peak-series-squeeze-bottle",
+      "quote": "Weight: 102 g (listed as 3.2 oz | 102 g)"
+    },
+    {
+      "brand": "Grayl",
+      "name": "GeoPress Purifier Bottle",
+      "variant": "24 fl oz",
+      "category_hint": "water",
+      "weight_value": 15.9,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://grayl.com/pages/geopress-tech-specs",
+      "quote": "15.9 oz (450 g)"
+    },
+    {
+      "brand": "Grayl",
+      "name": "UltraPress Purifier Bottle",
+      "variant": "16.9 fl oz",
+      "category_hint": "water",
+      "weight_value": 10.9,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://grayl.com/pages/ul-specs",
+      "quote": "10.9 oz (309 g)"
+    },
+    {
+      "brand": "CamelBak",
+      "name": "Crux Reservoir",
+      "variant": "3L",
+      "category_hint": "water",
+      "weight_value": 235,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.excelsports.com/camelbak-crux-3l-reservoir",
+      "quote": "235 grams"
+    },
+    {
+      "brand": "CamelBak",
+      "name": "Chute Mag Bottle",
+      "variant": "1L Tritan",
+      "category_hint": "water",
+      "weight_value": 6.8,
+      "weight_unit": "oz",
+      "weight_source": "measured",
+      "source_url": "https://www.packhacker.com/travel-gear/camelbak/chute-mag-1l-bottle/",
+      "quote": "6.8 oz (192.8 g)"
+    },
+    {
+      "brand": "BioLite",
+      "name": "HeadLamp 425",
+      "variant": "",
+      "category_hint": "electronics",
+      "weight_value": 78,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.bioliteenergy.com/products/headlamp-425",
+      "quote": "2.75 oz (78 g)"
+    },
+    {
+      "brand": "BioLite",
+      "name": "CampStove 2+",
+      "variant": "",
+      "category_hint": "cook",
+      "weight_value": 935,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.bioliteenergy.com/products/campstove-2-plus",
+      "quote": "2.06 lbs (935g)"
+    },
+    {
+      "brand": "BioLite",
+      "name": "Charge 80 PD",
+      "variant": "20000mAh power bank",
+      "category_hint": "electronics",
+      "weight_value": 465,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.bioliteenergy.com/products/charge-80-pd",
+      "quote": "16.4 oz (465 g)"
+    },
+    {
+      "brand": "Trangia",
+      "name": "Stove 27-2 UL",
+      "variant": "27-2 UL with kettle",
+      "category_hint": "cook",
+      "weight_value": 825,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://trangia.se/en/shop/trangia-stove-27-2-ul/",
+      "quote": "Weight (g): 825"
+    },
+    {
+      "brand": "Trangia",
+      "name": "Spirit Burner",
+      "variant": "",
+      "category_hint": "cook",
+      "weight_value": 110,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://trangia.se/en/support/guides/all-about-our-burners/guide-spirit-burner/",
+      "quote": "Weight (g) 110"
+    },
+    {
+      "brand": "Keen",
+      "name": "Targhee III Waterproof Mid",
+      "variant": "Men's, per pair",
+      "category_hint": "clothing",
+      "weight_value": 34.8,
+      "weight_unit": "oz",
+      "weight_source": "measured",
+      "source_url": "https://runrepeat.com/keen-targhee-iii-waterproof-mid",
+      "quote": "Men: 17.4 oz / 493g (brand-stated, per shoe) | pair = 987 g (2× per-shoe)"
+    },
+    {
+      "brand": "Keen",
+      "name": "Targhee III Waterproof Low",
+      "variant": "Men's, per pair",
+      "category_hint": "clothing",
+      "weight_value": 30.8,
+      "weight_unit": "oz",
+      "weight_source": "measured",
+      "source_url": "https://runrepeat.com/keen-targhee-iii-waterproof",
+      "quote": "Men: 15.4 oz / 437g (brand-stated, per shoe) | pair = 873 g (2× per-shoe)"
+    },
+    {
+      "brand": "Oboz",
+      "name": "Sawtooth X Mid Waterproof",
+      "variant": "Men's, per pair",
+      "category_hint": "clothing",
+      "weight_value": 38.8,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://obozfootwear.com/products/mens-sawtooth-x-mid-waterproof",
+      "quote": "Weight: 19.4 oz / 550 grams (per shoe) | pair = 1100 g (2× per-shoe)"
+    },
+    {
+      "brand": "Oboz",
+      "name": "Sawtooth X Low Waterproof",
+      "variant": "Men's, per pair (size 11)",
+      "category_hint": "clothing",
+      "weight_value": 2.38,
+      "weight_unit": "lb",
+      "weight_source": "measured",
+      "source_url": "https://www.outdoorgearlab.com/reviews/shoes-and-boots/hiking-shoes-men/oboz-sawtooth-x-low-waterproof",
+      "quote": "Measured Weight: 2.38 lbs (size 11) — per pair"
+    },
+    {
+      "brand": "Danner",
+      "name": "Mountain 600",
+      "variant": "Men's, per pair",
+      "category_hint": "clothing",
+      "weight_value": 37.4,
+      "weight_unit": "oz",
+      "weight_source": "measured",
+      "source_url": "https://runrepeat.com/danner-mountain-600",
+      "quote": "Tipping the scale at 18.7 oz (529g) ... (per shoe) | pair = 1060 g (2× per-shoe)"
+    },
+    {
+      "brand": "Danner",
+      "name": "Trail 2650",
+      "variant": "Men's, per pair",
+      "category_hint": "clothing",
+      "weight_value": 1.5,
+      "weight_unit": "lb",
+      "weight_source": "measured",
+      "source_url": "https://www.cleverhiker.com/footwear/mens-danner-trail-2650-review/",
+      "quote": "Weight (Pair): 1 lb. 8 oz."
+    }
+  ]
+}

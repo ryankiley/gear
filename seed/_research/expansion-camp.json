@@ -116,18 +116,6 @@
     },
     {
       "brand": "Sea to Summit",
-      "name": "Ultra-Sil Dry Sack",
-      "variant": "8L",
-      "category_hint": "other",
-      "weight_value": 39,
-      "weight_unit": "g",
-      "weight_secondary": "1.4 oz",
-      "weight_source": "manufacturer",
-      "source_url": "https://seatosummit.com/products/ultra-sil-dry-bag",
-      "quote": "8L: 39 g / 1.4 oz"
-    },
-    {
-      "brand": "Sea to Summit",
       "name": "Ultra-Sil Stuff Sack",
       "variant": "13L",
       "category_hint": "other",

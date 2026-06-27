@@ -56,8 +56,8 @@
       "quote": "Size: 100 g, 230 g (JetPower Fuel - Single)"
     },
     {
-      "brand": "Clif Bar",
-      "name": "Clif Bar",
+      "brand": "Clif",
+      "name": "Energy Bar (Chocolate Chip)",
       "variant": "single bar",
       "category_hint": "consumable",
       "weight_value": 68,
@@ -79,7 +79,7 @@
     },
     {
       "brand": "Snickers",
-      "name": "Snickers Singles Size Chocolate Candy Bar",
+      "name": "Singles Size Bar",
       "variant": "single bar",
       "category_hint": "consumable",
       "weight_value": 1.86,

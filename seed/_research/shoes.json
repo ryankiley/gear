@@ -3,61 +3,57 @@
     {
       "brand": "Altra",
       "name": "Lone Peak 9",
-      "variant": "Men's, per shoe",
+      "variant": "Men's, per pair",
       "category_hint": "clothing",
-      "weight_value": 10.4,
-      "weight_unit": "oz",
-      "weight_secondary": "295 g",
+      "weight_value": 590,
+      "weight_unit": "g",
       "weight_source": "manufacturer",
       "source_url": "https://www.runningwarehouse.com/Altra_Lone_Peak_9/descpage-ALL9PM1.html",
-      "quote": "Weight: 10.4 oz 295 g"
+      "quote": "Weight: 10.4 oz 295 g per shoe | pair = 590 g (2× per-shoe)"
     },
     {
       "brand": "Altra",
       "name": "Lone Peak 9+",
-      "variant": "Men's, per shoe",
+      "variant": "Men's, per pair",
       "category_hint": "clothing",
-      "weight_value": 10.7,
-      "weight_unit": "oz",
-      "weight_secondary": "303 g",
+      "weight_value": 607,
+      "weight_unit": "g",
       "weight_source": "manufacturer",
       "source_url": "https://www.runningwarehouse.com/Altra_Lone_Peak_9/descpage-AMLP9M6.html",
-      "quote": "Weight: 10.7 oz | 303 g"
+      "quote": "Weight: 10.7 oz | 303 g per shoe | pair = 607 g (2× per-shoe)"
     },
     {
       "brand": "Altra",
       "name": "Timp 5",
-      "variant": "Men's, per shoe",
+      "variant": "Men's, per pair",
       "category_hint": "clothing",
-      "weight_value": 9.8,
-      "weight_unit": "oz",
-      "weight_secondary": "278 g",
+      "weight_value": 556,
+      "weight_unit": "g",
       "weight_source": "manufacturer",
       "source_url": "https://www.runningwarehouse.com/Altra_Timp_5/descpage-AL5TIM2.html",
-      "quote": "Weight: 9.8 oz / 278 g"
+      "quote": "Weight: 9.8 oz / 278 g per shoe | pair = 556 g (2× per-shoe)"
     },
     {
       "brand": "Altra",
       "name": "Olympus 6",
-      "variant": "Men's, per shoe",
+      "variant": "Men's, per pair",
       "category_hint": "clothing",
-      "weight_value": 12.5,
-      "weight_unit": "oz",
-      "weight_secondary": "354 g",
+      "weight_value": 709,
+      "weight_unit": "g",
       "weight_source": "manufacturer",
       "source_url": "https://www.runningwarehouse.com/Altra_Olympus_6/descpage-AL6OLM4.html",
-      "quote": "Weight: 12.5 oz 354 g"
+      "quote": "Weight: 12.5 oz 354 g per shoe | pair = 709 g (2× per-shoe)"
     },
     {
       "brand": "Hoka",
       "name": "Speedgoat 6",
-      "variant": "Men's, per shoe",
+      "variant": "Men's, per pair",
       "category_hint": "clothing",
-      "weight_value": 9.8,
+      "weight_value": 19.6,
       "weight_unit": "oz",
       "weight_source": "manufacturer",
       "source_url": "https://www.alpinetrek.co.uk/hoka-speedgoat-6-trail-running-shoes/",
-      "quote": "Weight (pair): (men's), 9.8 oz (single)"
+      "quote": "Weight (pair): (men's), 9.8 oz (single) | pair = 556 g (2× per-shoe)"
     },
     {
       "brand": "Hoka",
@@ -73,109 +69,101 @@
     {
       "brand": "Hoka",
       "name": "Torrent 4",
-      "variant": "Men's, per shoe",
+      "variant": "Men's, per pair",
       "category_hint": "clothing",
-      "weight_value": 8.7,
-      "weight_unit": "oz",
-      "weight_secondary": "248 g",
+      "weight_value": 493,
+      "weight_unit": "g",
       "weight_source": "manufacturer",
       "source_url": "https://www.runningwarehouse.eu/HOKA_Torrent_4/descpage-HTO4CGN-EN.html",
-      "quote": "Weight: 8.7 oz 248 grams"
+      "quote": "Weight: 8.7 oz 248 grams per shoe | pair = 493 g (2× per-shoe)"
     },
     {
       "brand": "Topo Athletic",
       "name": "Pursuit 2",
-      "variant": "Men's, per shoe",
+      "variant": "Men's, per pair",
       "category_hint": "clothing",
-      "weight_value": 10.6,
-      "weight_unit": "oz",
-      "weight_secondary": "301 g",
+      "weight_value": 601,
+      "weight_unit": "g",
       "weight_source": "manufacturer",
       "source_url": "https://www.runningwarehouse.eu/Topo_Athletic_Pursuit_2/descpage-TO2PUM0-EN.html",
-      "quote": "Weight: 10.6 oz 301 g"
+      "quote": "Weight: 10.6 oz 301 g per shoe | pair = 601 g (2× per-shoe)"
     },
     {
       "brand": "Topo Athletic",
       "name": "Ultraventure 4",
-      "variant": "Men's, per shoe",
+      "variant": "Men's, per pair",
       "category_hint": "clothing",
-      "weight_value": 10.4,
+      "weight_value": 20.8,
       "weight_unit": "oz",
       "weight_source": "manufacturer",
       "source_url": "https://www.topoathletic.com/mens-ultraventure-4",
-      "quote": "Weight:10.4 OZ (M9)"
+      "quote": "Weight:10.4 OZ (M9) | pair = 590 g (2× per-shoe)"
     },
     {
       "brand": "Brooks",
       "name": "Cascadia 18",
-      "variant": "Men's, per shoe",
+      "variant": "Men's, per pair",
       "category_hint": "clothing",
-      "weight_value": 11.1,
-      "weight_unit": "oz",
-      "weight_secondary": "314 g",
+      "weight_value": 629,
+      "weight_unit": "g",
       "weight_source": "manufacturer",
       "source_url": "https://www.brooksrunning.com/en_us/mens/shoes/trail-shoes/cascadia-18/110426.html",
-      "quote": "Men: 11.1 oz / 314g"
+      "quote": "Men: 11.1 oz / 314g per shoe | pair = 629 g (2× per-shoe)"
     },
     {
       "brand": "Saucony",
       "name": "Peregrine 14",
-      "variant": "Men's, per shoe",
+      "variant": "Men's, per pair",
       "category_hint": "clothing",
-      "weight_value": 9.4,
-      "weight_unit": "oz",
-      "weight_secondary": "267 g",
+      "weight_value": 533,
+      "weight_unit": "g",
       "weight_source": "manufacturer",
       "source_url": "https://www.alpinetrek.co.uk/saucony-peregrine-14-trail-running-shoes/",
-      "quote": "Men: 9.4 oz / 267g"
+      "quote": "Men: 9.4 oz / 267g per shoe | pair = 533 g (2× per-shoe)"
     },
     {
       "brand": "La Sportiva",
       "name": "Bushido III",
-      "variant": "Men's, per shoe",
+      "variant": "Men's, per pair",
       "category_hint": "clothing",
-      "weight_value": 10.5,
-      "weight_unit": "oz",
-      "weight_secondary": "300 g",
+      "weight_value": 595,
+      "weight_unit": "g",
       "weight_source": "manufacturer",
       "source_url": "https://www.lasportivausa.com/products/bushido-iii",
-      "quote": "WEIGHT: 10.5 oz / 300 g"
+      "quote": "WEIGHT: 10.5 oz / 300 g per shoe | pair = 595 g (2× per-shoe)"
     },
     {
       "brand": "Merrell",
       "name": "Moab 3 (low)",
-      "variant": "Men's, per shoe",
+      "variant": "Men's, per pair",
       "category_hint": "clothing",
-      "weight_value": 16.2,
-      "weight_unit": "oz",
-      "weight_secondary": "460 g",
+      "weight_value": 919,
+      "weight_unit": "g",
       "weight_source": "manufacturer",
       "source_url": "https://www.merrell.com/US/en/moab-3/52481M.html",
-      "quote": "Men: 16.2 oz / 460g"
+      "quote": "Men: 16.2 oz / 460g per shoe | pair = 919 g (2× per-shoe)"
     },
     {
       "brand": "Salomon",
       "name": "Sense Ride 5",
-      "variant": "Men's, per shoe",
+      "variant": "Men's, per pair",
       "category_hint": "clothing",
-      "weight_value": 10.3,
-      "weight_unit": "oz",
-      "weight_secondary": "291 g",
+      "weight_value": 584,
+      "weight_unit": "g",
       "weight_source": "manufacturer",
       "source_url": "https://www.alpinetrek.co.uk/salomon-sense-ride-5-trail-running-shoes/",
-      "quote": "Men: 10.3 oz / 291g"
+      "quote": "Men: 10.3 oz / 291g per shoe | pair = 584 g (2× per-shoe)"
     },
     {
       "brand": "Salomon",
       "name": "X Ultra 360 (low)",
-      "variant": "Men's, per shoe",
+      "variant": "Men's, per pair",
       "category_hint": "clothing",
-      "weight_value": 12.3,
-      "weight_unit": "oz",
-      "weight_secondary": "350 g",
+      "weight_value": 697,
+      "weight_unit": "g",
       "weight_source": "manufacturer",
       "source_url": "https://www.alpinetrek.co.uk/salomon-x-ultra-360-multisport-shoes/",
-      "quote": "12.3 oz / 350g"
+      "quote": "12.3 oz / 350g per shoe | pair = 697 g (2× per-shoe)"
     }
   ]
 }
