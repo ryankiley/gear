@@ -196,12 +196,17 @@ function toggleCollapsed() {
 .folder__chev.is-collapsed {
   transform: rotate(-90deg);
 }
-/* size to the typed text so the chevron hugs the name (not the full column) */
+/* size to the typed text so the chevron hugs the name (not the full column);
+   once it hits the cap (or, on mobile, the row edge) it truncates with an ellipsis
+   rather than a hard mid-character cut */
 .folder__name {
   width: auto;
   field-sizing: content;
   min-width: 4ch;
   max-width: min(40ch, 50vw);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-weight: 600;
   font-size: var(--text-title);
   letter-spacing: -0.02em;
@@ -268,6 +273,11 @@ function toggleCollapsed() {
   }
   .folder__title {
     grid-column: 1;
+  }
+  /* on a phone, 50vw strands space before the action icons — let the name run the
+     full row (the grid column + chevron bound it) and ellipsize at the edge */
+  .folder__name {
+    max-width: none;
   }
   .folder__actions {
     grid-column: auto;
