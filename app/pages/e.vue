@@ -430,6 +430,10 @@ function onCorrected(res: { status: string; itemName?: string }) {
      pushing the save status + app-bar controls off the edge */
   .editor__title {
     min-width: 0;
+    /* drop the 42vw cap here: the flex layout (titlewrap flex:1 + this min-width:0)
+       already bounds the title and ellipsizes it, so the cap just stranded usable
+       space — let the name run right up to the status + icon cluster */
+    max-width: none;
   }
 }
 .editor__title:focus {
