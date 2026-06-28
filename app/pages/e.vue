@@ -631,6 +631,12 @@ function onCorrected(res: { status: string; itemName?: string }) {
   left: 50%;
   bottom: var(--space-5);
   transform: translateX(-50%);
+  /* a position:fixed box is laid out against the viewport, so it escapes the
+     html{overflow-x:clip} guard; without a cap, translateX(-50%) of a wide toast
+     could overhang an edge and (like any element wider than the layout viewport)
+     nudge iOS Safari into the same viewport-growth margin bug. Keep it within the
+     gutters. */
+  max-width: calc(100% - 2 * var(--space-4));
   background: var(--ink);
   color: var(--paper);
   padding: var(--space-2) var(--space-4);
