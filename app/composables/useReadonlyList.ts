@@ -8,7 +8,11 @@ import { computeTotals } from "~~/shared/weights";
 // pages differ only in chrome (SEO/report on /l, live-poll on /s) — the data
 // shaping is identical and lives here so it can't drift.
 export function useReadonlyList(snapshot: Ref<ListSnapshot | null>) {
-  const unit = ref<Unit>(snapshot.value?.displayUnit ?? "g");
+  // Shared read-only views always START in grams — they deliberately DON'T inherit
+  // the owner's saved displayUnit, so a shared link reads the same for everyone
+  // regardless of the unit the owner happens to edit in. The viewer can still
+  // toggle the unit locally (below); that choice is never persisted.
+  const unit = ref<Unit>("g");
   const totals = computed(() => (snapshot.value ? computeTotals(snapshot.value) : null));
   // re-skin the snapshot with the viewer's chosen unit; readonly components read list.displayUnit
   const roList = computed(() =>
