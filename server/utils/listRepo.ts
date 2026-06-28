@@ -212,19 +212,6 @@ export async function getByEditToken(editToken: string): Promise<ListSnapshot | 
   return row ? rowToSnapshot(row) : null;
 }
 
-/** version of a list addressed by share code (cheap; for live-sync polling). */
-export async function versionByShareCode(code: string): Promise<number | null> {
-  const c = normShareCode(code);
-  if (!c) return null;
-  const db = await useDb();
-  const rows = await db
-    .select({ version: lists.version })
-    .from(lists)
-    .where(liveOnly(lists.shareCode, c))
-    .limit(1);
-  return rows[0]?.version ?? null;
-}
-
 export async function versionByEditToken(editToken: string): Promise<number | null> {
   const db = await useDb();
   const hash = sha256Hex(editToken);
