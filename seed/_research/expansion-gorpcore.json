@@ -34,6 +34,28 @@
       "quote": "No published weight; community estimate for Men's US 9, per shoe | pair = 760 g (2× per-shoe)"
     },
     {
+      "brand": "ROA",
+      "name": "Saharan Cap",
+      "variant": "",
+      "category_hint": "clothing",
+      "weight_value": 92,
+      "weight_unit": "g",
+      "weight_source": "community",
+      "source_url": "https://www.roa-hiking.com/products/roa-accessories-saharan-cap-multicolor-j277346",
+      "quote": "No published weight; community estimate ~92 g for the stretch nylon ripstop cap with detachable neck guard (cf. Outdoor Research Sun Runner Cap 84 g with cape)"
+    },
+    {
+      "brand": "ROA",
+      "name": "Logo Wool Beanie",
+      "variant": "",
+      "category_hint": "clothing",
+      "weight_value": 65,
+      "weight_unit": "g",
+      "weight_source": "community",
+      "source_url": "https://www.roa-hiking.com/products/roa-accessories-logo-wool-beanie-black-j334872",
+      "quote": "No published weight; community estimate ~65 g for the cuffed 50% virgin wool / 50% acrylic knit beanie (between Smartwool Merino 250 cuffed 59.5 g and Satisfy CloudMerino 71 g)"
+    },
+    {
       "brand": "Diemme",
       "name": "Roccia Vet",
       "variant": "Men's US 9, EU 42, per pair",
