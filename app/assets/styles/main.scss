@@ -45,11 +45,18 @@
   padding-left: var(--space-4);
   position: relative;
 }
+/* a small round bullet (drawn, not a glyph — crisp + consistent across fonts),
+   sized in em so it tracks the text, centred on the first line */
 .prose li::before {
-  content: "—";
+  content: "";
   position: absolute;
   left: 0;
-  color: var(--ink-3);
+  top: 0.72em;
+  width: 0.36em;
+  height: 0.36em;
+  border-radius: 50%;
+  background: var(--ink-3);
+  transform: translateY(-50%);
 }
 .prose a {
   color: var(--ink);
