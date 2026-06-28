@@ -26,6 +26,8 @@ several intentional design trade-offs are documented as accepted risk.
 | 3 | In-memory rate-limit fallback in prod when Upstash absent | Low | Accepted (documented) |
 | 4 | Wiki-open weight edits for unverified catalog rows | Info | By design |
 | 5 | Rate-limit IP trust for direct-to-origin requests | Info | Accepted (documented) |
+| 6 | `lighterpackId` 500 on malformed percent-encoding (import) | Low | **Fixed (2nd pass)** |
+| 7 | Community-intake catalog spam (branded + K-distinct) | Info | By design (2nd pass) |
 
 ---
 
@@ -99,6 +101,38 @@ request sent directly to the `*.vercel.app` origin, bypassing the edge, could fo
 those headers — is a platform exposure documented in the code. Out of scope to fix
 here; mitigated by Vercel deployment protection if desired.
 
+### 6. `lighterpackId` crashes on malformed percent-encoding — Low — FIXED (2nd pass)
+
+`shared/lighterpack.ts:lighterpackId` ran `decodeURIComponent(m[1])` on the URL's
+path segment. `decodeURIComponent` throws `URIError` on malformed percent-encoding
+(e.g. `https://lighterpack.com/csv/%E0%A4%A`), and `server/api/import.post.ts` calls
+`lighterpackId(...)` **outside** its `try/catch` — so such a URL produced an
+unhandled 500 instead of the intended clean 400 ("Not a LighterPack share link").
+A public, unauthenticated endpoint should degrade gracefully on hostile input.
+
+**Fix:** the decode is now wrapped so `lighterpackId` is total — malformed input
+returns `null` (→ 400), never throws. Regression test added in
+`tests/lighterpack.test.ts`.
+
+### 7. Community-intake catalog spam — Informational — by design (2nd pass)
+
+Lists are free and unauthenticated, so an actor can create ≥ K distinct lists
+(`CATALOG_MIN_DISTINCT_LISTS`, default 3) containing the same crafted item and get
+it promoted into a **community/unverified** `catalog_items` row (visible in
+autocomplete and the changes feed). This is well-gated and bounded, not a vuln:
+- `isAcceptableTypedItem` strips PII/profanity and caps length; `isBrandedTypedItem`
+  rejects bare generic nouns and requires a known brand prefix or a real model
+  token; the median weight must fall in the category's plausibility band.
+- Promoted names are rendered exclusively through Vue text interpolation (escaped) —
+  **no XSS**; community rows rank below the cited spine; raw typed text is purged
+  after 90 days; admins can remove/merge.
+- Impact is catalog-content spam, not escalation: an attacker cannot make another
+  user's item point at the injected row.
+
+**Recommendation:** keep an eye on the changes feed / autocomplete for abuse;
+consider a lightweight admin "remove catalog row" affordance if spam appears in
+practice. No code change.
+
 ---
 
 ## Controls verified as sound (no action needed)
@@ -128,6 +162,27 @@ here; mitigated by Vercel deployment protection if desired.
 - **No secrets committed.** `.env` is gitignored; only `.env.example` (placeholders)
   is tracked.
 
+### Additional checks in the second (deeper) pass
+
+- **No prototype pollution.** The op reducer copies only whitelisted keys into
+  fresh objects (`cleanItemPatch`/`cleanFolderPatch`/`normalizeItem`/`normalizeFolder`)
+  before `Object.assign`, so a `__proto__`/`constructor` key in a patch can't reach
+  an object prototype. Snapshot clone/equality use `JSON.parse(JSON.stringify(...))`.
+- **No SSR head injection.** The public `/l/[slug]` page feeds the user's title /
+  description into `useHead`/`useSeoMeta`; Unhead escapes title text and meta
+  attribute values, and body content uses `{{ }}` interpolation — no raw HTML sink.
+- **`imageUrl` is inert.** Stored on items/catalog but never rendered as an `<img>`
+  `src` or any other sink anywhere in the client.
+- **Snapshot restore is safe.** Reconstruction is bounded (`SNAPSHOT_CAP = 5`,
+  newest is always a full base) and the restored state is re-run through the same
+  normalizers/caps as a normal write — a tampered snapshot can't bypass clamps.
+- **Integer-safe totals.** `MAX_ITEMS × qtyMax × UNIT_WEIGHT_MAX_MG ≈ 1e15 < 2^53`,
+  so `bigint(mode:number)` rollups stay exact; negative parsed weights are rejected.
+- **Edit-token handling.** The write capability lives only in the URL fragment
+  (`/e#token`, never sent to the server) and `localStorage`; `Referrer-Policy:
+  no-referrer` plus `replaceState` (not navigation) keep it out of the Referer and
+  history side-channels.
+
 ## Files changed by this review
 
 - `server/utils/tokens.ts` — added `safeEqual()` (constant-time secret compare).
@@ -136,3 +191,5 @@ here; mitigated by Vercel deployment protection if desired.
 - `server/routes/api/cron/corroborate-catalog.ts` — constant-time secret compare.
 - `shared/exporters/csv.ts` — CSV formula-injection guard on export + strip on import.
 - `tests/csv.test.ts` — regression test for the CSV guard.
+- `shared/lighterpack.ts` — make `lighterpackId` total (no throw on malformed `%`).
+- `tests/lighterpack.test.ts` — regression test for malformed percent-encoding.
