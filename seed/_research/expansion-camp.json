@@ -184,6 +184,39 @@
       "weight_source": "manufacturer",
       "source_url": "https://www.opinel-usa.com/products/opinel-no-6-carbon-steel-blade",
       "quote": "1.2 oz"
+    },
+    {
+      "brand": "REI Co-op",
+      "name": "Multi Towel Lite",
+      "variant": "Small",
+      "category_hint": "other",
+      "weight_value": 0.75,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.rei.com/product/195822/rei-co-op-multi-towel-lite",
+      "quote": "Multi Towel Lite Small: 14 x 10 in, 0.75 oz"
+    },
+    {
+      "brand": "REI Co-op",
+      "name": "Multi Towel Lite",
+      "variant": "Medium",
+      "category_hint": "other",
+      "weight_value": 1.4,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.rei.com/product/161674/rei-co-op-multi-towel-lite-medium",
+      "quote": "Multi Towel Lite Medium: 22 x 12.5 in, 1.4 oz"
+    },
+    {
+      "brand": "REI Co-op",
+      "name": "Multi Towel Lite",
+      "variant": "X-Large",
+      "category_hint": "other",
+      "weight_value": 6.4,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.rei.com/product/161676/rei-co-op-multi-towel-lite-extra-large",
+      "quote": "Multi Towel Lite X-Large: 54 x 25 in, 6.4 oz"
     }
   ]
 }

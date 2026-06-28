@@ -252,6 +252,39 @@
       "weight_source": "manufacturer",
       "source_url": "https://beautyofjoseon.com/products/relief-sun-rice-probiotics",
       "quote": "Relief Sun: Rice + Probiotics SPF50+ PA++++ — 50 ml / 1.69 fl oz net content; water-based emulsion density ~1.0, so ≈ 50 g net (net contents, not full tube)"
+    },
+    {
+      "brand": "Salt & Stone",
+      "name": "Extra-Strength Aluminum-Free Deodorant",
+      "variant": "75 g",
+      "category_hint": "consumable",
+      "weight_value": 75,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.saltandstone.com/products/natural-deodorant",
+      "quote": "Extra-Strength Aluminum-Free Deodorant — 2.6 oz / 75 g net (all scents same fill, incl. Bergamot & Hinoki)"
+    },
+    {
+      "brand": "Revlon",
+      "name": "Expert Slant Tweezer",
+      "variant": "",
+      "category_hint": "firstaid",
+      "weight_value": 16.3,
+      "weight_unit": "g",
+      "weight_source": "community",
+      "source_url": "https://www.target.com/p/revlon-expert-made-with-stainless-steel-slant-tip-tweezer/-/A-77640587",
+      "quote": "Stainless-steel slant tip, 3.66 in long; Revlon Information Center Q&A gives ~16.3 g (no manufacturer spec sheet)"
+    },
+    {
+      "brand": "TUMS",
+      "name": "Extra Strength 750 Antacid",
+      "variant": "roll of 8",
+      "category_hint": "firstaid",
+      "weight_value": 14,
+      "weight_unit": "g",
+      "weight_source": "community",
+      "source_url": "https://www.tums.com/antacid-products/extra-750/",
+      "quote": "No published pack weight; 8-tablet travel roll ≈ 8 x ~1.5 g chewable + paper wrapper ≈ 14 g (estimate, re-weigh to confirm)"
     }
   ]
 }
