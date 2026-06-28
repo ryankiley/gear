@@ -290,6 +290,18 @@
       "weight_source": "manufacturer",
       "source_url": "https://aeropress.com/products/aeropress-go-travel-coffee-press",
       "quote": "When fully packed up in the mug with the lid on top, the AeroPress Go, its accessories, and the 20 paper filters that fit into the travel filter holder weigh 11.4 oz. (323 g) altogether."
+    },
+    {
+      "brand": "Litesmith",
+      "name": "Folding Sit Pad",
+      "variant": "",
+      "category_hint": "other",
+      "weight_value": 0.98,
+      "weight_unit": "oz",
+      "weight_secondary": "27.8 g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.litesmith.com/folding-sit-pad/",
+      "quote": "Weight: 0.98 oz (27.8 g)"
     }
   ]
 }
