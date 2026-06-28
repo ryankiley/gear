@@ -407,7 +407,9 @@ function dismissFix() {
      toggling between packing and editing doesn't change row heights */
   min-height: calc(36px + 2 * var(--space-3));
 }
-/* custom monochrome checkbox — sharp square, fills with ink + a paper check */
+/* custom monochrome checkbox — softly rounded square, fills with ink + a paper
+   check. 4px sits between --radius-1 (2px, imperceptible here) and --radius-2 (8px,
+   too round at 18px) — a slight, friendly rounding. */
 .item__box {
   align-self: center;
   appearance: none;
@@ -418,7 +420,7 @@ function dismissFix() {
   place-content: center;
   border: 1.5px solid var(--ink-3);
   background: var(--paper);
-  border-radius: var(--radius-0);
+  border-radius: 4px;
   cursor: pointer;
   transition:
     background var(--dur) var(--ease),
@@ -431,22 +433,24 @@ function dismissFix() {
   background: var(--ink);
   border-color: var(--ink);
 }
+/* a drawn checkmark with ROUND caps/joins (from the design-system checkbox) — a
+   paper-coloured shape masked by the tick SVG, so it adapts to light/dark. */
 .item__box::after {
   content: "";
-  width: 4px;
-  height: 8px;
-  margin-top: calc(-1 * var(--space-px));
-  border: solid var(--paper);
-  border-width: 0 2px 2px 0;
+  width: 12px;
+  height: 12px;
+  background: var(--paper);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5 10 17.5 19 7'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5 10 17.5 19 7'/%3E%3C/svg%3E") center / contain no-repeat;
   /* checkmark pops in with a springy overshoot on check (SPACE10's easeOutBack) */
-  transform: rotate(45deg) scale(0);
+  transform: scale(0);
   opacity: 0;
   transition:
     transform var(--dur) var(--ease-spring),
     opacity 120ms var(--ease);
 }
 .item__box:checked::after {
-  transform: rotate(45deg) scale(1);
+  transform: scale(1);
   opacity: 1;
 }
 .item__cname {
