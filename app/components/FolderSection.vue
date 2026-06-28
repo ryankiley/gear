@@ -39,11 +39,17 @@ function addBlank() {
   c.addBlankItem(props.folder.id);
 }
 
-// collapse: the chevron shows/hides the folder body. Persisted per folder id so a
-// collapsed folder stays collapsed across reloads (pure UI state, not synced).
+// collapse: the chevron shows/hides the folder body. In the EDITABLE view it's
+// persisted per folder id so a collapsed folder stays collapsed across reloads
+// (pure UI state, never sent to the server). The read-only shared views (/s, /l)
+// deliberately DON'T read or write this: they always start with every folder open
+// so the owner's collapse state can't bleed into a shared link (folder ids — and
+// thus the localStorage keys — are shared across views in the same browser). A
+// viewer may still collapse locally, but that choice is never persisted.
 const COLLAPSE_KEY = `gear.fold.${props.folder.id}`;
 const collapsed = ref(false);
 onMounted(() => {
+  if (props.readonly) return; // shared views always start expanded
   try {
     collapsed.value = localStorage.getItem(COLLAPSE_KEY) === "1";
   } catch {
@@ -52,6 +58,7 @@ onMounted(() => {
 });
 function toggleCollapsed() {
   collapsed.value = !collapsed.value;
+  if (props.readonly) return; // don't persist/sync collapse from a shared view
   try {
     localStorage.setItem(COLLAPSE_KEY, collapsed.value ? "1" : "0");
   } catch {

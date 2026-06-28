@@ -223,9 +223,7 @@ function dismissFix() {
       <ItemName :item="item" /><span v-if="effClass !== 'base'" class="t-sm" :class="`item__class--${effClass}`"> · {{ effClass }}</span>
     </span>
     <span class="t-num t-sm t-muted item__roqty">{{ qtyLabel }}</span>
-    <span class="t-num item__roweight">{{
-      item.unitWeightMg > 0 ? formatWeight(lineMg(item), list.displayUnit) : "—"
-    }}</span>
+    <span class="t-num item__roweight"><template v-if="item.unitWeightMg > 0">{{ formatWeight(lineMg(item), list.displayUnit, { withUnit: false }) }} <span class="t-muted">{{ list.displayUnit }}</span></template><template v-else>—</template></span>
   </div>
 
   <!-- packing / checklist: a big tap target — check off the item; name + line weight only -->
@@ -238,9 +236,7 @@ function dismissFix() {
     />
     <span class="item__cname"><ItemName :item="item" /></span>
     <span class="t-num t-sm t-muted item__cqty">{{ qtyLabel }}</span>
-    <span class="t-num item__cweight">{{
-      item.unitWeightMg > 0 ? formatWeight(lineMg(item), list.displayUnit) : "—"
-    }}</span>
+    <span class="t-num item__cweight"><template v-if="item.unitWeightMg > 0">{{ formatWeight(lineMg(item), list.displayUnit, { withUnit: false }) }} <span class="t-muted">{{ list.displayUnit }}</span></template><template v-else>—</template></span>
   </label>
 
   <!-- editable row (default) -->
