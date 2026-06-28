@@ -110,7 +110,7 @@
     {
       "brand": "Montbell",
       "name": "Trekking Umbrella 50",
-      "variant": "50",
+      "variant": "",
       "category_hint": "other",
       "weight_value": 155,
       "weight_unit": "g",
@@ -121,7 +121,7 @@
     {
       "brand": "Montbell",
       "name": "Trekking Umbrella 55",
-      "variant": "55",
+      "variant": "",
       "category_hint": "other",
       "weight_value": 5.4,
       "weight_unit": "oz",
@@ -133,7 +133,7 @@
     {
       "brand": "Montbell",
       "name": "Trekking Umbrella 60",
-      "variant": "60",
+      "variant": "",
       "category_hint": "other",
       "weight_value": 5.9,
       "weight_unit": "oz",

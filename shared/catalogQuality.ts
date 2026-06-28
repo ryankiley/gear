@@ -24,6 +24,19 @@ export function normKey(s: string | null | undefined): string {
   return (s ?? "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 }
 
+/** A variant is redundant when its tokens already appear (contiguously) in the
+ *  name — e.g. name "Copper Spur HV UL3" + variant "UL3" → renders "…UL3 · UL3".
+ *  Such variants should be cleared (the name already carries the size/config). */
+export function isVariantRedundant(name: string, variant: string | null | undefined): boolean {
+  const v = normKey(variant).split(" ").filter(Boolean);
+  if (!v.length) return false;
+  const n = normKey(name).split(" ").filter(Boolean);
+  for (let i = 0; i + v.length <= n.length; i++) {
+    if (n.slice(i, i + v.length).join(" ") === v.join(" ")) return true;
+  }
+  return false;
+}
+
 /** Median of a numeric list (avg of the two middles for even length). */
 export function median(nums: number[]): number {
   if (!nums.length) return 0;

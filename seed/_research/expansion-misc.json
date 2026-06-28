@@ -49,7 +49,7 @@
     {
       "brand": "Adventure Medical Kits",
       "name": "Ultralight/Watertight .5 Medical Kit",
-      "variant": ".5",
+      "variant": "",
       "category_hint": "firstaid",
       "weight_value": 3.6,
       "weight_unit": "oz",
@@ -60,7 +60,7 @@
     {
       "brand": "Adventure Medical Kits",
       "name": "Ultralight/Watertight .7 Medical Kit",
-      "variant": ".7",
+      "variant": "",
       "category_hint": "firstaid",
       "weight_value": 5.8,
       "weight_unit": "oz",

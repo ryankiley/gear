@@ -102,7 +102,7 @@
     {
       "brand": "Zerogram",
       "name": "El Chalten Pro 2P",
-      "variant": "2P",
+      "variant": "",
       "category_hint": "shelter",
       "weight_value": 1.86,
       "weight_unit": "kg",
@@ -113,7 +113,7 @@
     {
       "brand": "Zerogram",
       "name": "El Chalten Pro 1.5P",
-      "variant": "1.5P",
+      "variant": "",
       "category_hint": "shelter",
       "weight_value": 1.76,
       "weight_unit": "kg",

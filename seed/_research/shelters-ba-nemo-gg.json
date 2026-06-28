@@ -3,7 +3,7 @@
     {
       "brand": "Big Agnes",
       "name": "Copper Spur HV UL1",
-      "variant": "UL1",
+      "variant": "",
       "category_hint": "shelter",
       "weight_value": 34,
       "weight_unit": "oz",
@@ -14,7 +14,7 @@
     {
       "brand": "Big Agnes",
       "name": "Copper Spur HV UL2",
-      "variant": "UL2",
+      "variant": "",
       "category_hint": "shelter",
       "weight_value": 43,
       "weight_unit": "oz",
@@ -25,7 +25,7 @@
     {
       "brand": "Big Agnes",
       "name": "Copper Spur HV UL3",
-      "variant": "UL3",
+      "variant": "",
       "category_hint": "shelter",
       "weight_value": 56,
       "weight_unit": "oz",
@@ -36,7 +36,7 @@
     {
       "brand": "Big Agnes",
       "name": "Tiger Wall UL2",
-      "variant": "UL2",
+      "variant": "",
       "category_hint": "shelter",
       "weight_value": 35,
       "weight_unit": "oz",
@@ -47,7 +47,7 @@
     {
       "brand": "Big Agnes",
       "name": "Tiger Wall UL3",
-      "variant": "UL3",
+      "variant": "",
       "category_hint": "shelter",
       "weight_value": 42,
       "weight_unit": "oz",
@@ -58,7 +58,7 @@
     {
       "brand": "Big Agnes",
       "name": "Fly Creek HV UL1",
-      "variant": "UL1",
+      "variant": "",
       "category_hint": "shelter",
       "weight_value": 27,
       "weight_unit": "oz",
@@ -69,7 +69,7 @@
     {
       "brand": "Big Agnes",
       "name": "Fly Creek HV UL2",
-      "variant": "UL2",
+      "variant": "",
       "category_hint": "shelter",
       "weight_value": 31,
       "weight_unit": "oz",

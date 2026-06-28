@@ -1,15 +1,15 @@
 brand,name,variant,category_hint,weight_mg,weight_source,source_url
-Big Agnes,Copper Spur HV UL1,UL1,shelter,963884,manufacturer,https://www.absolute-snow.com/big-agnes-copper-spur-hv-ul1-ultralight-backpacking-tent
-Big Agnes,Copper Spur HV UL2,UL2,shelter,1219029,manufacturer,https://www.absolute-snow.com/big-agnes-copper-spur-hv-ul2-ultralight-backpacking-tent
-Big Agnes,Copper Spur HV UL2 mtnGLO,UL2,shelter,1275729,manufacturer,https://jrifecompany.com/products/big-agnes-copper-spur-hv-ul2-mtnglo%C2%AE
-Big Agnes,Copper Spur HV UL3,UL3,shelter,1587573,manufacturer,https://www.absolute-snow.com/big-agnes-copper-spur-hv-ul3-ultralight-backpacking-tent
-Big Agnes,Fly Creek HV UL1,UL1,shelter,765437,manufacturer,https://www.outdoorline.eu/products/big-agnes-fly-creek-hv-ul1-ultralight-tent
-Big Agnes,Fly Creek HV UL2,UL2,shelter,878835,manufacturer,https://www.outdoorline.eu/products/big-agnes-fly-creek-hv-ul2-ultralight-tent
+Big Agnes,Copper Spur HV UL1,,shelter,963884,manufacturer,https://www.absolute-snow.com/big-agnes-copper-spur-hv-ul1-ultralight-backpacking-tent
+Big Agnes,Copper Spur HV UL2,,shelter,1219029,manufacturer,https://www.absolute-snow.com/big-agnes-copper-spur-hv-ul2-ultralight-backpacking-tent
+Big Agnes,Copper Spur HV UL2 mtnGLO,,shelter,1275729,manufacturer,https://jrifecompany.com/products/big-agnes-copper-spur-hv-ul2-mtnglo%C2%AE
+Big Agnes,Copper Spur HV UL3,,shelter,1587573,manufacturer,https://www.absolute-snow.com/big-agnes-copper-spur-hv-ul3-ultralight-backpacking-tent
+Big Agnes,Fly Creek HV UL1,,shelter,765437,manufacturer,https://www.outdoorline.eu/products/big-agnes-fly-creek-hv-ul1-ultralight-tent
+Big Agnes,Fly Creek HV UL2,,shelter,878835,manufacturer,https://www.outdoorline.eu/products/big-agnes-fly-creek-hv-ul2-ultralight-tent
 Big Agnes,Sarvis VST 2,2P,shelter,1133981,measured,https://www.adventurealan.com/best-new-ultralight-gear/
 Big Agnes,String Ridge VST 1.5,1.5P,shelter,547146,measured,https://www.treelinereview.com/gearreviews/big-agnes-string-ridge-vst-1-5-tent-review
 Big Agnes,Tiger Wall UL1,,shelter,848218,manufacturer,https://www.bigagnes.com/products/tiger-wall-ul-one.json
-Big Agnes,Tiger Wall UL2,UL2,shelter,992233,manufacturer,"https://www.absolute-snow.com/big-agnes-tiger-wall-ul2-tents,-bivvys--extensions"
-Big Agnes,Tiger Wall UL3,UL3,shelter,1190680,manufacturer,"https://www.absolute-snow.com/big-agnes-tiger-wall-ul3-tents,-bivvys--extensions"
+Big Agnes,Tiger Wall UL2,,shelter,992233,manufacturer,"https://www.absolute-snow.com/big-agnes-tiger-wall-ul2-tents,-bivvys--extensions"
+Big Agnes,Tiger Wall UL3,,shelter,1190680,manufacturer,"https://www.absolute-snow.com/big-agnes-tiger-wall-ul3-tents,-bivvys--extensions"
 Bonfus,Middus 2P,DCF 0.75,shelter,410000,manufacturer,https://bonfus.com/product/middus-2p/
 Bonfus,Solus 1P,DCF 0.75,shelter,495000,manufacturer,https://bonfus.com/product/solus-1p/
 Borah Gear,Ultralight Bivy,"Argon67, standard",shelter,141748,manufacturer,https://borahgear.com/ultralightbivy.html
@@ -33,8 +33,8 @@ Liteway,PyraOmm Duo Tarp DCF,"DCF, 2P",shelter,260000,manufacturer,https://litew
 Locus Gear,Hapi,DCF-B,shelter,350000,manufacturer,https://locusgear.com/en-us/products/hapi-dcf-b
 Locus Gear,Khafra,DCF-B,shelter,500000,manufacturer,https://locusgear.com/en-us/products/khafra-dcf-b
 Locus Gear,Khufu,DCF-B,shelter,335000,manufacturer,https://locusgear.com/en-us/products/khufu-dcf-b
-Marmot,Tungsten 2P,2P,shelter,2258890,manufacturer,https://www.rei.com/product/200288/marmot-tungsten-2p-tent-with-footprint
-Marmot,Tungsten UL 2P,2P,shelter,1340000,manufacturer,https://marmotau.com/products/tungsten-ul-2p-2
+Marmot,Tungsten 2P,,shelter,2258890,manufacturer,https://www.rei.com/product/200288/marmot-tungsten-2p-tent-with-footprint
+Marmot,Tungsten UL 2P,,shelter,1340000,manufacturer,https://marmotau.com/products/tungsten-ul-2p-2
 Mountain Laurel Designs,Cricket Pyramid Tarp,.5 DCF,shelter,212621,manufacturer,https://mountainlaureldesigns.com/product/cricket-pyramid-tarp/
 Mountain Laurel Designs,Cricket Pyramid Tarp,.8 DCF,shelter,255146,manufacturer,https://mountainlaureldesigns.com/product/cricket-pyramid-tarp/
 Mountain Laurel Designs,Cricket Pyramid Tarp,20d Pro SilPoly,shelter,354369,manufacturer,https://mountainlaureldesigns.com/product/cricket-pyramid-tarp/
@@ -72,8 +72,8 @@ Trekkertent,Stealth 1,DCF,shelter,435000,manufacturer,https://www.trekkertent.co
 Yama Mountain Gear,Cirriform 1P Tarp,DCF,shelter,246641,manufacturer,https://yamamountaingear.com/products/1p-cirriform-tarp-dcf
 Yama Mountain Gear,Cirriform 1P Tarp,Silpoly,shelter,331689,manufacturer,https://yamamountaingear.com/products/1p-cirriform-tarp-silpoly
 Yama Mountain Gear,Swiftline 1P Tent,"20D Silpoly, Medium",shelter,796622,manufacturer,https://yamamountaingear.com/products/1p-swiftline
-Zerogram,El Chalten Pro 1.5P,1.5P,shelter,1760000,manufacturer,https://prod.danawa.com/info/?pcode=16247600
-Zerogram,El Chalten Pro 2P,2P,shelter,1860000,manufacturer,https://prod.danawa.com/info/?pcode=16247885
+Zerogram,El Chalten Pro 1.5P,,shelter,1760000,manufacturer,https://prod.danawa.com/info/?pcode=16247600
+Zerogram,El Chalten Pro 2P,,shelter,1860000,manufacturer,https://prod.danawa.com/info/?pcode=16247885
 Zpacks,Altaplex,Lite Floor,shelter,379884,manufacturer,https://zpacks.com/products/altaplex-tent
 Zpacks,Altaplex,Standard Floor,shelter,456000,manufacturer,https://zpacks.com/products/altaplex-tent
 Zpacks,Altaplex Pro,Lite Floor,shelter,411068,manufacturer,https://zpacks.com/products/altaplex-pro-tent
@@ -318,14 +318,14 @@ Sea to Summit,Frontier UL Collapsible Cup,400 ml,cook,53000,manufacturer,https:/
 Sea to Summit,X-Mug,,cook,70874,manufacturer,https://seatosummit.com/products/x-mug-16oz-with-cool-grip-used
 Snow Peak,LiteMax Titanium Stove,,cook,53864,manufacturer,https://www.snowpeak.com/products/litemax-titanium-stove
 Snow Peak,Trek 700 Titanium,700ml,cook,136078,manufacturer,https://www.snowpeak.com/products/trek-700-titanium
-Soto,Amicus Stove with Igniter,with igniter,cook,82214,manufacturer,https://sotooutdoors.com/product/amicus-stove-with-igniter/
+Soto,Amicus Stove with Igniter,,cook,82214,manufacturer,https://sotooutdoors.com/product/amicus-stove-with-igniter/
 Soto,WindMaster Stove,with 4Flex,cook,85049,manufacturer,https://sotooutdoors.com/product/windmaster-stove-with-4flex/
-Toaks,Titanium 1100ml Pot,1100ml,cook,124738,manufacturer,https://www.toaksoutdoor.com/products/pot-1100
-Toaks,Titanium 450ml Cup,450ml,cook,76000,manufacturer,https://www.toaksoutdoor.com/products/cup-450
-Toaks,Titanium 550ml Pot (Ultralight),550ml,cook,73709,manufacturer,https://www.toaksoutdoor.com/products/pot-550-l
-Toaks,Titanium 650ml Pot (Light),650ml,cook,79379,manufacturer,https://www.toaksoutdoor.com/products/pot-650-l
-Toaks,Titanium 750ml Pot,750ml,cook,102058,manufacturer,https://www.toaksoutdoor.com/products/pot-750
-Toaks,Titanium 900ml D115mm Pot,900ml,cook,116233,manufacturer,https://www.toaksoutdoor.com/products/pot-900-d115
+Toaks,Titanium 1100ml Pot,,cook,124738,manufacturer,https://www.toaksoutdoor.com/products/pot-1100
+Toaks,Titanium 450ml Cup,,cook,76000,manufacturer,https://www.toaksoutdoor.com/products/cup-450
+Toaks,Titanium 550ml Pot (Ultralight),,cook,73709,manufacturer,https://www.toaksoutdoor.com/products/pot-550-l
+Toaks,Titanium 650ml Pot (Light),,cook,79379,manufacturer,https://www.toaksoutdoor.com/products/pot-650-l
+Toaks,Titanium 750ml Pot,,cook,102058,manufacturer,https://www.toaksoutdoor.com/products/pot-750
+Toaks,Titanium 900ml D115mm Pot,,cook,116233,manufacturer,https://www.toaksoutdoor.com/products/pot-900-d115
 Toaks,Titanium Long Handle Spoon,,cook,18427,manufacturer,https://www.toaksoutdoor.com/products/slv-03
 Trangia,Spirit Burner,,cook,110000,manufacturer,https://trangia.se/en/support/guides/all-about-our-burners/guide-spirit-burner/
 Trangia,Stove 27-2 UL,27-2 UL with kettle,cook,825000,manufacturer,https://trangia.se/en/shop/trangia-stove-27-2-ul/
@@ -612,8 +612,8 @@ Petzl,Swift LT,,electronics,43000,manufacturer,https://www.petzl.com/US/en/Sport
 Ricoh,GR III,"body, with battery + SD",electronics,257000,manufacturer,https://www.ricoh-imaging.co.jp/english/products/gr-3/spec/
 Ricoh,GR IV,"body, with battery + SD",electronics,262000,manufacturer,https://www.ricoh-imaging.co.jp/english/products/gr-4/spec/
 ZOLEO,Satellite Communicator,,electronics,150000,manufacturer,https://www.zoleo.com/en-us/product/zoleo-global-satellite-communicator
-Adventure Medical Kits,Ultralight/Watertight .5 Medical Kit,.5,firstaid,102058,manufacturer,https://adventuremedicalkits.com/products/ultralight-watertight-medical-kit-5
-Adventure Medical Kits,Ultralight/Watertight .7 Medical Kit,.7,firstaid,164427,manufacturer,https://adventuremedicalkits.com/products/ultralight-watertight-medical-kit-7
+Adventure Medical Kits,Ultralight/Watertight .5 Medical Kit,,firstaid,102058,manufacturer,https://adventuremedicalkits.com/products/ultralight-watertight-medical-kit-5
+Adventure Medical Kits,Ultralight/Watertight .7 Medical Kit,,firstaid,164427,manufacturer,https://adventuremedicalkits.com/products/ultralight-watertight-medical-kit-7
 Leukotape,Leukotape P Sports Tape,1.5 in x 15 yd full roll,firstaid,110563,measured,https://www.litesmith.com/leukotape-p-blister-prevention-tape/
 Aquaphor,Lip Repair,0.35 fl oz,consumable,10000,community,https://www.aquaphorus.com/products/aquaphor/aquaphor-lip-repair
 Aquatabs,Water Purification Tablets,per tablet,consumable,397,manufacturer,https://www.aquatabs.us/product/aquatabs-397mg-tablets-x100/
@@ -684,9 +684,9 @@ Matador,FlatPak Zipper Toiletry Case,,other,32000,manufacturer,https://www.matad
 Matador,Global Travel Stash,,other,120000,manufacturer,https://www.matadorequipment.com/products/global-travel-stash
 Matador,NanoDry Trek Towel,Small,other,34000,manufacturer,https://www.matadorequipment.com/products/nanodry-trek-towel-small
 Matador,Travel Earplugs Kit,,other,7000,manufacturer,https://www.matadorequipment.com/products/travel-earplugs-kit
-Montbell,Trekking Umbrella 50,50,other,155000,manufacturer,https://www.montbell.com/us/en/products/detail/1128698
-Montbell,Trekking Umbrella 55,55,other,153087,manufacturer,https://www.montbell.com/us/en/products/detail/1128701
-Montbell,Trekking Umbrella 60,60,other,167262,manufacturer,https://www.montbell.com/us/en/products/detail/1128702
+Montbell,Trekking Umbrella 50,,other,155000,manufacturer,https://www.montbell.com/us/en/products/detail/1128698
+Montbell,Trekking Umbrella 55,,other,153087,manufacturer,https://www.montbell.com/us/en/products/detail/1128701
+Montbell,Trekking Umbrella 60,,other,167262,manufacturer,https://www.montbell.com/us/en/products/detail/1128702
 MSR,Blizzard Stake,per stake,other,27000,manufacturer,https://www.msrgear.com/tents/tent-accessories/blizzard-tent-stakes/05809.html
 MSR,Carbon Core Stake,per stake,other,5750,manufacturer,https://www.msrgear.com/tents/tent-accessories/carboncore-tent-stakes/02499.html
 MSR,Core Stake,per stake,other,14175,measured,https://basecampfood.com/products/msr-core-stake-9-kit
@@ -711,7 +711,7 @@ Six Moon Designs,Silver Shadow Carbon Umbrella,,other,192777,manufacturer,https:
 Soar,Ultra Race Cap,,other,27000,manufacturer,https://www.altitude-sports.com/p/soar-running-ultra-race-cap-unisex-soa-sa13mw
 Sunski,Treeline,,other,28100,manufacturer,https://sunski.com/products/og-treeline
 Suunto,Clipper L/B NH Compass,,other,5103,manufacturer,https://www.gossamergear.com/products/suunto-clipper-compact-compass
-TheTentLab,The Deuce of Spades #2 Trowel,#2,other,17010,manufacturer,https://www.thetentlab.com/Deuce/number2.html
+TheTentLab,The Deuce of Spades #2 Trowel,,other,17010,manufacturer,https://www.thetentlab.com/Deuce/number2.html
 Ursack,Major AllMitey,standard,other,269320,manufacturer,https://ursack.com/products/ursack-allmitey
 Ursack,Major Bear Bag,standard ~10.65L,other,215456,manufacturer,https://ursack.com/products/ursack-major
 Victorinox,Classic SD,standard,other,22680,manufacturer,https://www.victorinox.com/en-US/Products/Swiss-Army-Knives/Small-Pocket-Knives/Classic-SD/p/0.6223

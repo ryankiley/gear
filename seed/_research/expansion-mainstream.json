@@ -1,21 +1,191 @@
 {
   "rows": [
-    {"brand":"Mammut","name":"Trion 35","variant":"","category_hint":"pack","weight_value":1480,"weight_unit":"g","weight_source":"manufacturer","source_url":"https://www.tradeinn.com/trekkinn/en/mammut-trion-35l-backpack/136990389/p","quote":"Weight: 1480 g"},
-    {"brand":"Mammut","name":"Lithium 30","variant":"","category_hint":"pack","weight_value":930,"weight_unit":"g","weight_source":"manufacturer","source_url":"https://www.mammut.com/us/en/products/2530-03152/lithium-30","quote":"930 g"},
-    {"brand":"Mammut","name":"Ducan 30","variant":"","category_hint":"pack","weight_value":920,"weight_unit":"g","weight_source":"manufacturer","source_url":"https://www.tradeinn.com/trekkinn/en/mammut-ducan-30l-backpack/137425020/p","quote":"Weight: 920 g"},
-    {"brand":"Marmot","name":"Tungsten UL 2P","variant":"2P","category_hint":"shelter","weight_value":1340,"weight_unit":"g","weight_source":"manufacturer","source_url":"https://marmotau.com/products/tungsten-ul-2p-2","quote":"Minimum Weight: 1340g"},
-    {"brand":"Marmot","name":"Trestles Elite Eco 20","variant":"Regular","category_hint":"sleep","weight_value":3.775,"weight_unit":"lb","weight_source":"measured","source_url":"https://www.cleverhiker.com/backpacking/marmot-trestles-elite-eco-20-review/","quote":"3 lb. 12.4 oz."},
-    {"brand":"Marmot","name":"Tungsten 2P","variant":"2P","category_hint":"shelter","weight_value":4.98,"weight_unit":"lb","weight_source":"manufacturer","source_url":"https://www.rei.com/product/200288/marmot-tungsten-2p-tent-with-footprint","quote":"Minimum trail weight: 4 lbs. 15.7 oz."},
-    {"brand":"Kelty","name":"Cosmic Down 20","variant":"Regular","category_hint":"sleep","weight_value":2.4375,"weight_unit":"lb","weight_source":"manufacturer","source_url":"https://www.kelty.com/cosmic-down-20/","quote":"2 lb. 7 oz."},
-    {"brand":"Kelty","name":"Redwing 50","variant":"","category_hint":"pack","weight_value":3.25,"weight_unit":"lb","weight_source":"manufacturer","source_url":"https://www.rei.com/product/895781/kelty-redwing-50-pack-mens","quote":"Weight: 3 lb 4 oz / 1.47 kg"},
-    {"brand":"Kelty","name":"Late Start 2","variant":"2P","category_hint":"shelter","weight_value":4.3125,"weight_unit":"lb","weight_source":"manufacturer","source_url":"https://kelty.com/products/late-start-2p","quote":"Minimum weight: 4 lbs 5 oz / 1.9 kg"},
-    {"brand":"Klymit","name":"Static V","variant":"","category_hint":"sleep","weight_value":18.1,"weight_unit":"oz","weight_source":"manufacturer","source_url":"https://klymit.com/products/static-v-sleeping-pad","quote":"Weight: 18.1 oz / 513 g"},
-    {"brand":"Klymit","name":"Static V Base","variant":"","category_hint":"sleep","weight_value":18.7,"weight_unit":"oz","weight_source":"manufacturer","source_url":"https://klymit.com/products/static-v-base-sleeping-pad","quote":"Weight 18.7 oz / 530 g"},
-    {"brand":"Klymit","name":"Insulated Static V Lite","variant":"","category_hint":"sleep","weight_value":19.9,"weight_unit":"oz","weight_source":"manufacturer","source_url":"https://klymit.com/products/insulated-static-v-lite-sleeping-pad","quote":"Weight: 19.9 oz / 556 g"},
-    {"brand":"SlingFin","name":"Portal 2","variant":"2P","category_hint":"shelter","weight_value":1.3,"weight_unit":"kg","weight_source":"manufacturer","source_url":"https://www.slingfin.com/products/portal-2","quote":"2lbs 14oz (1.3kg)"},
-    {"brand":"SlingFin","name":"2Lite","variant":"2P","category_hint":"shelter","weight_value":1.19,"weight_unit":"kg","weight_source":"manufacturer","source_url":"https://www.slingfin.com/products/2lite","quote":"2lbs 10oz (1.19kg)"},
-    {"brand":"SlingFin","name":"SplitWing UL Tarp","variant":"tarp only","category_hint":"shelter","weight_value":7.9,"weight_unit":"oz","weight_source":"manufacturer","source_url":"https://www.slingfin.com/products/splitwing-ul-tarp","quote":"7.9oz (224g) without the 6 included DAC j-stakes"},
-    {"brand":"Naturehike","name":"Cloud Up 2","variant":"20D","category_hint":"shelter","weight_value":1.38,"weight_unit":"kg","weight_source":"manufacturer","source_url":"https://www.naturehike.com/products/cloud-up-2-person-ultralight-backpacking-tent","quote":"Minimum Weight: approx. 1.38 kg / 3.04 lbs"},
-    {"brand":"Naturehike","name":"Mongar 2","variant":"2P","category_hint":"shelter","weight_value":2.2,"weight_unit":"kg","weight_source":"manufacturer","source_url":"https://www.naturehike.com/products/mongar-2-person-ultralight-backpacking-tent","quote":"2.2kg all-in, including the supplied footprint"}
+    {
+      "brand": "Mammut",
+      "name": "Trion 35",
+      "variant": "",
+      "category_hint": "pack",
+      "weight_value": 1480,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.tradeinn.com/trekkinn/en/mammut-trion-35l-backpack/136990389/p",
+      "quote": "Weight: 1480 g"
+    },
+    {
+      "brand": "Mammut",
+      "name": "Lithium 30",
+      "variant": "",
+      "category_hint": "pack",
+      "weight_value": 930,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.mammut.com/us/en/products/2530-03152/lithium-30",
+      "quote": "930 g"
+    },
+    {
+      "brand": "Mammut",
+      "name": "Ducan 30",
+      "variant": "",
+      "category_hint": "pack",
+      "weight_value": 920,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.tradeinn.com/trekkinn/en/mammut-ducan-30l-backpack/137425020/p",
+      "quote": "Weight: 920 g"
+    },
+    {
+      "brand": "Marmot",
+      "name": "Tungsten UL 2P",
+      "variant": "",
+      "category_hint": "shelter",
+      "weight_value": 1340,
+      "weight_unit": "g",
+      "weight_source": "manufacturer",
+      "source_url": "https://marmotau.com/products/tungsten-ul-2p-2",
+      "quote": "Minimum Weight: 1340g"
+    },
+    {
+      "brand": "Marmot",
+      "name": "Trestles Elite Eco 20",
+      "variant": "Regular",
+      "category_hint": "sleep",
+      "weight_value": 3.775,
+      "weight_unit": "lb",
+      "weight_source": "measured",
+      "source_url": "https://www.cleverhiker.com/backpacking/marmot-trestles-elite-eco-20-review/",
+      "quote": "3 lb. 12.4 oz."
+    },
+    {
+      "brand": "Marmot",
+      "name": "Tungsten 2P",
+      "variant": "",
+      "category_hint": "shelter",
+      "weight_value": 4.98,
+      "weight_unit": "lb",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.rei.com/product/200288/marmot-tungsten-2p-tent-with-footprint",
+      "quote": "Minimum trail weight: 4 lbs. 15.7 oz."
+    },
+    {
+      "brand": "Kelty",
+      "name": "Cosmic Down 20",
+      "variant": "Regular",
+      "category_hint": "sleep",
+      "weight_value": 2.4375,
+      "weight_unit": "lb",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.kelty.com/cosmic-down-20/",
+      "quote": "2 lb. 7 oz."
+    },
+    {
+      "brand": "Kelty",
+      "name": "Redwing 50",
+      "variant": "",
+      "category_hint": "pack",
+      "weight_value": 3.25,
+      "weight_unit": "lb",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.rei.com/product/895781/kelty-redwing-50-pack-mens",
+      "quote": "Weight: 3 lb 4 oz / 1.47 kg"
+    },
+    {
+      "brand": "Kelty",
+      "name": "Late Start 2",
+      "variant": "2P",
+      "category_hint": "shelter",
+      "weight_value": 4.3125,
+      "weight_unit": "lb",
+      "weight_source": "manufacturer",
+      "source_url": "https://kelty.com/products/late-start-2p",
+      "quote": "Minimum weight: 4 lbs 5 oz / 1.9 kg"
+    },
+    {
+      "brand": "Klymit",
+      "name": "Static V",
+      "variant": "",
+      "category_hint": "sleep",
+      "weight_value": 18.1,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://klymit.com/products/static-v-sleeping-pad",
+      "quote": "Weight: 18.1 oz / 513 g"
+    },
+    {
+      "brand": "Klymit",
+      "name": "Static V Base",
+      "variant": "",
+      "category_hint": "sleep",
+      "weight_value": 18.7,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://klymit.com/products/static-v-base-sleeping-pad",
+      "quote": "Weight 18.7 oz / 530 g"
+    },
+    {
+      "brand": "Klymit",
+      "name": "Insulated Static V Lite",
+      "variant": "",
+      "category_hint": "sleep",
+      "weight_value": 19.9,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://klymit.com/products/insulated-static-v-lite-sleeping-pad",
+      "quote": "Weight: 19.9 oz / 556 g"
+    },
+    {
+      "brand": "SlingFin",
+      "name": "Portal 2",
+      "variant": "2P",
+      "category_hint": "shelter",
+      "weight_value": 1.3,
+      "weight_unit": "kg",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.slingfin.com/products/portal-2",
+      "quote": "2lbs 14oz (1.3kg)"
+    },
+    {
+      "brand": "SlingFin",
+      "name": "2Lite",
+      "variant": "2P",
+      "category_hint": "shelter",
+      "weight_value": 1.19,
+      "weight_unit": "kg",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.slingfin.com/products/2lite",
+      "quote": "2lbs 10oz (1.19kg)"
+    },
+    {
+      "brand": "SlingFin",
+      "name": "SplitWing UL Tarp",
+      "variant": "tarp only",
+      "category_hint": "shelter",
+      "weight_value": 7.9,
+      "weight_unit": "oz",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.slingfin.com/products/splitwing-ul-tarp",
+      "quote": "7.9oz (224g) without the 6 included DAC j-stakes"
+    },
+    {
+      "brand": "Naturehike",
+      "name": "Cloud Up 2",
+      "variant": "20D",
+      "category_hint": "shelter",
+      "weight_value": 1.38,
+      "weight_unit": "kg",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.naturehike.com/products/cloud-up-2-person-ultralight-backpacking-tent",
+      "quote": "Minimum Weight: approx. 1.38 kg / 3.04 lbs"
+    },
+    {
+      "brand": "Naturehike",
+      "name": "Mongar 2",
+      "variant": "2P",
+      "category_hint": "shelter",
+      "weight_value": 2.2,
+      "weight_unit": "kg",
+      "weight_source": "manufacturer",
+      "source_url": "https://www.naturehike.com/products/mongar-2-person-ultralight-backpacking-tent",
+      "quote": "2.2kg all-in, including the supplied footprint"
+    }
   ]
 }

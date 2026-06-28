@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { normalizeVariant } from "../shared/catalogQuality";
+import { isVariantRedundant, normalizeVariant } from "../shared/catalogQuality";
 
 describe("normalizeVariant", () => {
   const cases: [string, string][] = [
@@ -43,5 +43,19 @@ describe("normalizeVariant", () => {
       const once = normalizeVariant(input);
       expect(normalizeVariant(once)).toBe(once);
     }
+  });
+});
+
+describe("isVariantRedundant", () => {
+  it("flags a variant whose tokens are already in the name", () => {
+    expect(isVariantRedundant("Copper Spur HV UL3", "UL3")).toBe(true);
+    expect(isVariantRedundant("Copper Spur HV UL2 mtnGLO", "UL2")).toBe(true); // contiguous, mid-name
+    expect(isVariantRedundant("Trekking Umbrella 55", "55")).toBe(true);
+    expect(isVariantRedundant("Amicus Stove with Igniter", "with igniter")).toBe(true);
+  });
+  it("keeps a variant that adds real info", () => {
+    expect(isVariantRedundant("Kakwa 55", "UltraGrid, M")).toBe(false);
+    expect(isVariantRedundant("Ether Light XT Insulated", "Regular")).toBe(false);
+    expect(isVariantRedundant("Plex Solo", "")).toBe(false);
   });
 });
