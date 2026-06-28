@@ -1,7 +1,7 @@
 import type { Op } from "~~/shared/ops";
 import { applyOps } from "~~/shared/ops";
 import { uid } from "~~/shared/id";
-import { nextFolderColor } from "~~/shared/categories";
+import { nextFolderColor, STARTER_FOLDERS } from "~~/shared/categories";
 import type { Folder, Item, ListSnapshot, Unit } from "~~/shared/types";
 import { bySortOrder, computeTotals, itemsInFolder, parseWeightInput } from "~~/shared/weights";
 
@@ -106,11 +106,98 @@ function create() {
     }
   }
 
+  // A list "has content" once any item carries a name or a weight. We don't persist
+  // a draft (or count it as a keepable list) until then — opening the site and
+  // bouncing leaves no row behind.
+  function hasRealContent(s: ListSnapshot) {
+    return s.items.some((i) => i.name.trim() !== "" || i.unitWeightMg > 0);
+  }
+
+  // Open a fresh, NOT-yet-persisted list (starter folders, no items). It lives only
+  // in memory until the first real content lands (createFromDraft), so a visitor who
+  // never adds anything never creates a server row.
+  function startDraft() {
+    epoch++;
+    editToken = "";
+    pending = [];
+    inFlight = false;
+    isEditing = false;
+    clearTimeout(flushTimer);
+    installListeners();
+    const folders: Folder[] = STARTER_FOLDERS.map((p, i) => ({
+      id: uid(),
+      name: p.name,
+      colorKey: p.colorKey,
+      defaultClassification: p.defaultClassification,
+      sortOrder: i,
+    }));
+    snapshot.value = {
+      title: "Untitled list",
+      description: "",
+      displayUnit: "g",
+      folders,
+      items: [],
+      shareCode: "",
+      slug: "",
+      version: 0,
+      isPublic: false,
+    };
+    status.value = "synced";
+  }
+
+  // Persist a draft to the server on its first real content. The created snapshot
+  // keeps the client-side folder/item ids (the create path normalizes but preserves
+  // ids), so adopting it doesn't disturb focus or references. Ops typed during the
+  // round-trip are queued and flushed right after.
+  async function createFromDraft() {
+    if (inFlight || editToken || !snapshot.value) return;
+    const myEpoch = epoch;
+    inFlight = true;
+    status.value = "saving";
+    try {
+      const s = snapshot.value;
+      const res = await $fetch<{ editToken: string; snapshot: ListSnapshot }>("/api/lists/create", {
+        method: "POST",
+        body: { title: s.title, displayUnit: s.displayUnit, data: { folders: s.folders, items: s.items } },
+      });
+      if (myEpoch !== epoch) return;
+      editToken = res.editToken;
+      const merged = res.snapshot;
+      if (pending.length) applyOps(merged as any, pending); // edits made mid-create
+      snapshot.value = merged;
+      status.value = "synced";
+      // register the write capability + put the token in the URL WITHOUT routing
+      // (replaceState, so the editor's hash watcher doesn't dispose/reload us)
+      const token = useMyLists().registerCreated(res, computeTotals(merged).totalMg);
+      if (typeof history !== "undefined") history.replaceState(history.state, "", `/e#${token}`);
+      startPoll();
+    } catch {
+      if (myEpoch !== epoch) return;
+      status.value = "error";
+      // retry while there's still un-persisted content
+      setTimeout(() => {
+        if (!editToken && snapshot.value && hasRealContent(snapshot.value)) createFromDraft();
+      }, 1500);
+    } finally {
+      if (myEpoch === epoch) {
+        inFlight = false;
+        if (editToken && pending.length) scheduleFlush();
+      }
+    }
+  }
+
   function dispatch(op: Op) {
     if (!snapshot.value) return;
     // optimistic: same reducer as the server
     applyOps(snapshot.value as any, [op]);
     snapshot.value = { ...snapshot.value };
+    // Draft (no token yet): keep edits local until there's real content, then create
+    // the list once. While that create is in flight, queue ops for the post-create flush.
+    if (!editToken) {
+      if (inFlight) pending.push(op);
+      else if (hasRealContent(snapshot.value)) createFromDraft();
+      return;
+    }
     pending.push(op);
     scheduleFlush();
   }
@@ -366,7 +453,7 @@ function create() {
   return {
     snapshot, totals, status,
     get editToken() { return editToken; },
-    load, dispose, rotate,
+    load, startDraft, dispose, rotate,
     setMeta, setUnit, addFolder, updateFolder, removeFolder, moveFolderBefore,
     addBlankItem, discardBlank, updateItem, removeItem, setItemWeight, moveItem,
     pendingBlankId, pendingUndo, undoRemove,

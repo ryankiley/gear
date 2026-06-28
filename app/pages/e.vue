@@ -63,7 +63,7 @@ watch(
     c.dispose();
     const token = decodeURIComponent((h || "").replace(/^#/, ""));
     if (token) c.load(token);
-    else c.status.value = "missing";
+    else c.startDraft(); // no token = a fresh, unsaved draft (persists on first real content)
   },
   { immediate: true },
 );
@@ -127,9 +127,12 @@ function onMenuAction() {
 }
 
 function copyShare() {
-  if (snapshot.value) copy(`${origin()}/s/${snapshot.value.shareCode}`, "Read-only link copied");
+  // a draft has no shareCode/token yet — nudge instead of copying a broken link
+  if (!snapshot.value?.shareCode) return flash("Add an item first to share");
+  copy(`${origin()}/s/${snapshot.value.shareCode}`, "Read-only link copied");
 }
 function copyEditLink() {
+  if (!c.editToken) return flash("Add an item first to get an edit link");
   if (!confirm("Anyone with this link can edit your list. Only send it to people you trust.")) return;
   copy(`${origin()}/e#${c.editToken}`, "Edit link copied");
 }
@@ -194,13 +197,10 @@ function openImport() {
   importOpen.value = true;
 }
 
-async function newList() {
-  const res = await $fetch<{ editToken: string; snapshot: ListSnapshot }>("/api/lists/create", {
-    method: "POST",
-    body: { title: "Untitled list", data: { folders: [], items: [] } },
-  });
-  // the route.hash watcher disposes + loads — don't double-load here
-  router.push(`/e#${useMyLists().registerCreated(res)}`);
+function newList() {
+  // a fresh draft — no server row until something is added. Clearing the hash fires
+  // the route watcher → startDraft; replace so Back doesn't return to the dead token.
+  router.replace("/e");
 }
 
 // no steady-state "Saved" noise — only transient saving / error / loading shows

@@ -91,7 +91,9 @@ export default defineNuxtConfig({
   // editor stays a pure client island (edit token in the URL fragment, no SSR value).
   // Everything else (legal pages, the public /l read view) is SSR by default.
   routeRules: {
-    "/": { isr: 600 },
+    // opening the site forwards straight into the editor, which starts an unsaved
+    // draft — no list row is created until you actually add content
+    "/": { redirect: "/e" },
     "/e": { ssr: false },
   },
 
