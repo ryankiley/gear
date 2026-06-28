@@ -414,7 +414,7 @@ function onCorrected(res: { status: string; itemName?: string }) {
   min-width: 8ch;
   max-width: min(46ch, 42vw);
   font-family: var(--font);
-  font-size: var(--text-base);
+  font-size: 1rem; /* static 16px — avoid iOS focus-zoom (see .field in controls.scss) */
   font-weight: 600;
   border-bottom-color: transparent;
   /* a long name that exceeds max-width truncates with an ellipsis at rest

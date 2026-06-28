@@ -649,7 +649,7 @@ function dismissFix() {
   border: 0;
   background: none;
   color: var(--ink-3);
-  font-size: var(--text-base);
+  font-size: 1rem; /* static 16px — avoid iOS focus-zoom (see .field in controls.scss) */
   font-style: italic;
 }
 .item__note::placeholder {
