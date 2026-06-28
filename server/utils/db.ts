@@ -88,11 +88,16 @@ export const SNAPSHOTS_DDL: string[] = [
   `CREATE TABLE IF NOT EXISTS list_snapshots (
     id serial PRIMARY KEY,
     list_id integer NOT NULL,
+    kind text NOT NULL DEFAULT 'base',
     snapshot jsonb NOT NULL,
+    item_count integer NOT NULL DEFAULT 0,
     version integer NOT NULL,
     reason text,
     created_at timestamptz NOT NULL DEFAULT now()
   )`,
+  // idempotent column adds for pre-existing tables (Neon has no build-time DDL)
+  `ALTER TABLE list_snapshots ADD COLUMN IF NOT EXISTS kind text NOT NULL DEFAULT 'base'`,
+  `ALTER TABLE list_snapshots ADD COLUMN IF NOT EXISTS item_count integer NOT NULL DEFAULT 0`,
   `CREATE INDEX IF NOT EXISTS idx_list_snapshots_list ON list_snapshots(list_id, created_at DESC)`,
 ];
 

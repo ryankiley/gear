@@ -22,6 +22,10 @@ import {
   uniqueIndex,
 } from "drizzle-orm/pg-core";
 import type { ListData } from "../../shared/types";
+import type { FullSnap, ListDiff } from "../../shared/snapshotDiff";
+
+// A snapshot row's JSONB: a full payload (`kind:'base'`) or a reverse-delta (`kind:'diff'`).
+type SnapshotPayload = FullSnap | ListDiff;
 
 export const lists = pgTable(
   "lists",
@@ -249,10 +253,14 @@ export const listSnapshots = pgTable(
   {
     id: serial("id").primaryKey(),
     listId: integer("list_id").notNull(),
-    // the restorable payload: list meta + the op-reducer content
-    snapshot: jsonb("snapshot")
-      .$type<{ title: string; description: string | null; displayUnit: string; data: ListData }>()
-      .notNull(),
+    // `base` rows hold a full payload (meta + reducer content); `diff` rows hold a
+    // reverse-delta (ListDiff) from the immediately-newer snapshot. Only the NEWEST
+    // per list is a base, so snapshots cost a fraction of a full copy. See
+    // shared/snapshotDiff.ts.
+    kind: text("kind").notNull().default("base"),
+    snapshot: jsonb("snapshot").$type<SnapshotPayload>().notNull(),
+    // reconstructed item count, cached so the snapshots list doesn't reconstruct
+    itemCount: integer("item_count").notNull().default(0),
     version: integer("version").notNull(),
     reason: text("reason"),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),

@@ -1,5 +1,5 @@
 import { PGlite } from "@electric-sql/pglite";
-import { sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/pglite";
 import { describe, expect, it } from "vitest";
 import * as schema from "../server/db/schema";
@@ -80,6 +80,32 @@ describe("snapshots — vandalism recovery", () => {
     const after = await listSnapshotsByEditToken(editToken, db);
     expect(after!.length).toBeGreaterThanOrEqual(2);
     expect(after!.some((s) => s.reason === "before restore")).toBe(true);
+  });
+
+  it("reconstructs old points across a reverse-delta chain (storage = 1 base + N diffs)", async () => {
+    const db = await freshDb();
+    const { editToken, row } = await seedList(db, { folders: [folder], items: [item("i1", "Tent"), item("i2", "Quilt")] });
+    // force a snapshot per edit by clearing the throttle each time
+    const clearThrottle = () => db.update(lists).set({ lastSnapshotAt: new Date(0) }).where(eq(lists.id, row.id));
+    await applyOpsByEditToken(editToken, [{ t: "addItem", item: item("i3", "Stove") }], db); // captures state0 [i1,i2]
+    await clearThrottle();
+    await applyOpsByEditToken(editToken, [{ t: "removeItem", id: "i1" }], db); // captures state1 [i1,i2,i3]
+    await clearThrottle();
+    await applyOpsByEditToken(editToken, [{ t: "updateItem", id: "i2", patch: { name: "Quilt v2" } }], db); // captures state2 [i2,i3]
+
+    const snaps = await listSnapshotsByEditToken(editToken, db); // newest→oldest
+    expect(snaps).toHaveLength(3);
+    // exactly one full base; the rest are deltas (the storage win)
+    const kinds = await db.select({ kind: schema.listSnapshots.kind }).from(schema.listSnapshots).where(eq(schema.listSnapshots.listId, row.id));
+    expect(kinds.filter((k) => k.kind === "base")).toHaveLength(1);
+
+    // oldest snapshot reconstructs to the ORIGINAL pre-edit state [i1, i2]
+    const oldest = await restoreSnapshotByEditToken(editToken, snaps![snaps!.length - 1]!.id, db);
+    expect(oldest!.items.map((i) => i.id).sort()).toEqual(["i1", "i2"]);
+    expect(oldest!.items.find((i) => i.id === "i2")!.name).toBe("Quilt");
+    // the middle snapshot reconstructs to [i1, i2, i3]
+    const mid = await restoreSnapshotByEditToken(editToken, snaps![1]!.id, db);
+    expect(mid!.items.map((i) => i.id).sort()).toEqual(["i1", "i2", "i3"]);
   });
 
   it("won't restore a snapshot that belongs to another list", async () => {

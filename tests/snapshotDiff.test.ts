@@ -1,0 +1,147 @@
+import { describe, it, expect } from "vitest";
+import { diffListState, applyListDiff, stateToFullSnap, fullSnapToState, reconstructChainAt, type FullSnap, type ListDiff } from "../shared/snapshotDiff";
+import type { Folder, Item, ListState } from "../shared/types";
+
+// content-only, order-insensitive equality (storage array order isn't load-bearing —
+// render sorts by sortOrder). Reconstruction must reproduce the target by id + fields.
+function byId<T extends { id: string }>(arr: T[]) {
+  return [...arr].sort((a, b) => a.id.localeCompare(b.id));
+}
+function expectSameState(got: ListState, want: ListState) {
+  expect(got.title).toBe(want.title);
+  expect(got.description ?? "").toBe(want.description ?? "");
+  expect(got.displayUnit).toBe(want.displayUnit);
+  expect(byId(got.folders)).toEqual(byId(want.folders));
+  expect(byId(got.items)).toEqual(byId(want.items));
+}
+const roundTrips = (base: ListState, target: ListState) =>
+  expectSameState(applyListDiff(base, diffListState(base, target)), target);
+
+const folder = (id: string, over: Partial<Folder> = {}): Folder => ({
+  id, name: "F" + id, colorKey: "shelter", defaultClassification: "base", sortOrder: 0, ...over,
+});
+const item = (id: string, over: Partial<Item> = {}): Item => ({
+  id, folderId: null, name: "I" + id, unitWeightMg: 100, weightOverridden: false, qty: 1,
+  classification: null, sortOrder: 0, ...over,
+});
+const state = (over: Partial<ListState> = {}): ListState => ({
+  title: "Untitled list", description: "", displayUnit: "g", folders: [], items: [], version: 1, ...over,
+});
+
+describe("snapshot diff/apply round-trips", () => {
+  it("empty diff for identical states", () => {
+    const s = state({ folders: [folder("a")], items: [item("x", { folderId: "a" })] });
+    expect(diffListState(s, structuredClone(s))).toEqual({});
+    roundTrips(s, structuredClone(s));
+  });
+
+  it("add / remove / change items", () => {
+    const base = state({ items: [item("x"), item("y")] });
+    roundTrips(base, state({ items: [item("x"), item("z")] })); // remove y, add z
+    roundTrips(base, state({ items: [item("x", { name: "renamed", qty: 4 }), item("y")] })); // change x
+    roundTrips(base, state({ items: [] })); // remove all
+  });
+
+  it("add / remove / change folders (folder removal drops nothing it shouldn't)", () => {
+    const base = state({ folders: [folder("a"), folder("b")], items: [item("x", { folderId: "a" })] });
+    roundTrips(base, state({ folders: [folder("a")], items: [item("x", { folderId: "a" })] })); // del folder b
+    roundTrips(base, state({ folders: [folder("a", { name: "Shelter!" }), folder("b")], items: [item("x", { folderId: "a" })] }));
+  });
+
+  it("clears optional fields losslessly (the op-reducer can't, the entity diff can)", () => {
+    const base = state({ items: [item("x", { description: "note", brand: "Zpacks", catalogItemId: 7 })] });
+    const target = state({ items: [item("x")] }); // brand/description/catalogItemId all gone
+    roundTrips(base, target);
+    // the reconstructed item must NOT carry the stale fields
+    const got = applyListDiff(base, diffListState(base, target));
+    expect(got.items[0].brand).toBeUndefined();
+    expect(got.items[0].description).toBeUndefined();
+    expect(got.items[0].catalogItemId).toBeUndefined();
+  });
+
+  it("meta changes", () => {
+    const base = state({ title: "Trip", description: "d", displayUnit: "g" });
+    roundTrips(base, state({ title: "New", description: "d", displayUnit: "lb" }));
+    roundTrips(base, state({ title: "Trip", description: "", displayUnit: "g" })); // clear description
+  });
+
+  it("the diff is genuinely smaller when few entities changed", () => {
+    const items = Array.from({ length: 50 }, (_, i) => item("i" + i, { name: "Item " + i }));
+    const base = state({ items });
+    const target = state({ items: items.map((it, i) => (i === 3 ? { ...it, qty: 9 } : it)) });
+    const diff = diffListState(base, target);
+    expect(diff.itemsUpsert?.length).toBe(1); // only the one changed item
+    expect(JSON.stringify(diff).length).toBeLessThan(JSON.stringify(target).length / 5);
+    roundTrips(base, target);
+  });
+
+  it("randomized round-trips", () => {
+    const rnd = (seed: number) => { let s = seed; return () => (s = (s * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff; };
+    const r = rnd(42);
+    for (let n = 0; n < 200; n++) {
+      const mk = () => {
+        const fs = Array.from({ length: Math.floor(r() * 4) }, (_, i) => folder("f" + Math.floor(r() * 5), { name: "n" + Math.floor(r() * 9), sortOrder: Math.floor(r() * 5) }));
+        const fids = [...new Set(fs.map((f) => f.id))];
+        const folders = fids.map((id) => fs.find((f) => f.id === id)!);
+        const items = Array.from({ length: Math.floor(r() * 8) }, () => {
+          const id = "it" + Math.floor(r() * 10);
+          const o: Partial<Item> = { name: "x" + Math.floor(r() * 9), qty: Math.floor(r() * 5) + 1, unitWeightMg: Math.floor(r() * 9000), sortOrder: Math.floor(r() * 9) };
+          if (r() > 0.6) o.folderId = folders.length ? folders[Math.floor(r() * folders.length)].id : null;
+          if (r() > 0.7) o.description = "d" + Math.floor(r() * 5);
+          if (r() > 0.8) o.brand = "b" + Math.floor(r() * 5);
+          return item(id, o);
+        });
+        const iids = [...new Set(items.map((i) => i.id))];
+        return state({ title: "t" + Math.floor(r() * 5), description: r() > 0.5 ? "d" + Math.floor(r() * 5) : "", displayUnit: (["g", "kg", "oz", "lb"] as const)[Math.floor(r() * 4)], folders, items: iids.map((id) => items.find((i) => i.id === id)!) });
+      };
+      roundTrips(mk(), mk());
+    }
+  });
+});
+
+describe("reverse-delta chain (capture + reconstruct + prune)", () => {
+  type Row = { kind: "base" | "diff"; snapshot: FullSnap | ListDiff; _ref: ListState };
+  // simulate captureSnapshot's reverse chain: newest is full, prev-newest is converted
+  // to a reverse-delta against the new state. Returns chain NEWEST→OLDEST.
+  function buildChain(states: ListState[]): Row[] {
+    const chain: Row[] = [];
+    for (const s of states) {
+      if (chain.length && chain[0].kind === "base") {
+        const prev = fullSnapToState(chain[0].snapshot as FullSnap);
+        chain[0] = { kind: "diff", snapshot: diffListState(s, prev), _ref: prev };
+      }
+      chain.unshift({ kind: "base", snapshot: stateToFullSnap(s), _ref: s });
+    }
+    return chain;
+  }
+  function expectSame(got: ListState | null, want: ListState) {
+    expect(got).not.toBeNull();
+    expect(got!.title).toBe(want.title);
+    expect(got!.displayUnit).toBe(want.displayUnit);
+    expect([...got!.folders].sort((a,b)=>a.id.localeCompare(b.id))).toEqual([...want.folders].sort((a,b)=>a.id.localeCompare(b.id)));
+    expect([...got!.items].sort((a,b)=>a.id.localeCompare(b.id))).toEqual([...want.items].sort((a,b)=>a.id.localeCompare(b.id)));
+  }
+  const f = (id: string, o: Partial<Folder> = {}): Folder => ({ id, name: "F"+id, colorKey: "shelter", defaultClassification: "base", sortOrder: 0, ...o });
+  const i = (id: string, o: Partial<Item> = {}): Item => ({ id, folderId: null, name: "I"+id, unitWeightMg: 1, weightOverridden: false, qty: 1, classification: null, sortOrder: 0, ...o });
+  const st = (o: Partial<ListState> = {}): ListState => ({ title: "t", description: "", displayUnit: "g", folders: [], items: [], version: 1, ...o });
+
+  it("every snapshot in the chain reconstructs to its original state", () => {
+    const states = [
+      st({ folders: [f("a")], items: [i("x", { folderId: "a" })] }),
+      st({ folders: [f("a")], items: [i("x", { folderId: "a", qty: 3 }), i("y")] }),
+      st({ title: "renamed", folders: [f("a"), f("b")], items: [i("x", { folderId: "b" }), i("y", { name: "Y!" })] }),
+      st({ folders: [f("b")], items: [i("y")], displayUnit: "lb" }), // dropped folder a + item x
+    ];
+    const chain = buildChain(states);
+    expect(chain[0].kind).toBe("base"); // newest is always the full anchor
+    expect(chain.filter(r => r.kind === "base").length).toBe(1); // exactly one full
+    for (let k = 0; k < chain.length; k++) expectSame(reconstructChainAt(chain, k), chain[k]._ref);
+  });
+
+  it("still reconstructs every retained point after pruning to a cap", () => {
+    const states = Array.from({ length: 9 }, (_, n) => st({ title: "v"+n, items: Array.from({ length: n+1 }, (_, j) => i("it"+j, { qty: n+1 })) }));
+    const chain = buildChain(states).slice(0, 5); // prune: keep 5 newest
+    expect(chain[0].kind).toBe("base");
+    for (let k = 0; k < chain.length; k++) expectSame(reconstructChainAt(chain, k), chain[k]._ref);
+  });
+});

@@ -14,6 +14,13 @@ import {
   type Op,
 } from "../../shared/ops";
 import { computeTotals } from "../../shared/weights";
+import {
+  diffListState,
+  fullSnapToState,
+  reconstructChainAt,
+  stateToFullSnap,
+  type FullSnap,
+} from "../../shared/snapshotDiff";
 import type { ListData, ListSnapshot, ListState, Unit } from "../../shared/types";
 import { ensureSnapshotSchema, useDb } from "./db";
 import { randomEditToken, randomShareCode, randomSlug, sha256Hex } from "./tokens";
@@ -116,18 +123,36 @@ const SNAPSHOT_CAP = 5; // keep the most recent N per list (older are pruned)
 async function captureSnapshot(db: Db, row: ListRow, reason: string): Promise<void> {
   try {
     await ensureSnapshotSchema(db);
+    const cur = rowToState(row);
+    // The newest snapshot is the chain anchor (a full `base`). Demote it to a
+    // reverse-delta against the new state, then insert the new full base on top —
+    // so only the newest row is ever a full copy. Reconstruction folds newest→target
+    // (see shared/snapshotDiff), and pruning only drops the oldest deltas (the anchor
+    // is the newest, never pruned) — no rebasing needed.
+    const newest = (
+      await db
+        .select()
+        .from(listSnapshots)
+        .where(eq(listSnapshots.listId, row.id))
+        .orderBy(desc(listSnapshots.createdAt), desc(listSnapshots.id))
+        .limit(1)
+    )[0];
+    if (newest && newest.kind === "base") {
+      const prevState = fullSnapToState(newest.snapshot as FullSnap);
+      await db
+        .update(listSnapshots)
+        .set({ kind: "diff", snapshot: diffListState(cur, prevState) })
+        .where(eq(listSnapshots.id, newest.id));
+    }
     await db.insert(listSnapshots).values({
       listId: row.id,
-      snapshot: {
-        title: row.title,
-        description: row.description ?? null,
-        displayUnit: row.displayUnit,
-        data: (row.data ?? { folders: [], items: [] }) as ListData,
-      },
+      kind: "base",
+      snapshot: stateToFullSnap(cur),
+      itemCount: cur.items.length,
       version: row.version,
       reason,
     });
-    // prune beyond the cap (oldest first; id tie-breaks same-timestamp rows)
+    // prune oldest beyond the cap (id tie-breaks same-timestamp rows)
     const all = await db
       .select({ id: listSnapshots.id })
       .from(listSnapshots)
@@ -138,6 +163,25 @@ async function captureSnapshot(db: Db, row: ListRow, reason: string): Promise<vo
   } catch {
     /* best-effort: never block a write on snapshotting */
   }
+}
+
+/** Reconstruct the full state at a snapshot id by folding the chain newest→target. */
+async function reconstructSnapshotState(
+  db: Db,
+  listId: number,
+  targetId: number,
+): Promise<ListState | null> {
+  const rows = await db
+    .select()
+    .from(listSnapshots)
+    .where(eq(listSnapshots.listId, listId))
+    .orderBy(desc(listSnapshots.createdAt), desc(listSnapshots.id)); // newest→oldest
+  const idx = rows.findIndex((r) => r.id === targetId);
+  if (idx < 0) return null;
+  return reconstructChainAt(
+    rows.map((r) => ({ kind: r.kind === "diff" ? "diff" : "base", snapshot: r.snapshot })),
+    idx,
+  );
 }
 
 export interface SnapshotMeta {
@@ -168,7 +212,7 @@ export async function listSnapshotsByEditToken(
     version: r.version,
     reason: r.reason ?? null,
     createdAt: r.createdAt instanceof Date ? r.createdAt.toISOString() : String(r.createdAt),
-    itemCount: r.snapshot?.data?.items?.length ?? 0,
+    itemCount: r.itemCount ?? 0,
   }));
 }
 
@@ -187,20 +231,24 @@ export async function restoreSnapshotByEditToken(
   const owner = await findByEditToken(editToken, d);
   if (!owner) return null;
   await ensureSnapshotSchema(d);
-  const snaps = await d
-    .select()
-    .from(listSnapshots)
-    .where(and(eq(listSnapshots.id, snapshotId), eq(listSnapshots.listId, owner.id)))
-    .limit(1);
-  const snap = snaps[0];
-  if (!snap) return null; // unknown id, or not this caller's list
+  // verify the snapshot is THIS caller's list (no cross-list oracle), then
+  // reconstruct its full state from the reverse-delta chain
+  const owns = (
+    await d
+      .select({ id: listSnapshots.id })
+      .from(listSnapshots)
+      .where(and(eq(listSnapshots.id, snapshotId), eq(listSnapshots.listId, owner.id)))
+      .limit(1)
+  )[0];
+  if (!owns) return null; // unknown id, or not this caller's list
+  const s = await reconstructSnapshotState(d, owner.id, snapshotId);
+  if (!s) return null;
 
-  const s = snap.snapshot;
   // re-normalize through the SAME reducer helpers (defensive — a snapshot must not
   // be a clamp-bypass back into raw JSONB), and re-validate the unit
   const data: ListData = {
-    folders: (s.data?.folders ?? []).slice(0, MAX_FOLDERS).map(normalizeFolder),
-    items: (s.data?.items ?? []).slice(0, MAX_ITEMS).map(normalizeItem),
+    folders: (s.folders ?? []).slice(0, MAX_FOLDERS).map(normalizeFolder),
+    items: (s.items ?? []).slice(0, MAX_ITEMS).map(normalizeItem),
   };
   const totals = computeTotals(data);
   const title = (s.title ?? "Untitled list").slice(0, 200);
