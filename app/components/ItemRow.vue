@@ -216,7 +216,7 @@ function dismissFix() {
     <span class="item__roname">
       <ItemName :item="item" /><span v-if="effClass !== 'base'" class="t-sm" :class="`item__class--${effClass}`"> · {{ effClass }}</span>
     </span>
-    <span class="t-num t-sm t-muted">×{{ item.qty }}</span>
+    <span class="t-num t-sm t-muted item__roqty">×{{ item.qty }}</span>
     <span class="t-num item__roweight">{{
       item.unitWeightMg > 0 ? formatWeight(lineMg(item), list.displayUnit) : "—"
     }}</span>
@@ -844,15 +844,31 @@ function dismissFix() {
     text-align: left;
   }
 
-  /* read view: let long names wrap instead of clipping, with the qty + weight
-     pinned to the top-right while the name flows underneath (the published-list
-     look) */
+  /* read view adopts the checklist's two-line shape (mirrors .item--check above):
+     the name takes its own line and wraps (never clips), and ×qty + weight sit
+     together on a second line, flush-left — instead of the weight stranded out at
+     the far-right margin on its own. */
   .item--ro {
-    align-items: start;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    column-gap: var(--space-3);
+    row-gap: var(--space-1);
   }
   .item__roname {
+    grid-column: 1 / -1;
+    grid-row: 1;
     white-space: normal;
     overflow: visible;
+  }
+  .item__roqty {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .item__roweight {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: start;
+    text-align: left;
   }
 }
 </style>

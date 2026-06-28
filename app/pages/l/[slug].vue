@@ -63,7 +63,7 @@ async function report() {
   <div>
     <SiteTopbar compact>
       <span class="t-sm t-muted topbar__tag"><Globe :size="13" :stroke-width="2" /> Public list</span>
-      <NuxtLink to="/" class="btn btn--sm">Make your own</NuxtLink>
+      <NuxtLink to="/" class="btn btn--link">Make your own</NuxtLink>
     </SiteTopbar>
 
     <ReadonlyListView

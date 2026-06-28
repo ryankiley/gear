@@ -66,6 +66,22 @@
 .btn--icon:hover {
   background: transparent;
 }
+
+// text-only button — reads as a plain link (no box, no fill): same size + weight
+// as the wordmark beside it, but a step lighter at rest so it's a calm link, and
+// the only hover affordance is darkening to full ink (matching the footer links —
+// --accent is monochrome here, so it can't carry the hover). Used for the
+// share-page "Make your own" CTA.
+.btn--link {
+  min-height: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--ink-2);
+}
+.btn--link:hover {
+  background: transparent;
+  color: var(--ink);
+}
 // Icons render as blocks (centred by each button's flexbox). An inline SVG sits on
 // the text baseline at a fractional offset that Safari re-snaps by ~1px on the
 // hover/active repaint — a visible jitter; block layout removes the baseline.

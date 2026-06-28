@@ -45,7 +45,7 @@ useSeoMeta({
   <div>
     <SiteTopbar compact>
       <span class="t-sm t-muted">Read-only</span>
-      <NuxtLink to="/" class="btn btn--sm">Make your own</NuxtLink>
+      <NuxtLink to="/" class="btn btn--link">Make your own</NuxtLink>
     </SiteTopbar>
 
     <ReadonlyListView

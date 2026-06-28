@@ -505,17 +505,16 @@ function onCorrected(res: { status: string; itemName?: string }) {
 .menu {
   position: relative;
   display: inline-flex;
+  /* shift the whole trailing cluster (toggle · share · kebab) right into the
+     gutter so the kebab lines up with the item rows' drag handle below — and the
+     toggle + share move over with it. The title group (flex:1) absorbs the freed
+     space, so this reflows the cluster as a unit (no tap-target overlap). */
+  margin-right: -13px;
 }
 .menu__btn {
   color: var(--ink-2);
   /* purely decorative — the overlaid <select> is the real control */
   pointer-events: none;
-  /* push the dots flush to the trailing edge so the kebab lines up with the item
-     rows' drag handle below (same justify-end + 33% overshoot as .item__grip) */
-  justify-content: flex-end;
-}
-.menu__btn svg {
-  transform: translateX(33.333%);
 }
 .menu__select {
   position: absolute;
