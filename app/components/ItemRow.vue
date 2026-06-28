@@ -63,6 +63,12 @@ const litersDisplay = computed(() => {
   const l = props.item.unitWeightMg / 1_000_000;
   return l > 0 ? String(Number(l.toFixed(2))) : "";
 });
+// the qty shown in the static (read-only + checklist) views: water's "amount" is
+// its volume in litres (matching the editable row's litres field), so it reads
+// "2 L" rather than a meaningless "×1"; everything else keeps its ×quantity
+const qtyLabel = computed(() =>
+  isWater.value ? `${litersDisplay.value || "0"} L` : `×${props.item.qty}`,
+);
 function onWaterLiters(e: Event) {
   const el = e.target as HTMLInputElement;
   const liters = Math.max(0, Number(el.value) || 0);
@@ -216,7 +222,7 @@ function dismissFix() {
     <span class="item__roname">
       <ItemName :item="item" /><span v-if="effClass !== 'base'" class="t-sm" :class="`item__class--${effClass}`"> · {{ effClass }}</span>
     </span>
-    <span class="t-num t-sm t-muted item__roqty">×{{ item.qty }}</span>
+    <span class="t-num t-sm t-muted item__roqty">{{ qtyLabel }}</span>
     <span class="t-num item__roweight">{{
       item.unitWeightMg > 0 ? formatWeight(lineMg(item), list.displayUnit) : "—"
     }}</span>
@@ -231,7 +237,7 @@ function dismissFix() {
       @change="c.updateItem(item.id, { packed: ($event.target as HTMLInputElement).checked })"
     />
     <span class="item__cname"><ItemName :item="item" /></span>
-    <span class="t-num t-sm t-muted item__cqty">×{{ item.qty }}</span>
+    <span class="t-num t-sm t-muted item__cqty">{{ qtyLabel }}</span>
     <span class="t-num item__cweight">{{
       item.unitWeightMg > 0 ? formatWeight(lineMg(item), list.displayUnit) : "—"
     }}</span>
@@ -655,10 +661,10 @@ function dismissFix() {
 .item__note::placeholder {
   color: var(--ink-3);
 }
-/* while editing, bump to full ink for readability (stays italic) */
+/* the note keeps its quiet entered colour (--ink-3) while you type it too — no
+   contrast jump between editing and resting (stays italic) */
 .item__note:focus {
   outline: none;
-  color: var(--ink);
 }
 /* quiet "suggest a fix" link under a row */
 .item__under-link {
