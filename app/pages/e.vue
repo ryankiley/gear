@@ -208,9 +208,11 @@ function newList() {
   router.replace("/e");
 }
 
-// no steady-state "Saved" noise — only transient saving / error / loading shows
+// no steady-state "Saved" noise — only transient saving / error / loading shows.
+// "offline" is the one persistent cue: edits are held on device until the
+// connection returns, so we say so rather than crying "Not saved".
 const statusLabel = computed(() =>
-  ({ loading: "Loading…", saving: "Saving…", synced: "", error: "Not saved ↻", missing: "", idle: "" })[status.value] || "",
+  ({ loading: "Loading…", saving: "Saving…", synced: "", error: "Not saved ↻", offline: "Offline · saved on device", missing: "", idle: "" })[status.value] || "",
 );
 
 function onCorrected(res: { status: string; itemName?: string }) {
@@ -458,6 +460,10 @@ function onCorrected(res: { status: string; itemName?: string }) {
 }
 .editor__status[data-state="error"] {
   color: var(--ink);
+}
+/* offline is informational, not an alarm — sits quietly, dimmer than the error cue */
+.editor__status[data-state="offline"] {
+  color: var(--ink-3);
 }
 /* the icon cluster is rigid (flex:none) and pinned to the trailing edge by the
    title group's flex:1 — so the transient "Saving…" status is absorbed by the
