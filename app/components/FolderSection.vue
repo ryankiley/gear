@@ -18,6 +18,10 @@ const isAppendTarget = computed(
     dnd.drop.value?.folderId === props.folder.id &&
     dnd.drop.value?.beforeId == null,
 );
+// while an item is being dragged, the source folder's body must let the lifted row
+// translate out of its bounds — so the collapse clip (overflow:hidden) is lifted for
+// the duration. A collapse animation never runs mid-drag, so dropping the clip is safe.
+const anyItemDrag = computed(() => dnd.dragId.value != null);
 
 const items = computed(() => itemsInFolder(props.list.items, props.folder.id).sort(bySortOrder));
 
@@ -117,15 +121,22 @@ function toggleCollapsed() {
       </div>
     </header>
 
-    <TransitionGroup v-show="!collapsed" name="item" tag="div" class="folder__items">
-      <ItemRow v-for="it in items" :key="it.id" :list="list" :item="it" :packed="packed" :readonly="readonly" />
-      <p v-if="!items.length && readonly" key="empty-ro" class="t-sm t-muted folder__empty">—</p>
-    </TransitionGroup>
+    <!-- collapsible body: a grid whose single row animates 1fr↔0fr (slide) while the
+         inner clips — works on Safari, unlike height:auto/interpolate-size which is
+         Chromium-only. The chevron rotates in sync. -->
+    <div class="folder__body">
+      <div class="folder__bodyinner" :class="{ 'is-dragpass': anyItemDrag && !collapsed }">
+        <TransitionGroup name="item" tag="div" class="folder__items">
+          <ItemRow v-for="it in items" :key="it.id" :list="list" :item="it" :packed="packed" :readonly="readonly" />
+          <p v-if="!items.length && readonly" key="empty-ro" class="t-sm t-muted folder__empty">—</p>
+        </TransitionGroup>
 
-    <div v-if="isAppendTarget && !collapsed" class="folder__droptail" aria-hidden="true" />
+        <div v-if="isAppendTarget" class="folder__droptail" aria-hidden="true" />
 
-    <div v-if="!packed && !readonly" v-show="!collapsed" class="folder__add">
-      <button type="button" class="folder__addbtn" @click="addBlank">Add an item</button>
+        <div v-if="!packed && !readonly" class="folder__add">
+          <button type="button" class="folder__addbtn" @click="addBlank">Add an item</button>
+        </div>
+      </div>
     </div>
   </section>
 </template>
@@ -200,9 +211,43 @@ function toggleCollapsed() {
 }
 .folder__chev {
   transition: transform var(--dur) var(--ease);
+  /* standing layer: the chevron transforms on every toggle, so keep it promoted to
+     avoid WebKit re-snapping it ~1px as the compositing layer comes and goes */
+  will-change: transform;
 }
 .folder__chev.is-collapsed {
   transform: rotate(-90deg);
+}
+/* collapsible body — a grid whose one row animates 1fr↔0fr (cross-browser slide;
+   Safari has no interpolate-size, so height:auto↔0 would just snap there). The inner
+   needs min-height:0 to collapse below content size + overflow:hidden to clip the
+   reveal; that clip is lifted mid-drag (.is-dragpass) so a lifted row can translate
+   out of its source folder. */
+.folder__body {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows var(--dur) var(--ease);
+}
+.folder[data-collapsed] .folder__body {
+  grid-template-rows: 0fr;
+}
+.folder__bodyinner {
+  min-height: 0;
+  overflow: hidden;
+  opacity: 1;
+  transition: opacity var(--dur) var(--ease);
+  /* the collapse clip (overflow:hidden) clips BOTH axes, but the row grips sit flush at
+     the content edge and overshoot ~5px into the gutter — so they were getting cropped.
+     Push the clip box's right edge out into the gutter: margin + padding cancel, so
+     content alignment is unchanged, and the collapse's vertical clip is untouched. */
+  margin-right: calc(-1 * var(--space-3));
+  padding-right: var(--space-3);
+}
+.folder[data-collapsed] .folder__bodyinner {
+  opacity: 0;
+}
+.folder__bodyinner.is-dragpass {
+  overflow: visible;
 }
 /* size to the typed text so the chevron hugs the name (not the full column);
    once it hits the cap (or, on mobile, the row edge) it truncates with an ellipsis
@@ -336,6 +381,10 @@ function toggleCollapsed() {
 .item-enter-from {
   opacity: 0;
 }
+/* (no item leave transition: removal goes through useGearList's dispatch(), which
+   splices the item out in place before the re-render, so TransitionGroup never holds
+   the leaving vnode — a CSS leave can't engage. Deletes stay instant by design, paired
+   with the undo toast as the real "undo a delete" affordance.) */
 /* the add affordance is the next row in the list rhythm: same top padding +
    border as the rule line between items, so it doesn't read as a separate block */
 .folder__add {

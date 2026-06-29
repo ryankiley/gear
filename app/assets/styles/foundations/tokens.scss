@@ -86,6 +86,12 @@
   --ease-spring: cubic-bezier(0.34, 1.4, 0.5, 1);
   --dur: 200ms;
   --dur-slow: 440ms;
+  --stagger: 31ms; /* per-child cascade step — SPACE10's kinetic-type cadence */
+  --blur-pop: 2px; /* enter blur for pop-ins (webkit-safe: rest at blur(0), never from none) */
+
+  /* ---- elevation: one floating-surface drop, shared so the lifted row + the toast
+     read at the same height and can't drift apart ---- */
+  --shadow-pop: 0 10px 24px -10px rgba(0, 0, 0, 0.35);
 
   /* ---- layout ---- */
   --measure: 56rem;

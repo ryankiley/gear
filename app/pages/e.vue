@@ -85,7 +85,15 @@ function onFocusIn(ev: FocusEvent) {
   if (!window.matchMedia("(pointer: coarse)").matches) return;
   clearTimeout(focusScrollTimer);
   focusScrollTimer = setTimeout(() => {
-    el.scrollIntoView({ block: "center", behavior: "smooth" });
+    // Only intervene if the field is ACTUALLY obscured (hidden under the keyboard or
+    // scrolled off the top). When iOS's own focus-scroll already made it visible, a
+    // second scrollIntoView is a visible double-reposition. visualViewport.height is
+    // the area left above the keyboard.
+    const vvH = window.visualViewport?.height ?? window.innerHeight;
+    const r = el.getBoundingClientRect();
+    if (r.bottom > vvH || r.top < 0) {
+      el.scrollIntoView({ block: "center", behavior: "smooth" });
+    }
   }, 300);
 }
 useEventListener(window, "focusin", onFocusIn); // auto-removes on unmount
@@ -242,6 +250,9 @@ function onCorrected(res: { status: string; itemName?: string }) {
         </div>
         <template v-if="snapshot">
           <div class="modetoggle" role="group" aria-label="View mode">
+            <!-- one pill tracks between the two segments (damped --ease, never overshoot —
+                 a tracking indicator must not leave its track); the icons sit above it -->
+            <span class="modetoggle__pill" :class="{ 'is-packing': packed }" aria-hidden="true" />
             <button
               type="button"
               class="modetoggle__opt"
@@ -455,8 +466,9 @@ function onCorrected(res: { status: string; itemName?: string }) {
 .menu {
   flex: none;
 }
-/* editing/packing toggle — a light container with two icon options */
+/* editing/packing toggle — a light container with two icon options + a tracking pill */
 .modetoggle {
+  position: relative;
   flex: none;
   display: inline-flex;
   gap: var(--space-px);
@@ -464,7 +476,26 @@ function onCorrected(res: { status: string; itemName?: string }) {
   background: var(--paper-2);
   border-radius: var(--radius-pill);
 }
+/* the active tint lives on ONE pill that slides between segments (was a per-segment
+   background crossfade). width/translate are percentage-based so it tracks the wider
+   coarse-pointer segments too. damped --ease — overshoot would let it leave the track. */
+.modetoggle__pill {
+  position: absolute;
+  top: var(--space-px);
+  bottom: var(--space-px);
+  left: var(--space-px);
+  width: calc((100% - 3 * var(--space-px)) / 2); /* one segment: (inner − gap) / 2 */
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, var(--ink) 12%, transparent);
+  pointer-events: none;
+  transition: transform var(--dur) var(--ease);
+  will-change: transform;
+}
+.modetoggle__pill.is-packing {
+  transform: translateX(calc(100% + var(--space-px))); /* over segment 2: own width + gap */
+}
 .modetoggle__opt {
+  position: relative; /* sits above the pill */
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -473,16 +504,12 @@ function onCorrected(res: { status: string; itemName?: string }) {
   border-radius: var(--radius-pill);
   color: var(--ink-3);
   cursor: pointer;
-  transition:
-    color var(--dur) var(--ease),
-    background var(--dur) var(--ease);
+  transition: color var(--dur) var(--ease);
 }
 .modetoggle__opt:hover {
   color: var(--ink-2);
 }
 .modetoggle__opt.is-active {
-  /* a mode-adaptive tint so the active option stands out on both themes */
-  background: color-mix(in oklab, var(--ink) 12%, transparent);
   color: var(--ink);
 }
 /* touch: each segment becomes a proper tap target (matches the 44px icon buttons) */
@@ -546,20 +573,22 @@ function onCorrected(res: { status: string; itemName?: string }) {
 .editor__folders > * {
   animation: rise var(--dur-slow) var(--ease) backwards;
 }
+/* cascade cadence lives in one token (--stagger, ~31ms — SPACE10's kinetic-type
+   step), not five magic numbers; child 1 leads at 0, the rest step off it */
 .editor__folders > *:nth-child(2) {
-  animation-delay: 50ms;
+  animation-delay: var(--stagger);
 }
 .editor__folders > *:nth-child(3) {
-  animation-delay: 100ms;
+  animation-delay: calc(var(--stagger) * 2);
 }
 .editor__folders > *:nth-child(4) {
-  animation-delay: 150ms;
+  animation-delay: calc(var(--stagger) * 3);
 }
 .editor__folders > *:nth-child(5) {
-  animation-delay: 200ms;
+  animation-delay: calc(var(--stagger) * 4);
 }
 .editor__folders > *:nth-child(n + 6) {
-  animation-delay: 250ms;
+  animation-delay: calc(var(--stagger) * 5);
 }
 .editor__ungrouped {
   padding: var(--space-3) var(--space-4) var(--space-4);
@@ -629,7 +658,11 @@ function onCorrected(res: { status: string; itemName?: string }) {
   position: fixed;
   left: 50%;
   bottom: var(--space-5);
-  transform: translateX(-50%);
+  /* translate(-50%, 0) — NOT translateX(-50%) — so the resting transform is the SAME
+     function as the enter/leave states' translate(-50%, Ypx). iOS Safari won't animate
+     across mismatched transform functions (translateX → translate); Chromium will
+     (matrix interpolation), which masked this. */
+  transform: translate(-50%, 0);
   /* a position:fixed box is laid out against the viewport, so it escapes the
      html{overflow-x:clip} guard; without a cap, translateX(-50%) of a wide toast
      could overhang an edge and (like any element wider than the layout viewport)
@@ -638,7 +671,12 @@ function onCorrected(res: { status: string; itemName?: string }) {
   max-width: calc(100% - 2 * var(--space-4));
   background: var(--ink);
   color: var(--paper);
-  padding: var(--space-2) var(--space-4);
+  padding: var(--space-2) var(--space-5);
+  /* a soft pill that floats above the page — rounded + the shared floating-surface
+     elevation (--shadow-pop, same as the lifted drag row) reads more modern than the
+     old square slab */
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-pop);
 }
 .undobar {
   display: flex;
@@ -657,11 +695,23 @@ function onCorrected(res: { status: string; itemName?: string }) {
   text-decoration: underline;
   cursor: pointer;
 }
-.toast-enter-active,
-.toast-leave-active {
-  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+/* enter ≠ exit: it arrives with a livelier spring rise (the toast is the event), and
+   leaves quietly on the plain ease. both keep translate(-50%, …) — the toast is
+   X-centred, so the overshoot only plays on Y (both ends share X = -50%). */
+.toast-enter-active {
+  transition:
+    opacity var(--dur) var(--ease),
+    transform var(--dur) var(--ease-spring);
 }
-.toast-enter-from,
+.toast-leave-active {
+  transition:
+    opacity var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+.toast-enter-from {
+  opacity: 0;
+  transform: translate(-50%, 12px);
+}
 .toast-leave-to {
   opacity: 0;
   transform: translate(-50%, 8px);

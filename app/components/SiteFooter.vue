@@ -36,6 +36,10 @@ const year = new Date().getFullYear();
 .foot__nav {
   display: flex;
   flex-wrap: wrap;
+  /* grow to fill the row so the copyright is pushed to the end; the copyright wraps to
+     its own (left-aligned) line ONLY when nav + copy genuinely don't fit — not at a
+     fixed breakpoint, which fired well before it was needed on phones */
+  flex: 1 1 auto;
   gap: var(--space-3) var(--space-5);
 }
 .foot__link {
@@ -48,12 +52,8 @@ const year = new Date().getFullYear();
   border-bottom-color: var(--ink);
 }
 .foot__copy {
-  margin-left: auto;
-}
-@media (max-width: 560px) {
-  .foot__copy {
-    margin-left: 0;
-    flex-basis: 100%;
-  }
+  /* no margin-left:auto + no forced wrap — .foot__nav's flex-grow pins this to the
+     row's end, and natural flex-wrap drops it to its own left-aligned line when needed */
+  flex: 0 1 auto;
 }
 </style>
