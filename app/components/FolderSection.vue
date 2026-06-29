@@ -264,6 +264,14 @@ function toggleCollapsed() {
   font-size: var(--text-title);
   letter-spacing: -0.02em;
 }
+/* packing/checklist mode disables the name input (it's read-only there). Browsers
+   grey disabled inputs out (UA -webkit-text-fill-color), so pin it back to full ink —
+   the folder name should read the same as it does in edit mode. */
+.folder__name:disabled {
+  color: var(--ink);
+  -webkit-text-fill-color: var(--ink);
+  opacity: 1;
+}
 /* remove + grip share the trailing actions cluster — evenly spaced + aligned
    with the item actions cluster below (both end at the grid edge) */
 .folder__actions {
