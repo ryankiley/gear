@@ -104,13 +104,44 @@ function flash(msg: string) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => (toast.value = ""), 2000);
 }
+// Clipboard writes here fire from a native <select> change (the ⋯ actions menu, e.g.
+// "Copy as Markdown") as well as buttons. iOS/Safari rejects the async Clipboard API
+// unless the write is part of a live user gesture with no await before it — a
+// select-change frequently doesn't qualify — so fall back to a synchronous
+// execCommand('copy') off a hidden textarea, which WebKit still honours in those
+// contexts. (See controls.scss for the sibling iOS input quirks.)
+function legacyCopy(text: string): boolean {
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    // off-screen but still selectable; fixed + opacity:0 avoids iOS scroll-to-field + zoom
+    ta.style.position = "fixed";
+    ta.style.top = "0";
+    ta.style.left = "0";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, text.length);
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  } catch {
+    return false;
+  }
+}
 async function copy(text: string, msg: string) {
   try {
-    await navigator.clipboard.writeText(text);
-    flash(msg);
+    if (navigator.clipboard?.writeText && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      flash(msg);
+      return;
+    }
   } catch {
-    flash("Copy failed");
+    // async API unavailable or rejected (e.g. fired from a select-change on iOS
+    // Safari) — fall through to the legacy path, still within the user gesture.
   }
+  flash(legacyCopy(text) ? msg : "Copy failed");
 }
 const origin = () => (typeof location !== "undefined" ? location.origin : "");
 
@@ -182,16 +213,27 @@ function download(filename: string, text: string, type: string) {
   a.click();
   URL.revokeObjectURL(url);
 }
+// Name the downloaded file after the list's NAME (what the user typed), e.g.
+// "Summer JMT" → "summer-jmt.json", so the saved file is recognisable. Falls back to
+// the URL slug, then "gear" (an unnamed draft has neither a title nor a slug yet).
+function fileBase(): string {
+  const fromTitle = (snapshot.value?.title || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return fromTitle || snapshot.value?.slug || "gear";
+}
 function downloadCsv() {
   if (!snapshot.value) return;
-  download(`${snapshot.value.slug || "gear"}.csv`, listToCsv(snapshot.value), "text/csv");
+  download(`${fileBase()}.csv`, listToCsv(snapshot.value), "text/csv");
   flash("CSV downloaded");
 }
 function downloadJson() {
   if (!snapshot.value) return;
   const { title, description, displayUnit, folders, items } = snapshot.value;
   download(
-    `${snapshot.value.slug || "gear"}.json`,
+    `${fileBase()}.json`,
     JSON.stringify({ title, description, displayUnit, folders, items }, null, 2),
     "application/json",
   );
@@ -671,12 +713,7 @@ function onCorrected(res: { status: string; itemName?: string }) {
   max-width: calc(100% - 2 * var(--space-4));
   background: var(--ink);
   color: var(--paper);
-  padding: var(--space-2) var(--space-5);
-  /* a soft pill that floats above the page — rounded + the shared floating-surface
-     elevation (--shadow-pop, same as the lifted drag row) reads more modern than the
-     old square slab */
-  border-radius: var(--radius-pill);
-  box-shadow: var(--shadow-pop);
+  padding: var(--space-2) var(--space-4);
 }
 .undobar {
   display: flex;
