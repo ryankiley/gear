@@ -12,7 +12,7 @@
       :key="`${generation}-${i}`"
       class="acount__ch"
       aria-hidden="true"
-      :style="i > 0 ? { animationDelay: `${i * 40}ms` } : undefined"
+      :style="{ '--i': i }"
     >{{ char }}</span>
   </span>
 </template>
@@ -50,28 +50,37 @@ onMounted(() => {
   align-items: baseline;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+  --stagger-ch: 40ms; /* per-digit cascade step (its own slower cadence vs the folder --stagger) */
 }
 .acount__ch {
   display: inline-block;
   white-space: pre; /* keep the space before the unit */
+  /* §6 "Rung 2": rest at blur(0) (never `none`, so the filter context persists) AND
+     force a standing GPU layer with translateZ(0). iOS Safari often won't RENDER a
+     filter animation at all unless the element is composited; Rung 1 (blur-at-rest
+     alone) left the blur invisible on Ryan's iPhone. The layer is baked into the
+     keyframe transforms too (a static transform here is overwritten while `transform`
+     animates), so it persists through and after the run. */
+  filter: blur(0);
+  transform: translateZ(0);
 }
 /* .acount__sr → migrated to the shared global .visually-hidden utility
    (app/assets/styles/foundations/reset.scss) */
-/* no filter:blur — Safari can leave the last character stuck in a blurred
-   compositing layer (it fails to repaint the final blur(0) state). translate +
-   opacity alone give the pop-in and never freeze. */
 @keyframes acount-pop {
   0% {
-    transform: translateY(0.2em);
+    transform: translateY(0.2em) translateZ(0);
     opacity: 0;
+    filter: blur(var(--blur-pop));
   }
   100% {
-    transform: translateY(0);
+    transform: translateY(0) translateZ(0);
     opacity: 1;
+    filter: blur(0);
   }
 }
 .acount.is-animating .acount__ch {
   animation: acount-pop var(--dur-slow) var(--ease-spring) both;
+  animation-delay: calc(var(--i, 0) * var(--stagger-ch)); /* 0 for the first char */
 }
 @media (prefers-reduced-motion: reduce) {
   .acount.is-animating .acount__ch {

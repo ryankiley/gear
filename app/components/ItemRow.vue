@@ -223,7 +223,7 @@ function dismissFix() {
       <ItemName :item="item" /><span v-if="effClass !== 'base'" class="t-sm" :class="`item__class--${effClass}`"> · {{ effClass }}</span>
     </span>
     <span class="t-num t-sm t-muted item__roqty">{{ qtyLabel }}</span>
-    <span class="t-num item__roweight"><template v-if="item.unitWeightMg > 0">{{ formatWeight(lineMg(item), list.displayUnit, { withUnit: false }) }} <span class="t-muted">{{ list.displayUnit }}</span></template><template v-else>—</template></span>
+    <span class="t-num item__roweight"><template v-if="item.unitWeightMg > 0">{{ formatWeight(lineMg(item), list.displayUnit, { withUnit: false }) }}<span class="t-muted item__wunit">{{ list.displayUnit }}</span></template><template v-else>—</template></span>
   </div>
 
   <!-- packing / checklist: a big tap target — check off the item; name + line weight only -->
@@ -236,7 +236,7 @@ function dismissFix() {
     />
     <span class="item__cname"><ItemName :item="item" /></span>
     <span class="t-num t-sm t-muted item__cqty">{{ qtyLabel }}</span>
-    <span class="t-num item__cweight"><template v-if="item.unitWeightMg > 0">{{ formatWeight(lineMg(item), list.displayUnit, { withUnit: false }) }} <span class="t-muted">{{ list.displayUnit }}</span></template><template v-else>—</template></span>
+    <span class="t-num item__cweight"><template v-if="item.unitWeightMg > 0">{{ formatWeight(lineMg(item), list.displayUnit, { withUnit: false }) }}<span class="t-muted item__wunit">{{ list.displayUnit }}</span></template><template v-else>—</template></span>
   </label>
 
   <!-- editable row (default) -->
@@ -338,34 +338,42 @@ function dismissFix() {
       </div>
     </div>
 
-    <!-- note: a single-line live-text field; appears once it has content or the note button is clicked -->
-    <input
-      v-if="item.description || noteOpen"
-      ref="noteRef"
-      class="item__note"
-      :value="item.description ?? ''"
-      placeholder="Add a note"
-      aria-label="Item note"
-      autocorrect="off"
-      spellcheck="false"
-      @change="c.updateItem(item.id, { description: ($event.target as HTMLInputElement).value })"
-      @blur="onNoteBlur"
-    />
+    <!-- note: a single-line live-text field; appears once it has content or the note button is clicked.
+         the .reveal wrapper is a grid whose row animates 1fr↔0fr (Safari-safe slide). -->
+    <Transition name="reveal">
+      <div v-if="item.description || noteOpen" class="reveal reveal--note">
+        <input
+          ref="noteRef"
+          class="item__note"
+          :value="item.description ?? ''"
+          placeholder="Add a note"
+          aria-label="Item note"
+          autocorrect="off"
+          spellcheck="false"
+          @change="c.updateItem(item.id, { description: ($event.target as HTMLInputElement).value })"
+          @blur="onNoteBlur"
+        />
+      </div>
+    </Transition>
 
-    <div v-if="showFix" class="item__fixrow">
-      <button type="button" class="item__under-link t-sm" @click="openFix">
-        Catalog: {{ formatWeight(item.catalogWeightMgAtLink ?? 0, list.displayUnit) }} — suggest a fix
-      </button>
-      <button
-        type="button"
-        class="item__fixdismiss"
-        title="Dismiss"
-        aria-label="Dismiss suggestion"
-        @click="dismissFix"
-      >
-        <X :size="13" />
-      </button>
-    </div>
+    <Transition name="reveal">
+      <div v-if="showFix" class="reveal">
+        <div class="item__fixrow">
+          <button type="button" class="item__under-link t-sm" @click="openFix">
+            Catalog: {{ formatWeight(item.catalogWeightMgAtLink ?? 0, list.displayUnit) }} — suggest a fix
+          </button>
+          <button
+            type="button"
+            class="item__fixdismiss"
+            title="Dismiss"
+            aria-label="Dismiss suggestion"
+            @click="dismissFix"
+          >
+            <X :size="13" />
+          </button>
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -495,6 +503,12 @@ function dismissFix() {
 .item__cweight {
   text-align: right;
 }
+/* unit suffix in the read + checklist weights — an explicit gap from the number so it
+   doesn't crowd ("1200g"); matches the editing row's --space-1 unit gap (a literal
+   template space rendered inconsistently) */
+.item__wunit {
+  margin-inline-start: var(--space-1);
+}
 .item--done {
   opacity: 0.5;
   text-decoration: line-through;
@@ -595,11 +609,11 @@ function dismissFix() {
   background: var(--paper-2);
   border-radius: var(--radius-2);
   /* a hairline ring (subtle in BOTH themes — no white glow in dark, which the
-     old --ink-derived shadow caused) + a neutral black drop that reads as
-     elevation in light; in dark the ring + the lift/motion carry it */
+     old --ink-derived shadow caused) + the shared floating-surface drop (--shadow-pop,
+     also used by the toast) so the two lifted surfaces read at one height */
   box-shadow:
     0 0 0 1px var(--line-2),
-    0 10px 24px -10px rgba(0, 0, 0, 0.35);
+    var(--shadow-pop);
   cursor: grabbing;
 }
 /* insertion line marking where the dragged row will land */
@@ -651,17 +665,53 @@ function dismissFix() {
   }
 }
 
+/* smooth disclosure for the note + fix-row — a grid whose one row animates 1fr↔0fr
+   (cross-browser slide; Safari has no interpolate-size, so height:auto↔0 just snaps
+   there). The inner child clips. reduced-motion → the global duration kill-switch
+   makes it instant. */
+.reveal {
+  display: grid;
+  grid-template-rows: 1fr;
+}
+.reveal > * {
+  min-height: 0;
+  overflow: hidden;
+}
+.reveal-enter-active,
+.reveal-leave-active {
+  transition:
+    grid-template-rows var(--dur) var(--ease),
+    opacity var(--dur) var(--ease);
+}
+/* the content also rises a touch as it fades — so the note reads as lifting into
+   place, not just unveiling. Synced with the height reveal + the wrapper's fade. */
+.reveal-enter-active > *,
+.reveal-leave-active > * {
+  transition: transform var(--dur) var(--ease);
+}
+.reveal-enter-from,
+.reveal-leave-to {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+.reveal-enter-from > *,
+.reveal-leave-to > * {
+  transform: translateY(0.4em);
+}
+/* the note tucks up under the name (into the 36px field's dead space); the offset
+   lives on the wrapper, not the input, so the grid track sizing stays clean */
+.reveal--note {
+  margin-top: calc(-1 * var(--space-1) - var(--space-px));
+}
 /* note — a single-line live-text field under the item (no box, no resize handle).
    reads as a caption: the lightest ink (matching the "Add an item" placeholder) and
    italic, to sit quietly beneath the item name. */
 .item__note {
   width: 100%;
   min-height: 0;
-  /* sit tight under the item line it captions. The editing name field is 36px tall
-     with its text vertically centred, leaving dead space below the name; a negative
-     top margin pulls the caption up into that gap so it reads as the name's second
-     line. (mobile fields are compact — see the override in the media query.) */
-  margin: calc(-1 * var(--space-1) - var(--space-px)) 0 0;
+  /* the upward tuck under the name now lives on the .reveal--note wrapper (so the
+     grid track sizing stays clean); this element just fills its cell */
+  margin: 0;
   padding: 0;
   border: 0;
   background: none;
@@ -745,7 +795,7 @@ function dismissFix() {
   }
   /* the caption sits under the compact meta line here (not a tall 36px field), so
      the desktop negative pull would overlap — a small positive gap instead */
-  .item__note {
+  .reveal--note {
     margin-top: var(--space-px);
   }
   /* one line only — qty · weight · class on the left, controls on the right — so a
