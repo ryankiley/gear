@@ -19,14 +19,19 @@
 
 import { and, desc, eq, gt, inArray, sql } from "drizzle-orm";
 import { catalogEdits, catalogItems } from "../db/schema";
-import { itemDisplayName } from "../../shared/weights";
+import {
+  SIM_THRESHOLD,
+  searchCatalogLocal,
+  type CatalogSearchResult,
+  type LocalCatalogRow,
+} from "../../shared/catalogSearch";
+
+// trigrams/trigramScore live in shared/catalogSearch (single source of truth for
+// the offline client + this server fallback) — re-exported so existing importers
+// (candidates.ts, tests) keep their import path.
+export { trigrams, trigramScore } from "../../shared/catalogSearch";
 
 const isNeon = () => Boolean(process.env.DATABASE_URL);
-
-/** The text we fuzzy-match against: "brand name" (matches the GIN index expr). */
-function searchText(brand: string | null, name: string): string {
-  return itemDisplayName(brand, name);
-}
 
 // Safe on BOTH PGlite and Neon. Single source of truth; also spread into db.ts's
 // local idempotent DDL. The pg_trgm GIN index is created separately (Neon only).
@@ -99,46 +104,6 @@ export function ensureCatalogSchema(db: unknown): Promise<void> {
   return _ensured;
 }
 
-export interface CatalogSearchResult {
-  id: number;
-  brand: string | null;
-  name: string;
-  variant: string | null;
-  weightMg: number;
-  weightSource: string;
-  verified: boolean;
-}
-
-// --- trigram fuzzy scoring (the local PGlite fallback; pure + unit-tested) ---
-
-/** pg_trgm-style trigrams: lowercase, non-alphanumerics→space, each word padded. */
-export function trigrams(input: string): Set<string> {
-  const cleaned = input.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-  const out = new Set<string>();
-  if (!cleaned) return out;
-  for (const word of cleaned.split(/\s+/)) {
-    const padded = `  ${word} `; // 2 leading + 1 trailing, like pg_trgm
-    for (let i = 0; i < padded.length - 2; i++) out.add(padded.slice(i, i + 3));
-  }
-  return out;
-}
-
-/**
- * How well `query` is covered by `target` (≈ pg_trgm word_similarity intent):
- * |T(query) ∩ T(target)| / |T(query)|. Rewards a short fragment/typo that's a
- * substring-ish of a longer name ("duplx" → "zpacks duplex" ≈ 0.67).
- */
-export function trigramScore(query: string, target: string): number {
-  const q = trigrams(query);
-  if (q.size === 0) return 0;
-  const t = trigrams(target);
-  let hits = 0;
-  for (const g of q) if (t.has(g)) hits++;
-  return hits / q.size;
-}
-
-const SIM_THRESHOLD = 0.3; // matches pg_trgm's default similarity threshold
-
 function normalizeQuery(q: unknown): string {
   return typeof q === "string" ? q.trim() : "";
 }
@@ -180,7 +145,8 @@ export async function searchCatalog(
     return normalizeRows(res);
   }
 
-  // PGlite: load the bounded active catalog and rank in JS.
+  // PGlite: load the bounded active catalog and rank in JS — the SAME ranking the
+  // offline client uses (searchCatalogLocal is the shared source of truth).
   const d = db as unknown as {
     select: () => {
       from: (t: typeof catalogItems) => {
@@ -188,39 +154,8 @@ export async function searchCatalog(
       };
     };
   };
-  const rows = await d
-    .select()
-    .from(catalogItems)
-    .where(eq(catalogItems.status, "active"));
-
-  return (rows as unknown as Array<{
-    id: number;
-    brand: string | null;
-    name: string;
-    variant: string | null;
-    weightMg: number;
-    weightSource: string;
-    verified: boolean;
-    usageCount: number;
-  }>)
-    .map((r) => ({ row: r, score: trigramScore(q, searchText(r.brand, r.name)) }))
-    .filter((r) => r.score >= SIM_THRESHOLD)
-    .sort(
-      (a, b) =>
-        Number(b.row.verified) - Number(a.row.verified) ||
-        b.row.usageCount - a.row.usageCount ||
-        b.score - a.score,
-    )
-    .slice(0, limit)
-    .map(({ row }) => ({
-      id: row.id,
-      brand: row.brand,
-      name: row.name,
-      variant: row.variant,
-      weightMg: Number(row.weightMg),
-      weightSource: row.weightSource,
-      verified: Boolean(row.verified),
-    }));
+  const rows = await d.select().from(catalogItems).where(eq(catalogItems.status, "active"));
+  return searchCatalogLocal(rows as unknown as LocalCatalogRow[], q, limit);
 }
 
 /**
