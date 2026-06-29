@@ -2,14 +2,17 @@ import type { Op } from "~~/shared/ops";
 import { applyOps } from "~~/shared/ops";
 import { uid } from "~~/shared/id";
 import { nextFolderColor, STARTER_FOLDERS } from "~~/shared/categories";
+import { DRAFT_KEY, localKey, rebaseOnto } from "~~/shared/localList";
 import type { Folder, Item, ListSnapshot, Unit } from "~~/shared/types";
 import { bySortOrder, computeTotals, itemsInFolder, parseWeightInput } from "~~/shared/weights";
 
 // Editor controller (one list open at a time → module singleton). Mutations are
 // applied optimistically via the SAME op-reducer the server uses, queued, and
-// flushed (debounced). A poll pulls other editors' merged changes live.
+// flushed (debounced). A poll pulls other editors' merged changes live. The queue
+// is mirrored to IndexedDB (useLocalListStore) so a draft or an un-acked edit
+// survives a reload, a crash, or a dropped connection.
 
-type Status = "idle" | "loading" | "saving" | "synced" | "missing" | "error";
+type Status = "idle" | "loading" | "saving" | "synced" | "missing" | "error" | "offline";
 
 let singleton: ReturnType<typeof create> | undefined;
 
@@ -28,6 +31,50 @@ function create() {
   // bumped on every load/dispose so in-flight responses for a previous list are ignored
   let epoch = 0;
   let teardownListeners: (() => void) | undefined;
+
+  // on-device durability + connectivity awareness. The connectivity ref + watcher
+  // live in a DETACHED effect scope so they track for the singleton's whole life,
+  // not just while the editor component happens to be mounted (this controller
+  // outlives any single mount).
+  const store = useLocalListStore();
+  const scope = effectScope(true);
+  const online = scope.run(() => useOnline())!;
+  let persistTimer: ReturnType<typeof setTimeout> | undefined;
+
+  // Mirror the current snapshot + queue to IndexedDB under this list's key (its
+  // edit token, or the draft slot before first save). Debounced — local writes are
+  // cheap but frequent (every keystroke dispatches an op). Best-effort: the store
+  // swallows its own failures, so this never throws into the edit path.
+  function persistLocal() {
+    clearTimeout(persistTimer);
+    persistTimer = setTimeout(() => {
+      if (!snapshot.value) return;
+      store.set(localKey(editToken), {
+        snapshot: snapshot.value,
+        pending: pending.slice(),
+        updatedAt: Date.now(),
+      });
+    }, 200);
+  }
+
+  // Going offline surfaces honestly; coming back online drains whatever the offline
+  // gate held back (a never-saved draft's create, or a saved list's queued ops).
+  scope.run(() => {
+    watch(online, (isOnline) => {
+      if (!isOnline) {
+        if (snapshot.value && status.value !== "loading") status.value = "offline";
+        return;
+      }
+      if (!snapshot.value) return;
+      if (!editToken) {
+        if (hasRealContent(snapshot.value)) createFromDraft();
+      } else if (pending.length) {
+        scheduleFlush();
+      } else if (status.value === "offline") {
+        status.value = "synced";
+      }
+    });
+  });
 
   // single-level undo for destructive removes — drives the "Undo" toast
   const pendingUndo = ref<{ label: string; restore: () => void } | null>(null);
@@ -73,17 +120,31 @@ function create() {
     snapshot.value = null;
     status.value = "loading";
     installListeners();
+
+    // Hydrate from this browser's local copy first — instant paint, and the only
+    // thing we can show if the network is down. Restore its un-acked queue too.
+    const local = await store.get(localKey(token));
+    if (myEpoch !== epoch) return; // a newer load() superseded this one
+    if (local) {
+      snapshot.value = local.snapshot;
+      pending = local.pending ?? [];
+      status.value = pending.length ? "saving" : "synced";
+      syncRegistry();
+    }
+
     try {
       const res = await $fetch<{ snapshot: ListSnapshot }>("/api/edit/list", {
         headers: authHeaders(),
       });
-      if (myEpoch !== epoch) return; // a newer load() superseded this one
-      snapshot.value = res.snapshot;
-      status.value = "synced";
+      if (myEpoch !== epoch) return;
+      // server is authoritative; replay any un-acked local ops on top of it
+      const merged = rebaseOnto(res.snapshot, pending);
+      snapshot.value = merged;
+      status.value = pending.length ? "saving" : "synced";
       syncRegistry();
       // one-time cleanup: early water rows were named "Water · 1 L"; the volume now
       // lives in the qty (litres) field, so the name should just be "Water"
-      for (const it of res.snapshot.items) {
+      for (const it of merged.items) {
         if (/^water\s*·/i.test(it.name)) updateItem(it.id, { name: "Water" });
       }
       // one-time backfill: lists imported before folders got colours assigned have
@@ -92,17 +153,31 @@ function create() {
       // viz is colourful. "other" is never auto-assigned and has no picker, so the
       // only folders carrying it came from a pre-colour import; recolouring is safe
       // and self-persists via the mutate flow (covers existing prod lists on open).
-      const colorKeys = res.snapshot.folders.map((f) => f.colorKey ?? "other");
-      res.snapshot.folders.forEach((f, i) => {
+      const colorKeys = merged.folders.map((f) => f.colorKey ?? "other");
+      merged.folders.forEach((f, i) => {
         if (colorKeys[i] !== "other") return;
         const colorKey = nextFolderColor(colorKeys);
         colorKeys[i] = colorKey;
         updateFolder(f.id, { colorKey });
       });
+      persistLocal();
+      if (pending.length) scheduleFlush();
       startPoll();
     } catch (e: any) {
       if (myEpoch !== epoch) return;
-      status.value = e?.statusCode === 404 ? "missing" : "error";
+      if (e?.statusCode === 404) {
+        // The server has no list under this token (deleted, or the link was
+        // rotated). If we still hold a local copy, keep it on screen so the data
+        // is readable/exportable, but don't poll or flush against a dead token.
+        status.value = local ? "synced" : "missing";
+      } else if (local) {
+        // Network failure with a local copy: keep editing, sync when it returns.
+        status.value = "offline";
+        if (pending.length) scheduleFlush();
+        startPoll();
+      } else {
+        status.value = "error";
+      }
     }
   }
 
@@ -118,6 +193,7 @@ function create() {
   // never adds anything never creates a server row.
   function startDraft() {
     epoch++;
+    const myEpoch = epoch;
     editToken = "";
     pending = [];
     inFlight = false;
@@ -143,6 +219,16 @@ function create() {
       isPublic: false,
     };
     status.value = "synced";
+    // Restore an in-progress, never-saved draft if one survived a reload/crash.
+    // Async (IndexedDB), so the fresh starter paints first and is replaced if found.
+    store.get(DRAFT_KEY).then((local) => {
+      if (myEpoch !== epoch || editToken || !local) return;
+      snapshot.value = local.snapshot;
+      pending = local.pending ?? [];
+      status.value = "synced";
+      // a restored draft that already has real content resumes its create attempt
+      if (hasRealContent(local.snapshot)) createFromDraft();
+    });
   }
 
   // Persist a draft to the server on its first real content. The created snapshot
@@ -151,6 +237,8 @@ function create() {
   // round-trip are queued and flushed right after.
   async function createFromDraft() {
     if (inFlight || editToken || !snapshot.value) return;
+    // offline: the draft is already persisted locally; create once back online
+    if (!online.value) { status.value = "offline"; return; }
     const myEpoch = epoch;
     inFlight = true;
     status.value = "saving";
@@ -166,6 +254,9 @@ function create() {
       if (pending.length) applyOps(merged as any, pending); // edits made mid-create
       snapshot.value = merged;
       status.value = "synced";
+      // the draft is now a real list — move its on-device record onto the token key
+      store.del(DRAFT_KEY);
+      persistLocal();
       // register the write capability + put the token in the URL WITHOUT routing
       // (replaceState, so the editor's hash watcher doesn't dispose/reload us)
       const token = useMyLists().registerCreated(res, computeTotals(merged).totalMg);
@@ -191,6 +282,7 @@ function create() {
     // optimistic: same reducer as the server
     applyOps(snapshot.value as any, [op]);
     snapshot.value = { ...snapshot.value };
+    persistLocal(); // mirror to IndexedDB so this edit survives a reload/crash
     // Draft (no token yet): keep edits local until there's real content, then create
     // the list once. While that create is in flight, queue ops for the post-create flush.
     if (!editToken) {
@@ -209,6 +301,8 @@ function create() {
 
   async function flush() {
     if (inFlight || !pending.length || !snapshot.value) return;
+    // offline: leave the queue intact + persisted; the online watcher re-flushes
+    if (!online.value) { status.value = "offline"; persistLocal(); return; }
     const myEpoch = epoch;
     const ops = pending;
     pending = [];
@@ -232,10 +326,13 @@ function create() {
       // so the post-blur poll (since < server version) still delivers the merge.
       status.value = "synced";
       syncRegistry();
+      persistLocal(); // snapshot adopted + queue drained → update the on-device copy
     } catch (e: any) {
       if (myEpoch !== epoch) return;
       pending = ops.concat(pending); // re-queue (incl. 409 contention) and retry shortly
-      status.value = "error";
+      // offline surfaces honestly; a genuine server error keeps the "Not saved" cue
+      status.value = online.value ? "error" : "offline";
+      persistLocal(); // keep the re-queued ops on device until they land
       setTimeout(scheduleFlush, 1500);
     } finally {
       if (myEpoch === epoch) {
@@ -249,6 +346,7 @@ function create() {
     stopPoll();
     pollTimer = setInterval(async () => {
       if (typeof document !== "undefined" && document.hidden) return;
+      if (!online.value) return; // nothing to pull while the connection is down
       if (inFlight || pending.length || !snapshot.value || useItemDnd().dragId.value != null) return;
       const myEpoch = epoch;
       try {
@@ -287,9 +385,10 @@ function create() {
       el instanceof HTMLElement && /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName);
     const onFocusIn = (e: FocusEvent) => { if (isField(e.target)) isEditing = true; };
     const onFocusOut = () => { isEditing = false; };
-    // warn before leaving with unsynced edits
+    // warn before leaving with unsynced edits — but offline edits are safely held
+    // on device (IndexedDB), so only nag when a server sync is pending AND reachable
     const onBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (pending.length || inFlight) { e.preventDefault(); e.returnValue = ""; }
+      if ((pending.length || inFlight) && online.value) { e.preventDefault(); e.returnValue = ""; }
     };
     window.addEventListener("focusin", onFocusIn);
     window.addEventListener("focusout", onFocusOut);
@@ -421,8 +520,9 @@ function create() {
               version: snapshot.value.version,
             }
           : null);
-      my.forget(old);
+      my.forget(old); // also drops the old token's on-device record
       if (base) my.upsert({ ...base, editToken: res.editToken, lastOpened: Date.now() } as any);
+      persistLocal(); // re-key this device's copy onto the new token
       return res.editToken;
     } catch {
       return null;
@@ -435,6 +535,16 @@ function create() {
     if (pending.length && editToken) {
       $fetch("/api/edit/mutate", { method: "POST", headers: authHeaders(), body: { ops: pending } }).catch(() => {});
     }
+    // capture the latest state on device before teardown — the debounced persist
+    // may not have fired, and SPA nav / unmount must not drop the last edits
+    if (snapshot.value) {
+      store.set(localKey(editToken), {
+        snapshot: snapshot.value,
+        pending: pending.slice(),
+        updatedAt: Date.now(),
+      });
+    }
+    clearTimeout(persistTimer);
     epoch++; // invalidate any in-flight flush/poll responses
     useItemDnd().reset(); // drop any in-flight drag so it can't commit against a new list
     stopPoll();

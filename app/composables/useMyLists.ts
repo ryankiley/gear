@@ -26,6 +26,9 @@ export function useMyLists() {
 
   function forget(editToken: string) {
     entries.value = entries.value.filter((x) => x.editToken !== editToken);
+    // drop this list's on-device snapshot/queue too (rotate re-keys; explicit
+    // removal cleans up) so a forgotten token leaves nothing behind in IndexedDB
+    useLocalListStore().del(editToken);
   }
 
   // Register a freshly created/imported/cloned list in this browser's registry.
