@@ -13,6 +13,11 @@ export interface CatalogResult {
 
 export function useCatalogSearch() {
   const results = ref<CatalogResult[]>([]);
+  // When the offline flag is on, warm an on-device catalog snapshot and fall back
+  // to it if the live search can't reach the network. Flag off → both are inert
+  // and this behaves exactly as before (server-only).
+  const cache = useOfflineEnabled() ? useCatalogCache() : null;
+  if (cache) void cache.prime();
   let timer: ReturnType<typeof setTimeout> | undefined;
   let controller: AbortController | undefined;
   let lastQ = "";
@@ -42,7 +47,10 @@ export function useCatalogSearch() {
         });
         if (lastQ === q) results.value = res.results || [];
       } catch {
-        /* abort / transient — keep prior results */
+        // A newer keystroke aborted this request → lastQ !== q, leave results be.
+        // A genuine failure (offline / network) with the flag on → serve the cached
+        // catalog. Flag off → no cache, keep prior results (unchanged behavior).
+        if (cache && lastQ === q) results.value = cache.searchLocal(q);
       }
     }, 140);
   }
