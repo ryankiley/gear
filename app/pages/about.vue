@@ -47,6 +47,14 @@ useHead({
           <li>Weights are backed by a curated, cited gear catalog, but you can override anything.</li>
         </ul>
 
+        <h2>Open source</h2>
+        <p>
+          Mahonia is open source under the MIT license. The code lives on
+          <a href="https://github.com/ryankiley/mahonia" target="_blank" rel="noopener noreferrer"
+            >GitHub</a
+          >, so you can read how it works, file an issue, or run your own copy.
+        </p>
+
         <p>
           Questions, or want a list removed? Email
           <a :href="`mailto:${CONTACT_EMAIL}`">{{ CONTACT_EMAIL }}</a>. See also the
