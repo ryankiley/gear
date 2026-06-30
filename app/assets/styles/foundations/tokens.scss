@@ -22,6 +22,10 @@
   --line: light-dark(#00000014, #ffffff14);
   --line-2: light-dark(#00000026, #ffffff26);
 
+  /* ---- underline: ONE soft colour for text underlines (links). Legible but never
+     full-strength ink — interactive links may deepen to --ink-2, never to --ink ---- */
+  --underline: var(--ink-3);
+
   /* ---- chrome is MONOCHROME — controls/state/primary all read as ink; the only
      colour on the site is the data viz (the category bar + dots, --cat-* below).
      See wiki: concepts/monochrome-chrome-colour-from-content. The primary action

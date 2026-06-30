@@ -49,7 +49,8 @@ const year = new Date().getFullYear();
 }
 .foot__link:hover {
   color: var(--ink);
-  border-bottom-color: var(--ink);
+  /* underline appears on hover but stays soft — never full-strength ink */
+  border-bottom-color: var(--ink-2);
 }
 .foot__copy {
   /* no margin-left:auto + no forced wrap — .foot__nav's flex-grow pins this to the

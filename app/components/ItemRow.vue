@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ChevronDown, GripVertical, StickyNotePlus, StickyNoteX, Trash2, X } from "@lucide/vue";
+import { ChevronDown, GripVertical, Search, StickyNotePlus, StickyNoteX, Trash2, X } from "@lucide/vue";
+import { webSearchUrl } from "~~/shared/links";
 import type { Classification, Item, ListSnapshot, Unit } from "~~/shared/types";
 import { effectiveClassification, formatWeight, fromMg, itemDisplayName, lineMg, parseWeightInput } from "~~/shared/weights";
 
@@ -71,6 +72,16 @@ const litersDisplay = computed(() => {
 // "2 L" rather than a meaningless "×1"; everything else keeps its ×quantity
 const qtyLabel = computed(() =>
   isWater.value ? `${litersDisplay.value || "0"} L` : `×${props.item.qty}`,
+);
+// read-only share views: the item name links out to a web search so a viewer can
+// look the gear up (and maybe buy it). The query is the same flat "Brand Model
+// Variant" the editable name shows; water + unnamed rows get no link (a search
+// for "Water" is meaningless).
+const searchName = computed(() =>
+  itemDisplayName(props.item.brand, props.item.name, props.item.variant).trim(),
+);
+const searchUrl = computed(() =>
+  !isWater.value && searchName.value ? webSearchUrl(searchName.value) : null,
 );
 function onWaterLiters(e: Event) {
   const el = e.target as HTMLInputElement;
@@ -223,7 +234,14 @@ function dismissFix() {
   <!-- read-only row (shared with the public /s view) -->
   <div v-if="readonly" class="item item--ro">
     <span class="item__roname">
-      <ItemName :item="item" /><span v-if="effClass !== 'base'" class="t-sm" :class="`item__class--${effClass}`"> · {{ effClass }}</span>
+      <a
+        v-if="searchUrl"
+        class="item__rolink"
+        :href="searchUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        :aria-label="`Search the web for ${searchName}`"
+      ><ItemName :item="item" /><Search class="item__rosearch" :size="13" aria-hidden="true" /></a><ItemName v-else :item="item" /><span v-if="effClass !== 'base'" class="t-sm" :class="`item__class--${effClass}`"> · {{ effClass }}</span>
     </span>
     <span class="t-num t-sm t-muted item__roqty">{{ qtyLabel }}</span>
     <span class="t-num item__roweight"><template v-if="item.unitWeightMg > 0">{{ formatWeight(lineMg(item), list.displayUnit, { withUnit: false }) }}<span class="t-muted item__wunit">{{ list.displayUnit }}</span></template><template v-else>—</template></span>
@@ -429,6 +447,42 @@ function dismissFix() {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+/* the read-only name links out to a web search (look up / buy the gear). Quiet at
+   rest — keeps the list reading as text — with a SOFT underline (never full ink)
+   appearing on hover/focus, alongside the search icon. */
+.item__rolink {
+  color: inherit;
+  text-decoration: none;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px; /* from-font is heavy; pin it thin */
+  transition: text-decoration-color var(--dur) var(--ease);
+}
+.item__rolink:hover,
+.item__rolink:focus-visible {
+  text-decoration: underline;
+  text-decoration-color: var(--underline);
+}
+/* search-icon hint: muted, sits just after the name. On desktop it's hidden at rest
+   and fades in on hover/focus (mirrors the editor's hover-reveal row icons); on
+   touch (no hover) it stays subtly visible so the affordance is discoverable. */
+.item__rosearch {
+  /* lucide renders svg as display:block — keep it inline so it sits after the name
+     rather than dropping onto its own line */
+  display: inline-block;
+  margin-inline-start: var(--space-1);
+  color: var(--ink-3);
+  vertical-align: -2px;
+}
+@media (hover: hover) {
+  .item__rosearch {
+    opacity: 0;
+    transition: opacity var(--dur) var(--ease);
+  }
+  .item__rolink:hover .item__rosearch,
+  .item__rolink:focus-visible .item__rosearch {
+    opacity: 1;
+  }
 }
 .item__roweight {
   text-align: right;

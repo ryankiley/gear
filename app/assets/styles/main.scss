@@ -71,7 +71,8 @@
   transition: border-color var(--dur) var(--ease);
 }
 .prose a:hover {
-  border-bottom-color: var(--ink);
+  // deepen on hover, but never to full ink — keeps the underline soft (see --underline)
+  border-bottom-color: var(--ink-2);
 }
 
 // Motion — one signature ease (SPACE10), opacity + transform only. The load
