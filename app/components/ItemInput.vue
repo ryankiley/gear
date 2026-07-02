@@ -249,8 +249,11 @@ function highlightParts(text: string): { t: string; on: boolean }[] {
         v-model="weightDraft"
         class="field field--num"
         placeholder="--"
-        inputmode="decimal"
         aria-label="Weight"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
         @keydown.enter="commitFree"
       />
       <span class="t-sm t-muted ac__unit">{{ unit }}</span>
