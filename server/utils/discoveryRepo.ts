@@ -21,6 +21,7 @@ import {
   cardFromRow,
   decidePublish,
   normalizeSeason,
+  normalizeSlug,
   normalizeTripType,
   type DiscoveryCard,
   type FeedView,
@@ -32,14 +33,6 @@ import { rowToSnapshot } from "./listRepo";
 import { sha256Hex } from "./tokens";
 
 type Db = Awaited<ReturnType<typeof useDb>>;
-
-// Public addresses look like `{slug}-{6 crockford}`, lowercased. Validate the
-// shape before any DB round-trip (and to keep obviously-junk input out).
-const SLUG_RE = /^[a-z0-9-]{1,80}$/;
-function normalizeSlug(raw: string): string | null {
-  const s = (raw || "").trim().toLowerCase();
-  return SLUG_RE.test(s) ? s : null;
-}
 
 const liveByEditToken = (hash: string) =>
   and(eq(lists.editTokenHash, hash), eq(lists.status, "active"), isNull(lists.deletedAt));

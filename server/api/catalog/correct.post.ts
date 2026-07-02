@@ -1,7 +1,7 @@
 import { createError, defineEventHandler, setHeader } from "h3";
 import { parseWeightInput } from "../../../shared/weights";
-import { ensureCatalogSchema, proposeCorrection } from "../../utils/catalog";
-import { useDb } from "../../utils/db";
+import { proposeCorrection } from "../../utils/catalog";
+import { useCatalogDb } from "../../utils/db";
 import { readJsonBody } from "../../utils/http";
 import { assertMaxBody, rateLimit } from "../../utils/rateLimit";
 
@@ -11,7 +11,7 @@ import { assertMaxBody, rateLimit } from "../../utils/rateLimit";
 export default defineEventHandler(async (event) => {
   setHeader(event, "X-Robots-Tag", "noindex");
   assertMaxBody(event, 8_000);
-  await rateLimit(event, "catalog-correct", 20, 60_000);
+  await rateLimit(event, "catalog-correct");
 
   const body = await readJsonBody<{
     catalogItemId?: number;
@@ -42,7 +42,6 @@ export default defineEventHandler(async (event) => {
       ? body.reason.trim().slice(0, 500)
       : undefined;
 
-  const db = await useDb();
-  await ensureCatalogSchema(db);
+  const db = await useCatalogDb();
   return proposeCorrection(db, { catalogItemId, newWeightMg: weightMg, sourceUrl, reason });
 });

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ChevronDown } from "@lucide/vue";
 import type { ListSnapshot, Totals, Unit } from "~~/shared/types";
+import { UNITS } from "~~/shared/types";
 import { formatWeight } from "~~/shared/weights";
 
 defineProps<{
@@ -11,8 +12,6 @@ defineProps<{
 const emit = defineEmits<{
   "set-unit": [Unit];
 }>();
-
-const UNITS: Unit[] = ["g", "kg", "oz", "lb"];
 </script>
 
 <template>

@@ -42,19 +42,21 @@ function create() {
   let persistTimer: ReturnType<typeof setTimeout> | undefined;
 
   // Mirror the current snapshot + queue to IndexedDB under this list's key (its
-  // edit token, or the draft slot before first save). Debounced — local writes are
-  // cheap but frequent (every keystroke dispatches an op). Best-effort: the store
+  // edit token, or the draft slot before first save). Best-effort: the store
   // swallows its own failures, so this never throws into the edit path.
+  function writeLocal() {
+    if (!snapshot.value) return;
+    store.set(localKey(editToken), {
+      snapshot: snapshot.value,
+      pending: pending.slice(),
+      updatedAt: Date.now(),
+    });
+  }
+  // Debounced writeLocal — local writes are cheap but frequent (every keystroke
+  // dispatches an op).
   function persistLocal() {
     clearTimeout(persistTimer);
-    persistTimer = setTimeout(() => {
-      if (!snapshot.value) return;
-      store.set(localKey(editToken), {
-        snapshot: snapshot.value,
-        pending: pending.slice(),
-        updatedAt: Date.now(),
-      });
-    }, 200);
+    persistTimer = setTimeout(writeLocal, 200);
   }
 
   // Going offline surfaces honestly; coming back online drains whatever the offline
@@ -105,7 +107,7 @@ function create() {
     useMyLists().touch(editToken, {
       title: snapshot.value.title,
       version: snapshot.value.version,
-      totalMg: computeTotals(snapshot.value).totalMg,
+      totalMg: totals.value?.totalMg ?? 0, // the memoized rollup — no fresh full-list pass
     });
   }
 
@@ -259,7 +261,7 @@ function create() {
       persistLocal();
       // register the write capability + put the token in the URL WITHOUT routing
       // (replaceState, so the editor's hash watcher doesn't dispose/reload us)
-      const token = useMyLists().registerCreated(res, computeTotals(merged).totalMg);
+      const token = useMyLists().registerCreated(res, totals.value?.totalMg ?? 0);
       if (typeof history !== "undefined") history.replaceState(history.state, "", `/e#${token}`);
       startPoll();
     } catch {
@@ -516,7 +518,7 @@ function create() {
               shareCode: snapshot.value.shareCode,
               slug: snapshot.value.slug,
               title: snapshot.value.title,
-              totalMg: computeTotals(snapshot.value).totalMg,
+              totalMg: totals.value?.totalMg ?? 0,
               version: snapshot.value.version,
             }
           : null);
@@ -537,13 +539,7 @@ function create() {
     }
     // capture the latest state on device before teardown — the debounced persist
     // may not have fired, and SPA nav / unmount must not drop the last edits
-    if (snapshot.value) {
-      store.set(localKey(editToken), {
-        snapshot: snapshot.value,
-        pending: pending.slice(),
-        updatedAt: Date.now(),
-      });
-    }
+    writeLocal();
     clearTimeout(persistTimer);
     epoch++; // invalidate any in-flight flush/poll responses
     useItemDnd().reset(); // drop any in-flight drag so it can't commit against a new list

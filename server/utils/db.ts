@@ -4,7 +4,7 @@
 
 import { sql } from "drizzle-orm";
 import * as schema from "../db/schema";
-import { CATALOG_DDL } from "./catalog";
+import { CATALOG_DDL, ensureCatalogSchema } from "./catalog";
 import { CANDIDATES_DDL } from "./candidates";
 
 type Db = Awaited<ReturnType<typeof build>>;
@@ -158,5 +158,13 @@ export async function useDb(): Promise<Db> {
   // ensure the core `lists` table exists on first use. Memoized → one batch per
   // warm instance. Snapshots + catalog self-ensure on their own paths.
   if (process.env.DATABASE_URL) await ensureListsSchema(db);
+  return db;
+}
+
+/** useDb + the catalog-schema ensure — the standard opener for every catalog
+ *  endpoint, so a handler can't forget the ensure (= a 500 on cold Neon). */
+export async function useCatalogDb(): Promise<Db> {
+  const db = await useDb();
+  await ensureCatalogSchema(db);
   return db;
 }
