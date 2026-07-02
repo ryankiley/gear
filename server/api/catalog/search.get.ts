@@ -1,6 +1,6 @@
 import { defineEventHandler, getQuery, setHeader } from "h3";
-import { ensureCatalogSchema, searchCatalog } from "../../utils/catalog";
-import { useDb } from "../../utils/db";
+import { searchCatalog } from "../../utils/catalog";
+import { useCatalogDb } from "../../utils/db";
 import { rateLimit } from "../../utils/rateLimit";
 
 // Maps-grade autocomplete for the gear catalog. `?q=` returns up to 8 fuzzy
@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
   // keystroke prefixes are absorbed by the edge cache below, never reaching here);
   // distinct-query enumeration by a scraper gets capped per IP, forcing rotation.
   // Runs BEFORE the cache headers so a 429 is never cached at the edge. Tunable.
-  await rateLimit(event, "catalog-search", 240, 60_000);
+  await rateLimit(event, "catalog-search");
 
   setHeader(event, "X-Robots-Tag", "noindex");
   setHeader(event, "Cache-Control", "public, max-age=2, s-maxage=10");
@@ -25,8 +25,7 @@ export default defineEventHandler(async (event) => {
   const raw = getQuery(event).q;
   const q = (Array.isArray(raw) ? raw[0] : raw ?? "").toString().slice(0, 100);
 
-  const db = await useDb();
-  await ensureCatalogSchema(db);
+  const db = await useCatalogDb();
   const results = await searchCatalog(db, q, 8);
 
   return { results };
